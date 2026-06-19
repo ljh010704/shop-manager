@@ -6,12 +6,23 @@
 <p class="text-amber-700/70">查看任务完成数据</p>
 </div>
 
-<div class="glass rounded-2xl p-6 mb-6">
-<div class="flex flex-wrap gap-2">
-<a href="/task/stats?days=7" class="px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-amber-500 text-white shadow-md' if days == 7 else 'bg-amber-100 text-amber-700 hover:bg-amber-200' }}">近7天</a>
-<a href="/task/stats?days=15" class="px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-amber-500 text-white shadow-md' if days == 15 else 'bg-amber-100 text-amber-700 hover:bg-amber-200' }}">近15天</a>
-<a href="/task/stats?days=30" class="px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-amber-500 text-white shadow-md' if days == 30 else 'bg-amber-100 text-amber-700 hover:bg-amber-200' }}">近30天</a>
+<div class="tech-card p-6 mb-6">
+<form method="get" class="flex flex-wrap gap-3 items-end">
+<div>
+<label class="block text-xs font-medium text-amber-700 mb-1.5">开始日期</label>
+<input type="date" name="date_from" value="{{ date_from }}" class="px-4 py-2.5 rounded-xl bg-white border border-amber-200 text-amber-900 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">
 </div>
+<div>
+<label class="block text-xs font-medium text-amber-700 mb-1.5">结束日期</label>
+<input type="date" name="date_to" value="{{ date_to }}" class="px-4 py-2.5 rounded-xl bg-white border border-amber-200 text-amber-900 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">
+</div>
+<div class="flex gap-2">
+<button type="submit" class="cyber-btn text-sm py-2 px-4">查询</button>
+<a href="/task/stats?days=7" class="px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-amber-500 text-white shadow-md' if days == 7 else 'bg-amber-100 text-amber-700 hover:bg-amber-200' }}">近7天</a>
+<a href="/task/stats?days=15" class="px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-amber-500 text-white shadow-md' if days == 15 else 'bg-amber-100 text-amber-700 hover:bg-amber-200' }}">近15天</a>
+<a href="/task/stats?days=30" class="px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-amber-500 text-white shadow-md' if days == 30 else 'bg-amber-100 text-amber-700 hover:bg-amber-200' }}">近30天</a>
+</div>
+</form>
 </div>
 
 <div class="tech-card p-6 mb-6">
@@ -123,8 +134,8 @@
 </thead>
 <tbody>
 {% for g in group_stats %}
-<tr class="border-t border-amber-100 hover:bg-amber-50/50 transition stagger-item">
-<td class="px-5 py-4"><a href="/task/stats?days={{ days }}&group={{ g.group_name }}" class="text-amber-700 hover:underline font-medium">{{ g.group_name }}</a></td>
+<tr class="border-t border-amber-100 hover:bg-amber-50/50 transition stagger-item cursor-pointer" onclick="showGroupDetail('{{ g.group_name }}')">
+<td class="px-5 py-4"><span class="text-amber-700 font-medium hover:underline">{{ g.group_name }}</span></td>
 <td class="px-5 py-4 text-center text-amber-700">{{ g.shop_count }}</td>
 <td class="px-5 py-4 text-center text-green-600 font-semibold">{{ g.done_tasks or 0 }}</td>
 <td class="px-5 py-4 text-center text-amber-700">{{ g.total_tasks or 0 }}</td>
@@ -143,4 +154,63 @@
 </div>
 </div>
 {% endif %}
+
+<!-- Group Detail Modal -->
+<div id="groupModal" class="fixed inset-0 z-50 hidden">
+<div class="modal-overlay absolute inset-0" onclick="closeGroupModal()"></div>
+<div class="relative max-w-4xl w-full mx-auto mt-[5vh]">
+<div class="tech-card p-6 max-h-[85vh] flex flex-col">
+<div class="flex justify-between items-center mb-4">
+<h3 id="groupModalTitle" class="text-lg font-semibold text-amber-800">分组详情</h3>
+<button onclick="closeGroupModal()" class="w-8 h-8 rounded-full bg-amber-100 hover:bg-amber-200 flex items-center justify-center transition text-amber-600">&times;</button>
+</div>
+<div id="groupModalBody" class="overflow-y-auto flex-1">
+<div class="text-center py-8 text-amber-400">加载中...</div>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+function showGroupDetail(groupName) {
+    var modal = document.getElementById('groupModal');
+    document.getElementById('groupModalTitle').textContent = groupName + ' - 任务完成详情';
+    document.getElementById('groupModalBody').innerHTML = '<div class="text-center py-8 text-amber-400">加载中...</div>';
+    modal.classList.remove('hidden');
+    
+    var dateFrom = '{{ date_from }}';
+    var dateTo = '{{ date_to }}';
+    
+    fetch('/task/api/group/detail?group=' + encodeURIComponent(groupName) + '&date_from=' + dateFrom + '&date_to=' + dateTo)
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (!data.shops || data.shops.length === 0) {
+                document.getElementById('groupModalBody').innerHTML = '<div class="text-center py-8 text-amber-400">该分组暂无数据</div>';
+                return;
+            }
+            var html = '<div class="mb-4 text-sm text-amber-600">日期范围: ' + dateFrom + ' 至 ' + dateTo + '</div>';
+            html += '<div class="overflow-x-auto"><table class="w-full text-sm"><thead class="bg-amber-50"><tr>';
+            html += '<th class="px-4 py-3 font-medium text-amber-700 text-left">店铺名称</th>';
+            html += '<th class="px-4 py-3 font-medium text-amber-700 text-center">总任务</th>';
+            html += '<th class="px-4 py-3 font-medium text-amber-700 text-center">已完成</th>';
+            html += '<th class="px-4 py-3 font-medium text-amber-700 text-left">完成率</th>';
+            html += '</tr></thead><tbody>';
+            data.shops.forEach(function(shop) {
+                var rate = shop.total > 0 ? Math.round(shop.done / shop.total * 100) : 0;
+                html += '<tr class="border-t border-amber-100 hover:bg-amber-50/50">';
+                html += '<td class="px-4 py-3 font-medium text-amber-900">' + shop.name + '</td>';
+                html += '<td class="px-4 py-3 text-center text-amber-700">' + shop.total + '</td>';
+                html += '<td class="px-4 py-3 text-center text-green-600 font-semibold">' + shop.done + '</td>';
+                html += '<td class="px-4 py-3"><div class="flex items-center gap-2"><div class="cyber-progress flex-1 max-w-[150px]"><div class="cyber-progress-fill" style="width:' + rate + '%"></div></div><span class="text-sm text-amber-700 w-10">' + rate + '%</span></div></td>';
+                html += '</tr>';
+            });
+            html += '</tbody></table></div>';
+            document.getElementById('groupModalBody').innerHTML = html;
+        });
+}
+
+function closeGroupModal() {
+    document.getElementById('groupModal').classList.add('hidden');
+}
+</script>
 {% endblock %}

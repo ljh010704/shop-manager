@@ -286,12 +286,71 @@ body {
     justify-content: center;
     background: linear-gradient(135deg, rgba(245, 184, 0, 0.2), rgba(251, 191, 36, 0.2));
     border: 1px solid rgba(245, 184, 0, 0.3);
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .icon-cyber:hover {
+    transform: scale(1.15) rotate(5deg);
+    box-shadow: 0 0 25px rgba(245, 184, 0, 0.4);
+    background: linear-gradient(135deg, rgba(245, 184, 0, 0.3), rgba(251, 191, 36, 0.3));
+}
+
+/* Icon hover effects for SVG icons */
+svg {
+    transition: all 0.3s ease;
+}
+
+a:hover svg {
     transform: scale(1.1);
-    box-shadow: 0 0 20px rgba(245, 184, 0, 0.3);
+}
+
+button:hover svg {
+    transform: scale(1.1);
+}
+
+/* Nav icon animation */
+.nav-link svg {
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover svg {
+    transform: scale(1.15) rotate(5deg);
+    color: #B45309;
+}
+
+/* Card icon container hover */
+.tech-card .icon-cyber {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tech-card:hover .icon-cyber {
+    transform: scale(1.1) rotate(8deg);
+    box-shadow: 0 0 30px rgba(245, 184, 0, 0.4);
+}
+
+/* Button icon hover */
+.cyber-btn svg {
+    transition: all 0.3s ease;
+}
+
+.cyber-btn:hover svg {
+    transform: translateX(3px);
+}
+
+/* Table row icon hover */
+.cyber-table tr:hover svg {
+    transform: scale(1.1);
+}
+
+/* Footer icon animation */
+footer .pulse svg {
+    animation: iconFloat 3s ease-in-out infinite;
+}
+
+@keyframes iconFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-3px) rotate(5deg); }
+    75% { transform: translateY(3px) rotate(-5deg); }
 }
 
 /* Pulse animation */

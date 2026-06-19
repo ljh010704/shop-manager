@@ -1953,10 +1953,16 @@ def task_new_shop_history_page(request: Request, shop_id: str = ""):
 
 
 @task_router.get("/stats", response_class=HTMLResponse)
-def task_stats_page(request: Request, days: int = 7):
+def task_stats_page(request: Request, days: int = 7, date_from: str = "", date_to: str = ""):
     conn = get_db()
     today = date.today().isoformat()
-    start_date = (date.today() - timedelta(days=days - 1)).isoformat()
+    
+    if date_from and date_to:
+        start_date = date_from
+        end_date = date_to
+    else:
+        start_date = (date.today() - timedelta(days=days - 1)).isoformat()
+        end_date = today
 
     daily_stats = [dict(r) for r in conn.execute("""
         SELECT task_date,
@@ -1966,7 +1972,7 @@ def task_stats_page(request: Request, days: int = 7):
         FROM daily_tasks
         WHERE task_date >= ? AND task_date <= ?
         GROUP BY task_date ORDER BY task_date
-    """, (start_date, today)).fetchall()]
+    """, (start_date, end_date)).fetchall()]
 
     for d in daily_stats:
         d['completion_rate'] = round(d['done_count'] / d['total_count'] * 100) if d['total_count'] > 0 else 0
@@ -1988,7 +1994,6 @@ def task_stats_page(request: Request, days: int = 7):
         "SELECT DISTINCT group_name FROM shops WHERE group_name != '' ORDER BY group_name"
     ).fetchall()]
 
-    # Group statistics
     group_stats = [dict(r) for r in conn.execute("""
         SELECT s.group_name,
                COUNT(DISTINCT s.id) as shop_count,
@@ -1999,7 +2004,7 @@ def task_stats_page(request: Request, days: int = 7):
         WHERE s.group_name != '' AND s.status != 'closed'
         GROUP BY s.group_name
         ORDER BY s.group_name
-    """, (start_date, today)).fetchall()]
+    """, (start_date, end_date)).fetchall()]
 
     for g in group_stats:
         g['completion_rate'] = round(g['done_tasks'] / g['total_tasks'] * 100) if g['total_tasks'] > 0 else 0
@@ -2014,8 +2019,31 @@ def task_stats_page(request: Request, days: int = 7):
     return templates.TemplateResponse(request, "task/stats.html", {
         "request": request, "daily_stats": daily_stats, "days": days,
         "new_shops_progress": new_shops_progress, "license_stats": license_stats,
-        "all_groups": all_groups, "today": today, "group_stats": group_stats
+        "all_groups": all_groups, "today": today, "group_stats": group_stats,
+        "date_from": start_date, "date_to": end_date
     })
+
+
+@task_router.get("/api/group/detail")
+def task_group_detail(group: str, date_from: str = "", date_to: str = ""):
+    conn = get_db()
+    today = date.today().isoformat()
+    start_date = date_from or (date.today() - timedelta(days=6)).isoformat()
+    end_date = date_to or today
+    
+    shops = [dict(r) for r in conn.execute("""
+        SELECT s.id, s.name,
+               COUNT(dt.id) as total,
+               SUM(CASE WHEN dt.is_completed=1 THEN 1 ELSE 0 END) as done
+        FROM shops s
+        LEFT JOIN daily_tasks dt ON s.id = dt.shop_id AND dt.task_date >= ? AND dt.task_date <= ?
+        WHERE s.group_name = ? AND s.status != 'closed'
+        GROUP BY s.id
+        ORDER BY s.name
+    """, (start_date, end_date, group)).fetchall()]
+    
+    conn.close()
+    return {"group": group, "shops": shops, "date_from": start_date, "date_to": end_date}
 
 
 # ==================== Main App Routes ====================
