@@ -41,20 +41,47 @@ body {
     color: #e2e8f0;
 }
 
-/* Grid background */
+/* Animated grid background */
 body::before {
     content: '';
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: 0; left: 0; right: 0; bottom: 0;
     background-image:
         linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
     background-size: 50px 50px;
+    animation: gridMove 20s linear infinite;
     pointer-events: none;
     z-index: 0;
+}
+
+@keyframes gridMove {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(50px, 50px); }
+}
+
+/* Floating particles */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+        radial-gradient(2px 2px at 20px 30px, rgba(0, 212, 255, 0.4), transparent),
+        radial-gradient(2px 2px at 40px 70px, rgba(124, 58, 237, 0.3), transparent),
+        radial-gradient(2px 2px at 50px 160px, rgba(236, 72, 153, 0.3), transparent),
+        radial-gradient(2px 2px at 90px 40px, rgba(0, 212, 255, 0.3), transparent),
+        radial-gradient(2px 2px at 130px 80px, rgba(124, 58, 237, 0.2), transparent),
+        radial-gradient(2px 2px at 160px 120px, rgba(0, 212, 255, 0.3), transparent);
+    background-repeat: repeat;
+    background-size: 200px 200px;
+    animation: particles 60s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes particles {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-200px); }
 }
 
 /* Glass morphism */
@@ -64,43 +91,24 @@ body::before {
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(0, 212, 255, 0.15);
     position: relative;
+    animation: fadeInUp 0.6s ease-out;
 }
 
 .glass::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+    top: 0; left: 0; right: 0;
     height: 1px;
     background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.5), transparent);
+    animation: shimmerLine 3s ease-in-out infinite;
 }
 
-/* Gradient border effect */
-.gradient-border {
-    position: relative;
-    background: rgba(15, 23, 42, 0.8);
-    border-radius: 1rem;
-    overflow: hidden;
+@keyframes shimmerLine {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
 }
 
-.gradient-border::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-radius: 1rem;
-    padding: 1px;
-    background: linear-gradient(135deg, #00d4ff, #7c3aed, #ec4899, #00d4ff);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-}
-
-/* Card hover effects */
+/* Card animations */
 .tech-card {
     background: rgba(15, 23, 42, 0.6);
     backdrop-filter: blur(20px);
@@ -109,49 +117,117 @@ body::before {
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
+    animation: fadeInUp 0.6s ease-out both;
 }
+
+.tech-card:nth-child(1) { animation-delay: 0.1s; }
+.tech-card:nth-child(2) { animation-delay: 0.2s; }
+.tech-card:nth-child(3) { animation-delay: 0.3s; }
+.tech-card:nth-child(4) { animation-delay: 0.4s; }
+.tech-card:nth-child(5) { animation-delay: 0.5s; }
 
 .tech-card::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
+    top: 0; left: 0; right: 0;
     height: 2px;
     background: linear-gradient(90deg, transparent, #00d4ff, transparent);
     opacity: 0;
     transition: opacity 0.4s;
 }
 
+.tech-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s;
+    pointer-events: none;
+}
+
 .tech-card:hover {
     transform: translateY(-8px) scale(1.02);
-    border-color: rgba(0, 212, 255, 0.3);
+    border-color: rgba(0, 212, 255, 0.4);
     box-shadow:
-        0 0 20px rgba(0, 212, 255, 0.15),
-        0 0 40px rgba(0, 212, 255, 0.1),
-        0 20px 40px rgba(0, 0, 0, 0.3);
+        0 0 30px rgba(0, 212, 255, 0.2),
+        0 0 60px rgba(0, 212, 255, 0.1),
+        0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
-.tech-card:hover::before {
-    opacity: 1;
+.tech-card:hover::before { opacity: 1; }
+.tech-card:hover::after { opacity: 1; }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-/* Glow effect */
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Neon glow */
 .glow {
-    box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+    animation: glowPulse 2s ease-in-out infinite;
 }
 
-.glow:hover {
-    box-shadow: 0 0 30px rgba(0, 212, 255, 0.4), 0 0 60px rgba(0, 212, 255, 0.2);
+@keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.2); }
+    50% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.4), 0 0 80px rgba(0, 212, 255, 0.2); }
 }
 
 /* Neon text */
 .neon-text {
     color: #00d4ff;
     text-shadow: 0 0 10px rgba(0, 212, 255, 0.5), 0 0 20px rgba(0, 212, 255, 0.3);
+    animation: neonFlicker 3s ease-in-out infinite;
 }
 
-/* Button styles */
+@keyframes neonFlicker {
+    0%, 100% { text-shadow: 0 0 10px rgba(0, 212, 255, 0.5), 0 0 20px rgba(0, 212, 255, 0.3); }
+    50% { text-shadow: 0 0 20px rgba(0, 212, 255, 0.8), 0 0 40px rgba(0, 212, 255, 0.5), 0 0 60px rgba(0, 212, 255, 0.3); }
+}
+
+/* Button animations */
 .cyber-btn {
     background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%);
     color: white;
@@ -168,29 +244,37 @@ body::before {
 .cyber-btn::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
     transition: left 0.5s;
 }
 
 .cyber-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0 20px rgba(0, 212, 255, 0.4), 0 0 40px rgba(124, 58, 237, 0.3);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.5), 0 0 60px rgba(124, 58, 237, 0.3);
 }
 
 .cyber-btn:hover::before {
     left: 100%;
 }
 
-/* Nav styles */
+.cyber-btn:active {
+    transform: translateY(0) scale(0.98);
+}
+
+/* Nav animations */
 .cyber-nav {
-    background: rgba(10, 14, 39, 0.9);
+    background: rgba(10, 14, 39, 0.95);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(0, 212, 255, 0.2);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+    animation: slideDown 0.5s ease-out;
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 
 .nav-link {
@@ -201,6 +285,17 @@ body::before {
     font-weight: 500;
     color: #94a3b8;
     transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.nav-link::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 50%;
+    width: 0; height: 2px;
+    background: #00d4ff;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
 }
 
 .nav-link:hover {
@@ -208,13 +303,21 @@ body::before {
     background: rgba(0, 212, 255, 0.1);
 }
 
+.nav-link:hover::before {
+    width: 80%;
+}
+
 .nav-link.active {
     color: #00d4ff;
     background: rgba(0, 212, 255, 0.15);
-    box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
 }
 
-/* Input styles */
+.nav-link.active::before {
+    width: 80%;
+}
+
+/* Input animations */
 .cyber-input {
     background: rgba(15, 23, 42, 0.8);
     border: 1px solid rgba(0, 212, 255, 0.2);
@@ -227,14 +330,11 @@ body::before {
 .cyber-input:focus {
     outline: none;
     border-color: #00d4ff;
-    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.2), 0 0 20px rgba(0, 212, 255, 0.1);
+    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.2), 0 0 30px rgba(0, 212, 255, 0.1);
+    transform: scale(1.02);
 }
 
-.cyber-input::placeholder {
-    color: #64748b;
-}
-
-/* Table styles */
+/* Table animations */
 .cyber-table {
     width: 100%;
     border-collapse: separate;
@@ -259,43 +359,39 @@ body::before {
 .cyber-table td {
     padding: 1rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+.cyber-table tr {
+    transition: all 0.3s ease;
 }
 
 .cyber-table tr:hover {
-    background: rgba(0, 212, 255, 0.05);
+    background: rgba(0, 212, 255, 0.08);
+    transform: scale(1.01);
 }
 
-/* Progress bar */
+/* Progress bar animation */
 .cyber-progress {
     height: 8px;
     background: rgba(0, 212, 255, 0.1);
     border-radius: 4px;
     overflow: hidden;
-    position: relative;
 }
 
 .cyber-progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, #00d4ff, #7c3aed);
+    background: linear-gradient(90deg, #00d4ff, #7c3aed, #ec4899);
+    background-size: 200% 100%;
     border-radius: 4px;
-    transition: width 0.5s ease;
-    position: relative;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: gradientShift 3s ease infinite;
 }
 
-.cyber-progress-fill::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-    animation: shimmer 2s infinite;
-}
-
-@keyframes shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 /* Data flow animation */
@@ -307,30 +403,28 @@ body::before {
 .data-flow::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: -100%;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1), transparent);
-    animation: flow 3s infinite;
+    top: 0; left: -100%;
+    width: 50%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.15), transparent);
+    animation: dataFlow 2s ease-in-out infinite;
 }
 
-@keyframes flow {
+@keyframes dataFlow {
     0% { left: -50%; }
     100% { left: 150%; }
 }
 
 /* Pulse animation */
 .pulse {
-    animation: pulse-glow 2s infinite;
+    animation: pulseGlow 2s ease-in-out infinite;
 }
 
-@keyframes pulse-glow {
-    0%, 100% { box-shadow: 0 0 5px rgba(0, 212, 255, 0.2); }
-    50% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.4); }
+@keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 10px rgba(0, 212, 255, 0.3); }
+    50% { box-shadow: 0 0 30px rgba(0, 212, 255, 0.6), 0 0 60px rgba(0, 212, 255, 0.3); }
 }
 
-/* Badge styles */
+/* Badge animations */
 .cyber-badge {
     display: inline-flex;
     align-items: center;
@@ -338,6 +432,13 @@ body::before {
     border-radius: 9999px;
     font-size: 0.75rem;
     font-weight: 500;
+    animation: badgePop 0.3s ease-out;
+}
+
+@keyframes badgePop {
+    0% { transform: scale(0); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
 }
 
 .cyber-badge-blue {
@@ -365,40 +466,41 @@ body::before {
 }
 
 /* Scrollbar */
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: rgba(15, 23, 42, 0.5);
-}
-
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.5); }
 ::-webkit-scrollbar-thumb {
-    background: rgba(0, 212, 255, 0.3);
+    background: linear-gradient(180deg, #00d4ff, #7c3aed);
     border-radius: 4px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 212, 255, 0.5);
+    background: linear-gradient(180deg, #00d4ff, #ec4899);
 }
 
-/* Floating animation */
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+/* Number counter animation */
+.counter {
+    display: inline-block;
+    animation: countUp 1s ease-out;
 }
 
-.float {
-    animation: float 3s ease-in-out infinite;
+@keyframes countUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* Text gradient */
 .text-gradient {
-    background: linear-gradient(135deg, #00d4ff, #7c3aed);
+    background: linear-gradient(135deg, #00d4ff, #7c3aed, #ec4899);
+    background-size: 200% 200%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    animation: gradientText 3s ease infinite;
+}
+
+@keyframes gradientText {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 /* Icon container */
@@ -411,6 +513,159 @@ body::before {
     justify-content: center;
     background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(124, 58, 237, 0.2));
     border: 1px solid rgba(0, 212, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.icon-cyber:hover {
+    transform: rotate(10deg) scale(1.1);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+}
+
+/* Stagger animation for lists */
+.stagger-item {
+    animation: fadeInUp 0.5s ease-out both;
+}
+
+.stagger-item:nth-child(1) { animation-delay: 0.05s; }
+.stagger-item:nth-child(2) { animation-delay: 0.1s; }
+.stagger-item:nth-child(3) { animation-delay: 0.15s; }
+.stagger-item:nth-child(4) { animation-delay: 0.2s; }
+.stagger-item:nth-child(5) { animation-delay: 0.25s; }
+.stagger-item:nth-child(6) { animation-delay: 0.3s; }
+.stagger-item:nth-child(7) { animation-delay: 0.35s; }
+.stagger-item:nth-child(8) { animation-delay: 0.4s; }
+.stagger-item:nth-child(9) { animation-delay: 0.45s; }
+.stagger-item:nth-child(10) { animation-delay: 0.5s; }
+
+/* Hover lift effect */
+.hover-lift {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 40px rgba(0, 212, 255, 0.2);
+}
+
+/* Glitch effect for titles */
+.glitch {
+    position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.glitch::before {
+    animation: glitchTop 1s linear infinite;
+    clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+    -webkit-text-fill-color: #00d4ff;
+    opacity: 0.8;
+}
+
+.glitch::after {
+    animation: glitchBottom 1.5s linear infinite;
+    clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
+    -webkit-text-fill-color: #7c3aed;
+    opacity: 0.8;
+}
+
+@keyframes glitchTop {
+    2%, 64% { transform: translate(2px, -2px); }
+    4%, 60% { transform: translate(-2px, 2px); }
+    62% { transform: translate(13px, -1px) skew(-13deg); }
+}
+
+@keyframes glitchBottom {
+    2%, 64% { transform: translate(-2px, 0); }
+    4%, 60% { transform: translate(-2px, 0); }
+    62% { transform: translate(-22px, 5px) skew(21deg); }
+}
+
+/* Ripple effect */
+.ripple {
+    position: relative;
+    overflow: hidden;
+}
+
+.ripple::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0; left: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, rgba(0, 212, 255, 0.3) 10%, transparent 10.01%);
+    background-repeat: no-repeat;
+    background-position: 50%;
+    transform: scale(10, 10);
+    opacity: 0;
+    transition: transform .5s, opacity 1s;
+}
+
+.ripple:active::after {
+    transform: scale(0, 0);
+    opacity: .3;
+    transition: 0s;
+}
+
+/* Loading spinner */
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(0, 212, 255, 0.2);
+    border-top-color: #00d4ff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Border animation */
+.border-animate {
+    position: relative;
+}
+
+.border-animate::before {
+    content: '';
+    position: absolute;
+    top: -2px; left: -2px; right: -2px; bottom: -2px;
+    background: linear-gradient(45deg, #00d4ff, #7c3aed, #ec4899, #00d4ff);
+    background-size: 400% 400%;
+    border-radius: inherit;
+    z-index: -1;
+    animation: borderRotate 3s linear infinite;
+}
+
+@keyframes borderRotate {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Typing effect */
+.typing {
+    overflow: hidden;
+    border-right: 2px solid #00d4ff;
+    white-space: nowrap;
+    animation: typing 3s steps(30) 1s forwards, blink 0.75s step-end infinite;
+}
+
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+@keyframes blink {
+    50% { border-color: transparent; }
 }
 </style>
 </head>
@@ -419,17 +674,17 @@ body::before {
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 <div class="flex items-center justify-between h-16">
 <div class="flex items-center space-x-2">
-<a href="/" class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-cyber-blue/10 transition">
-<div class="w-9 h-9 rounded-lg bg-gradient-to-br from-cyber-blue to-cyber-purple flex items-center justify-center">
+<a href="/" class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-cyber-blue/10 transition-all duration-300 hover:scale-105">
+<div class="w-9 h-9 rounded-lg bg-gradient-to-br from-cyber-blue to-cyber-purple flex items-center justify-center hover:rotate-12 transition-transform duration-300">
 <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
 </div>
 <span class="text-xl font-bold neon-text" style="font-family: 'Orbitron', sans-serif;">SHOP MANAGER</span>
 </a>
 <div class="hidden md:flex items-center ml-8 space-x-2">
-<a href="/profit/" class="nav-link {{ 'active' if '/profit' in request.url.path }}">利润统计</a>
-<a href="/dashboard/" class="nav-link {{ 'active' if '/dashboard' in request.url.path }}">数据看板</a>
-<a href="/task/" class="nav-link {{ 'active' if '/task' in request.url.path }}">任务管理</a>
-<a href="/backup" class="nav-link {{ 'active' if request.url.path == '/backup' }}">
+<a href="/profit/" class="nav-link ripple {{ 'active' if '/profit' in request.url.path }}">利润统计</a>
+<a href="/dashboard/" class="nav-link ripple {{ 'active' if '/dashboard' in request.url.path }}">数据看板</a>
+<a href="/task/" class="nav-link ripple {{ 'active' if '/task' in request.url.path }}">任务管理</a>
+<a href="/backup" class="nav-link ripple {{ 'active' if request.url.path == '/backup' }}">
 <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
 备份
 </a>
@@ -444,10 +699,10 @@ body::before {
 </main>
 <footer class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-12 relative z-10">
 <div class="text-center">
-<div class="w-10 h-10 mx-auto mb-3 rounded-full bg-gradient-to-br from-cyber-blue to-cyber-purple flex items-center justify-center pulse">
+<div class="w-10 h-10 mx-auto mb-3 rounded-full bg-gradient-to-br from-cyber-blue to-cyber-purple flex items-center justify-center pulse hover:scale-110 transition-transform duration-300 cursor-pointer">
 <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
 </div>
-<p class="text-sm text-gray-500">ShopManager v2.0 <span class="text-cyber-blue">●</span> Powered by Cyber Tech</p>
+<p class="text-sm text-gray-500">ShopManager v2.0 <span class="text-cyber-blue animate-pulse">●</span> Powered by Cyber Tech</p>
 </div>
 </footer>
 {% block scripts %}{% endblock %}
