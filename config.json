@@ -1,0 +1,6 @@
+﻿{
+    "FundThreshold":  300,
+    "EmailTo":  "897284707@qq.com",
+    "Note":  "请填入QQ邮箱授权码。获取方式: QQ邮箱-\u003e设置-\u003e账户-\u003ePOP3/SMTP服务-\u003e生成授权码",
+    "EmailAuthCode":  ""
+}

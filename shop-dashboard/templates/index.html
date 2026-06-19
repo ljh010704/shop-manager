@@ -1,0 +1,349 @@
+{% extends "base.html" %}
+{% block title %}首页 - 抖店数据看板{% endblock %}
+{% block content %}
+
+{% if not available_dates %}
+<div class="text-center py-20">
+<h2 class="text-3xl font-semibold text-[#1d1d1f] mb-3">暂无数据</h2>
+<p class="text-[#6e6e73] mb-6">将 Excel 文件放入报表目录，或手动上传</p>
+<a href="/import" class="inline-block bg-[#0071e3] text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-[#0077ed] transition-colors">去导入</a>
+</div>
+{% else %}
+
+<div class="flex items-center justify-between mb-6">
+<h1 class="text-2xl font-semibold tracking-tight">数据概览</h1>
+<div class="flex items-center space-x-3">
+<div class="relative">
+<button onclick="toggleCalendar()" id="calBtn" class="flex items-center space-x-2 card rounded-full px-4 py-1.5 text-sm hover:bg-white transition-colors">
+<svg class="w-4 h-4 text-[#6e6e73]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+<span class="font-medium">{{ selected_date }}</span>
+<svg class="w-3.5 h-3.5 text-[#6e6e73]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+</button>
+<div id="calendarPanel" class="hidden absolute right-0 top-full mt-2 card rounded-2xl shadow-2xl z-50 p-4 w-72">
+<div class="flex items-center justify-between mb-3">
+<button onclick="calNav(-1)" class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-black/5 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+<span id="calTitle" class="font-semibold text-sm"></span>
+<button onclick="calNav(1)" class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-black/5 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
+</div>
+<div class="grid grid-cols-7 gap-1 text-center text-xs text-[#6e6e73] mb-1">
+<span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
+</div>
+<div id="calGrid" class="grid grid-cols-7 gap-1"></div>
+</div></div></div></div>
+
+<div class="flex items-center space-x-1.5 mb-4">
+<button onclick="switchRange('day')" id="range-day" class="range-btn px-3 py-1 rounded-full text-xs font-medium bg-[#0071e3] text-white">当日</button>
+<button onclick="switchRange('7d')" id="range-7d" class="range-btn px-3 py-1 rounded-full text-xs font-medium bg-[#f5f5f7] hover:bg-[#e8e8ed]">近7天</button>
+<button onclick="switchRange('15d')" id="range-15d" class="range-btn px-3 py-1 rounded-full text-xs font-medium bg-[#f5f5f7] hover:bg-[#e8e8ed]">近15天</button>
+<button onclick="switchRange('30d')" id="range-30d" class="range-btn px-3 py-1 rounded-full text-xs font-medium bg-[#f5f5f7] hover:bg-[#e8e8ed]">近30天</button>
+</div>
+
+<div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6" id="summaryCards">
+<div class="card rounded-2xl p-4"><div class="text-xs text-[#6e6e73] mb-1">店铺数量</div><div class="text-2xl font-semibold" id="val-shop_count">{{ summary.shop_count }}</div></div>
+<div class="card rounded-2xl p-4 cursor-pointer hover:bg-white transition-colors" onclick="showSummaryDetail('total_today_orders','订单数')"><div class="text-xs text-[#6e6e73] mb-1">订单数</div><div class="text-2xl font-semibold text-[#0071e3] decoration-1 underline underline-offset-4 decoration-[#0071e3]/30" id="val-orders">{{ summary.total_today_orders }}</div></div>
+<div class="card rounded-2xl p-4 cursor-pointer hover:bg-white transition-colors" onclick="showSummaryDetail('total_amount','成交金额')"><div class="text-xs text-[#6e6e73] mb-1">成交金额</div><div class="text-2xl font-semibold text-[#34c759] decoration-1 underline underline-offset-4 decoration-[#34c759]/30" id="val-amount">{{ "%.2f"|format(summary.total_amount) }}</div></div>
+<div class="card rounded-2xl p-4 cursor-pointer hover:bg-white transition-colors" onclick="showSummaryDetail('total_refund_today','今日退款金额')"><div class="text-xs text-[#6e6e73] mb-1">今日退款金额</div><div class="text-2xl font-semibold text-[#ff3b30] decoration-1 underline underline-offset-4 decoration-[#ff3b30]/30" id="val-refund_today">{{ "%.2f"|format(summary.total_refund_today) }}</div></div>
+<div class="card rounded-2xl p-4 cursor-pointer hover:bg-white transition-colors" onclick="showSummaryDetail('total_refund','全部退款金额')"><div class="text-xs text-[#6e6e73] mb-1">全部退款金额</div><div class="text-2xl font-semibold text-[#ff9500] decoration-1 underline underline-offset-4 decoration-[#ff9500]/30" id="val-refund">{{ "%.2f"|format(summary.total_refund) }}</div></div>
+<div class="card rounded-2xl p-4 cursor-pointer hover:bg-white transition-colors" onclick="showSummaryDetail('total_pending_ship','待发货')"><div class="text-xs text-[#6e6e73] mb-1">待发货</div><div class="text-2xl font-semibold text-[#ff9500] decoration-1 underline underline-offset-4 decoration-[#ff9500]/30" id="val-pending_ship">{{ summary.total_pending_ship }}</div></div>
+<div class="card rounded-2xl p-4 cursor-pointer hover:bg-white transition-colors" onclick="showSummaryDetail('total_overdue_ship','超时未发货')"><div class="text-xs text-[#6e6e73] mb-1">超时未发货</div><div class="text-2xl font-semibold decoration-1 underline underline-offset-4 decoration-[#ff3b30]/30" id="val-overdue_ship">{{ summary.total_overdue_ship }}</div></div>
+<div class="card rounded-2xl p-4 cursor-pointer hover:bg-white transition-colors" onclick="showSummaryDetail('total_exposure','曝光人数')"><div class="text-xs text-[#6e6e73] mb-1">曝光人数</div><div class="text-2xl font-semibold text-[#5856d6] decoration-1 underline underline-offset-4 decoration-[#5856d6]/30" id="val-exposure">{{ summary.total_exposure }}</div></div>
+<div class="card rounded-2xl p-4 cursor-pointer hover:bg-white transition-colors" onclick="showSummaryDetail('total_clicks','点击人数')"><div class="text-xs text-[#6e6e73] mb-1">点击人数</div><div class="text-2xl font-semibold text-[#af52de] decoration-1 underline underline-offset-4 decoration-[#af52de]/30" id="val-clicks">{{ summary.total_clicks }}</div></div>
+<div class="card rounded-2xl p-4"><div class="text-xs text-[#6e6e73] mb-1">今日剩余金额</div><div class="text-2xl font-semibold text-[#0071e3]" id="val-remaining">{{ "%.2f"|format(summary.total_amount - summary.total_refund_today) }}</div></div>
+</div>
+
+<div class="card rounded-2xl overflow-hidden fade-in">
+<div class="px-5 py-3 border-b border-black/5 flex items-center justify-between">
+<h2 class="text-base font-semibold">店铺列表</h2>
+<div class="flex items-center space-x-2">
+<select id="groupFilter" onchange="filterShops()" class="bg-[#f5f5f7] border-0 rounded-lg px-3 py-1.5 text-sm focus:ring-1 focus:ring-[#0071e3] outline-none">
+<option value="">全部分组</option>
+{% for g in groups %}<option value="{{ g }}">{{ g }}</option>{% endfor %}
+</select>
+<input type="text" id="shopSearch" placeholder="搜索店铺..." class="bg-[#f5f5f7] border-0 rounded-lg px-3 py-1.5 text-sm w-44 focus:ring-1 focus:ring-[#0071e3] outline-none" oninput="filterShops()">
+</div></div>
+<div class="overflow-x-auto">
+<table class="w-full text-sm" id="shopTable">
+<thead class="bg-[#fafafa] text-[#6e6e73] text-xs sticky top-0">
+<tr>
+<th class="px-3 py-2.5 text-left cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="0" data-type="text" onclick="sortTable(this)">店铺名称 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-left cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium max-w-[80px]" data-col="1" data-type="text" onclick="sortTable(this)">分组 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-center cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="2" data-type="text" onclick="sortTable(this)">状态 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-left cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium max-w-[100px]" data-col="3" data-type="text" onclick="sortTable(this)">备注 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-left cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="4" data-type="text" onclick="sortTable(this)">到期时间 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-right cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="5" data-type="num" onclick="sortTable(this)">预警 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-right cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="6" data-type="num" onclick="sortTable(this)">成交金额 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-right cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="7" data-type="num" onclick="sortTable(this)">订单数 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-right cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="8" data-type="num" onclick="sortTable(this)">曝光 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-right cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="9" data-type="num" onclick="sortTable(this)">点击 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-right cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="10" data-type="num" onclick="sortTable(this)">退款 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-right cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="11" data-type="text" onclick="sortTable(this)">体验分 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-right cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="12" data-type="num" onclick="sortTable(this)">待发货 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-right cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="13" data-type="num" onclick="sortTable(this)">待售后 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-right cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="14" data-type="num" onclick="sortTable(this)">在售中 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-right cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="15" data-type="num" onclick="sortTable(this)">仓库中 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-right cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="16" data-type="num" onclick="sortTable(this)">草稿箱 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-right cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="17" data-type="text" onclick="sortTable(this)">24h需发货 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-right cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="18" data-type="num" onclick="sortTable(this)">超时 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-right cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="19" data-type="text" onclick="sortTable(this)">24h需售后 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-right cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="20" data-type="num" onclick="sortTable(this)">待整改 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-left cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="21" data-type="text" onclick="sortTable(this)">违规时间 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-right cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="22" data-type="num" onclick="sortTable(this)">工单 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-right cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="23" data-type="num" onclick="sortTable(this)">资金 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-right cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="24" data-type="num" onclick="sortTable(this)">体验金 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-left cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="25" data-type="text" onclick="sortTable(this)">运费险 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-right cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="26" data-type="num" onclick="sortTable(this)">30天订单 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-right cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="27" data-type="num" onclick="sortTable(this)">被清洗 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-right cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="28" data-type="num" onclick="sortTable(this)">违规数 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-right cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="29" data-type="text" onclick="sortTable(this)">商品分 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-right cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="30" data-type="text" onclick="sortTable(this)">物流分 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-right cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="31" data-type="text" onclick="sortTable(this)">服务分 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-right cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="32" data-type="num" onclick="sortTable(this)">异常包裹 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-right cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="33" data-type="num" onclick="sortTable(this)">回收站 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-right cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="34" data-type="num" onclick="sortTable(this)">今退款 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-left cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="35" data-type="text" onclick="sortTable(this)">店铺ID <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-left cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="36" data-type="text" onclick="sortTable(this)">千川ID <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-right cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="37" data-type="num" onclick="sortTable(this)">需开票 <span class="sort-icon">⇅</span></th>
+<th class="px-3 py-2.5 text-right cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="38" data-type="num" onclick="sortTable(this)">今订单 <span class="sort-icon">⇅</span></th>
+</tr></thead>
+<tbody class="divide-y divide-black/5">
+{% for s in shops %}
+<tr class="hover:bg-[#fafafa] transition-colors">
+<td class="px-3 py-2.5 text-[#0071e3] cursor-pointer hover:underline whitespace-nowrap text-xs font-medium" onclick="showShopModal('{{ s.shop_name }}')">{{ s.shop_name }}</td>
+<td class="px-3 py-2.5 text-[#6e6e73] whitespace-nowrap text-xs max-w-[80px] truncate" title="{{ s.group_name }}">{{ s.group_name }}</td>
+<td class="px-3 py-2.5 text-center"><span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-medium {% if s.status == '在线' %}bg-[#34c759]/10 text-[#34c759]{% else %}bg-[#ff3b30]/10 text-[#ff3b30]{% endif %}">{{ s.status }}</span></td>
+<td class="px-3 py-2.5 text-[#6e6e73] text-xs max-w-[100px] truncate" title="{{ s.remark }}">{{ s.remark }}</td>
+<td class="px-3 py-2.5 text-[#6e6e73] text-xs whitespace-nowrap">{{ s.expire_info }}</td>
+<td class="px-3 py-2.5 text-right text-xs">{{ s.warning }}</td>
+<td class="px-3 py-2.5 text-right font-medium text-xs">{{ "%.2f"|format(s.amount) }}</td>
+<td class="px-3 py-2.5 text-right text-xs">{{ s.order_count }}</td>
+<td class="px-3 py-2.5 text-right text-xs">{{ s.exposure }}</td>
+<td class="px-3 py-2.5 text-right text-xs">{{ s.clicks }}</td>
+<td class="px-3 py-2.5 text-right text-xs {% if s.refund_amount > 0 %}text-[#ff3b30]{% endif %}">{{ "%.2f"|format(s.refund_amount) }}</td>
+<td class="px-3 py-2.5 text-right text-xs {% if s.experience_score not in ['-',''] and s.experience_score|float < 70 %}text-[#ff3b30] font-semibold{% endif %}">{{ s.experience_score }}</td>
+<td class="px-3 py-2.5 text-right text-xs">{{ s.pending_ship }}</td>
+<td class="px-3 py-2.5 text-right text-xs">{{ s.pending_after_sale }}</td>
+<td class="px-3 py-2.5 text-right text-xs">{{ s.on_sale }}</td>
+<td class="px-3 py-2.5 text-right text-xs">{{ s.in_warehouse }}</td>
+<td class="px-3 py-2.5 text-right text-xs">{{ s.draft }}</td>
+<td class="px-3 py-2.5 text-right text-xs">{{ s.ship_24h }}</td>
+<td class="px-3 py-2.5 text-right text-xs {% if s.overdue_ship > 0 %}text-[#ff3b30] font-semibold pulse-dot{% endif %}">{{ s.overdue_ship }}</td>
+<td class="px-3 py-2.5 text-right text-xs">{{ s.after_sale_24h }}</td>
+<td class="px-3 py-2.5 text-right text-xs">{{ s.pending_rectify }}</td>
+<td class="px-3 py-2.5 text-[#6e6e73] text-[11px] whitespace-nowrap">{{ s.last_violation }}</td>
+<td class="px-3 py-2.5 text-right text-xs">{{ s.work_order }}</td>
+<td class="px-3 py-2.5 text-right text-xs">{{ "%.2f"|format(s.fund) }}</td>
+<td class="px-3 py-2.5 text-right text-xs">{{ "%.2f"|format(s.experience_fund) }}</td>
+<td class="px-3 py-2.5 text-[#6e6e73] text-[11px]">{{ s.insurance_price }}</td>
+<td class="px-3 py-2.5 text-right text-xs">{{ s.valid_orders_30d }}</td>
+<td class="px-3 py-2.5 text-right text-xs">{{ s.cleaned_orders }}</td>
+<td class="px-3 py-2.5 text-right text-xs {% if s.violation_count > 0 %}text-[#ff3b30]{% endif %}">{{ s.violation_count }}</td>
+<td class="px-3 py-2.5 text-right text-xs">{{ s.product_score }}</td>
+<td class="px-3 py-2.5 text-right text-xs">{{ s.logistics_score }}</td>
+<td class="px-3 py-2.5 text-right text-xs">{{ s.service_score }}</td>
+<td class="px-3 py-2.5 text-right text-xs {% if s.abnormal_parcel > 0 %}text-[#ff9500]{% endif %}">{{ s.abnormal_parcel }}</td>
+<td class="px-3 py-2.5 text-right text-xs">{{ s.recycle_bin }}</td>
+<td class="px-3 py-2.5 text-right text-xs {% if s.refund_today > 0 %}text-[#ff3b30]{% endif %}">{{ "%.2f"|format(s.refund_today) }}</td>
+<td class="px-3 py-2.5 text-[#6e6e73] text-[11px]">{{ s.shop_id }}</td>
+<td class="px-3 py-2.5 text-[#6e6e73] text-[11px]">{{ s.qianchuan_id }}</td>
+<td class="px-3 py-2.5 text-right text-xs">{{ "%.2f"|format(s.need_invoice) }}</td>
+<td class="px-3 py-2.5 text-right text-xs font-medium">{{ s.today_orders }}</td>
+</tr>
+{% endfor %}
+</tbody></table></div></div>
+
+<div id="summaryModal" class="hidden fixed inset-0 z-50">
+<div class="modal-overlay absolute inset-0 bg-black/30 backdrop-blur-sm" onclick="closeSummaryModal()"></div>
+<div class="relative max-w-lg w-full mx-auto mt-[15vh]">
+<div class="modal-content card rounded-2xl shadow-2xl max-h-[65vh] flex flex-col overflow-hidden">
+<div class="px-5 py-3 border-b border-black/5 flex items-center justify-between">
+<h3 id="summaryModalTitle" class="text-base font-semibold"></h3>
+<button onclick="closeSummaryModal()" class="w-7 h-7 flex items-center justify-center rounded-full bg-black/5 hover:bg-black/10 transition-colors text-sm">&times;</button></div>
+<div id="summaryModalBody" class="overflow-y-auto flex-1 p-5"></div></div></div></div>
+
+<div id="shopModal" class="hidden fixed inset-0 z-50">
+<div class="modal-overlay absolute inset-0 bg-black/30 backdrop-blur-sm" onclick="closeShopModal()"></div>
+<div class="relative max-w-4xl w-full mx-auto mt-[8vh]">
+<div class="modal-content card rounded-2xl shadow-2xl max-h-[82vh] flex flex-col overflow-hidden">
+<div class="px-5 py-3 border-b border-black/5 flex items-center justify-between">
+<h3 id="shopModalTitle" class="text-base font-semibold"></h3>
+<button onclick="closeShopModal()" class="w-7 h-7 flex items-center justify-center rounded-full bg-black/5 hover:bg-black/10 transition-colors text-sm">&times;</button></div>
+<div id="shopModalBody" class="overflow-y-auto flex-1 p-5"></div></div></div></div>
+
+<script>
+const SELECTED_DATE = '{{ selected_date }}';
+let calYear, calMonth;
+const availableDates = {{ available_dates | tojson }};
+const dateSet = new Set(availableDates);
+
+function toggleCalendar() {
+    const p = document.getElementById('calendarPanel');
+    if (p.classList.contains('hidden')) {
+        const parts = SELECTED_DATE.split('-');
+        calYear = parseInt(parts[0]); calMonth = parseInt(parts[1]) - 1;
+        renderCal(); p.classList.remove('hidden');
+    } else { p.classList.add('hidden'); }
+}
+function calNav(dir) {
+    calMonth += dir;
+    if (calMonth < 0) { calMonth = 11; calYear--; }
+    if (calMonth > 11) { calMonth = 0; calYear++; }
+    renderCal();
+}
+function renderCal() {
+    document.getElementById('calTitle').textContent = calYear + '年' + (calMonth+1) + '月';
+    const grid = document.getElementById('calGrid');
+    grid.innerHTML = '';
+    const first = new Date(calYear, calMonth, 1);
+    const last = new Date(calYear, calMonth+1, 0);
+    for (let i = 0; i < first.getDay(); i++) grid.appendChild(document.createElement('span'));
+    for (let d = 1; d <= last.getDate(); d++) {
+        const ds = calYear + '-' + String(calMonth+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+        const btn = document.createElement('button');
+        btn.textContent = d;
+        btn.className = 'rounded-lg py-1 text-sm transition-colors ' + (ds === SELECTED_DATE ? 'bg-[#0071e3] text-white' : dateSet.has(ds) ? 'bg-[#0071e3]/10 text-[#0071e3] hover:bg-[#0071e3]/20 cursor-pointer' : 'text-[#d1d1d6] cursor-default');
+        if (dateSet.has(ds)) btn.onclick = () => location = '/?qdate=' + ds;
+        grid.appendChild(btn);
+    }
+}
+document.addEventListener('click', e => {
+    const p = document.getElementById('calendarPanel');
+    const btn = document.getElementById('calBtn');
+    if (!p.contains(e.target) && !btn.contains(e.target)) p.classList.add('hidden');
+});
+
+const SUMMARIES = {
+    'day': {{ summary | tojson }},
+    '7d': {{ summary_7d | tojson }},
+    '15d': {{ summary_15d | tojson }},
+    '30d': {{ summary_30d | tojson }}
+};
+const RANGE_LABELS = { day: '当日', '7d': '近7天', '15d': '近15天', '30d': '近30天' };
+let currentRange = 'day';
+
+function switchRange(r) {
+    currentRange = r;
+    document.querySelectorAll('.range-btn').forEach(b => {
+        b.className = 'range-btn px-3 py-1 rounded-full text-xs font-medium ' + (b.id === 'range-' + r ? 'bg-[#0071e3] text-white' : 'bg-[#f5f5f7] hover:bg-[#e8e8ed]');
+    });
+    const s = SUMMARIES[r];
+    document.getElementById('val-shop_count').textContent = s.shop_count;
+    document.getElementById('val-orders').textContent = s.total_today_orders;
+    document.getElementById('val-amount').textContent = s.total_amount.toFixed(2);
+    document.getElementById('val-refund_today').textContent = s.total_refund_today.toFixed(2);
+    document.getElementById('val-refund').textContent = s.total_refund.toFixed(2);
+    document.getElementById('val-pending_ship').textContent = s.total_pending_ship;
+    document.getElementById('val-overdue_ship').textContent = s.total_overdue_ship;
+    document.getElementById('val-overdue_ship').className = 'text-2xl font-semibold decoration-1 underline underline-offset-4 ' + (s.total_overdue_ship > 0 ? 'text-[#ff3b30] pulse-dot' : 'text-[#86868b] decoration-[#ff3b30]/30');
+    document.getElementById('val-exposure').textContent = s.total_exposure;
+    document.getElementById('val-clicks').textContent = s.total_clicks;
+    document.getElementById('val-remaining').textContent = (s.total_amount - s.total_refund_today).toFixed(2);
+}
+
+let sortDir = {};
+function sortTable(th) {
+    const col = parseInt(th.dataset.col), type = th.dataset.type;
+    const table = document.getElementById('shopTable');
+    const tbody = table.querySelector('tbody');
+    const rows = Array.from(tbody.rows);
+    sortDir[col] = sortDir[col] === 'asc' ? 'desc' : 'asc';
+    const dir = sortDir[col] === 'asc' ? 1 : -1;
+    rows.sort((a, b) => {
+        let va = a.cells[col].textContent.trim(), vb = b.cells[col].textContent.trim();
+        if (type === 'num') { va = parseFloat(va) || 0; vb = parseFloat(vb) || 0; return (va - vb) * dir; }
+        return va.localeCompare(vb, 'zh') * dir;
+    });
+    table.querySelectorAll('th').forEach(h => h.classList.remove('sorted'));
+    th.classList.add('sorted');
+    table.querySelectorAll('th .sort-icon').forEach(s => s.textContent = '⇅');
+    th.querySelector('.sort-icon').textContent = sortDir[col] === 'asc' ? '↑' : '↓';
+    rows.forEach(r => tbody.appendChild(r));
+}
+
+function filterShops() {
+    const q = document.getElementById('shopSearch').value.toLowerCase();
+    const g = document.getElementById('groupFilter').value;
+    document.querySelectorAll('#shopTable tbody tr').forEach(tr => {
+        const name = tr.cells[0].textContent.toLowerCase();
+        const group = tr.cells[1].textContent.trim();
+        tr.style.display = ((!q || name.includes(q)) && (!g || group === g)) ? '' : 'none';
+    });
+}
+
+async function showSummaryDetail(metric, title) {
+    const modal = document.getElementById('summaryModal');
+    const r = currentRange;
+    const label = r === 'day' ? SELECTED_DATE : RANGE_LABELS[r];
+    document.getElementById('summaryModalTitle').textContent = title + ' · ' + label;
+    document.getElementById('summaryModalBody').innerHTML = '<div class="text-center py-8 text-[#86868b]">加载中...</div>';
+    modal.classList.remove('hidden');
+    let url;
+    if (r === 'day') {
+        url = '/api/summary/detail?date=' + SELECTED_DATE + '&metric=' + metric;
+    } else {
+        const days = r === '7d' ? 7 : r === '15d' ? 15 : 30;
+        const sd = new Date(SELECTED_DATE);
+        sd.setDate(sd.getDate() - days + 1);
+        const start = sd.toISOString().slice(0, 10);
+        url = '/api/summary/range_detail?start=' + start + '&end=' + SELECTED_DATE + '&metric=' + metric;
+    }
+    const res = await fetch(url);
+    const data = await res.json();
+    let html = '<table class="w-full text-sm"><thead class="text-xs text-[#6e6e73]"><tr><th class="px-3 py-2 text-left font-medium">店铺</th><th class="px-3 py-2 text-right font-medium">' + title + '</th></tr></thead><tbody class="divide-y divide-black/5">';
+    data.shops.forEach(s => {
+        html += '<tr class="hover:bg-[#fafafa] cursor-pointer transition-colors" onclick="closeSummaryModal();showShopModal(\'' + s.shop_name + '\')"><td class="px-3 py-2 text-[#0071e3] text-sm">' + s.shop_name + '</td><td class="px-3 py-2 text-right font-medium text-sm">' + (typeof s.val === 'number' ? (Number.isInteger(s.val) ? s.val : s.val.toFixed(2)) : s.val) + '</td></tr>';
+    });
+    if (!data.shops.length) html += '<tr><td colspan="2" class="px-3 py-8 text-center text-[#86868b]">暂无数据</td></tr>';
+    html += '</tbody></table>';
+    document.getElementById('summaryModalBody').innerHTML = html;
+}
+function closeSummaryModal() { document.getElementById('summaryModal').classList.add('hidden'); }
+
+async function showShopModal(name) {
+    const modal = document.getElementById('shopModal');
+    document.getElementById('shopModalTitle').textContent = name;
+    document.getElementById('shopModalBody').innerHTML = '<div class="text-center py-8 text-[#86868b]">加载中...</div>';
+    modal.classList.remove('hidden');
+    loadShopData(name, '1');
+}
+async function loadShopData(name, range) {
+    const res = await fetch('/api/shop/detail?shop_name=' + encodeURIComponent(name) + '&range=' + range);
+    const data = await res.json();
+    if (data.error) { closeShopModal(); return; }
+    const history = data.history;
+    const latest = history[history.length - 1];
+    const ranges = [{l:'今日',v:'1'},{l:'昨日',v:'2'},{l:'近7天',v:'7'},{l:'近15天',v:'15'},{l:'近30天',v:'30'}];
+    let html = '<div class="flex items-center space-x-1.5 mb-4">';
+    ranges.forEach(r => {
+        html += '<button onclick="loadShopData(\'' + name + '\',\'' + r.v + '\')" class="px-3 py-1 rounded-full text-xs font-medium transition-colors ' + (range === r.v ? 'bg-[#0071e3] text-white' : 'bg-[#f5f5f7] text-[#1d1d1f] hover:bg-[#e8e8ed]') + '">' + r.l + '</button>';
+    });
+    html += '</div>';
+    if (latest) {
+        html += '<div class="grid grid-cols-3 md:grid-cols-6 gap-2.5 mb-4">';
+        [['成交', latest.amount, '#0071e3'],['订单', latest.order_count, '#1d1d1f'],['退款', latest.refund_amount, latest.refund_amount>0?'#ff3b30':'#86868b'],['体验分', latest.experience_score, '#1d1d1f'],['待发货', latest.pending_ship, '#ff9500'],['超时', latest.overdue_ship, latest.overdue_ship>0?'#ff3b30':'#86868b'],['曝光', latest.exposure, '#5856d6'],['点击', latest.clicks, '#af52de'],['资金', latest.fund?latest.fund.toFixed(2):'0', '#1d1d1f'],['在售', latest.on_sale, '#1d1d1f'],['仓库', latest.in_warehouse, '#1d1d1f'],['30天订单', latest.valid_orders_30d, '#1d1d1f']].forEach(i => {
+            html += '<div class="bg-[#f5f5f7] rounded-xl p-3"><div class="text-[10px] text-[#6e6e73] mb-0.5">' + i[0] + '</div><div class="text-base font-semibold" style="color:' + i[2] + '">' + i[1] + '</div></div>';
+        });
+        html += '</div>';
+    }
+    if (history.length > 1) {
+        html += '<h4 class="text-sm font-semibold mb-2">成交趋势</h4>';
+        html += '<div class="relative mb-4" style="height:140px"><div class="absolute inset-0 flex items-end">';
+        const maxAmt = Math.max(...history.map(h => h.amount || 0));
+        history.forEach(h => {
+            const hh = maxAmt > 0 ? (h.amount / maxAmt * 120) : 0;
+            html += '<div class="flex-1 mx-0.5 group relative"><div class="bg-[#0071e3] rounded-t-sm hover:bg-[#0077ed] transition-colors" style="height:' + hh + 'px"></div><div class="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 bg-[#1d1d1f] text-white text-[10px] px-2 py-1 rounded-md mb-1 whitespace-nowrap z-10">' + h.snapshot_date + ': ' + (h.amount||0).toFixed(2) + '</div></div>';
+        });
+        html += '</div></div>';
+    }
+    html += '<h4 class="text-sm font-semibold mb-2">详细数据</h4>';
+    html += '<div class="overflow-x-auto"><table class="w-full text-xs"><thead class="text-[#6e6e73]"><tr><th class="px-2 py-1.5 text-left font-medium">日期</th><th class="px-2 py-1.5 text-right font-medium">成交</th><th class="px-2 py-1.5 text-right font-medium">订单</th><th class="px-2 py-1.5 text-right font-medium">退款</th><th class="px-2 py-1.5 text-right font-medium">体验分</th><th class="px-2 py-1.5 text-right font-medium">待发</th><th class="px-2 py-1.5 text-right font-medium">超时</th><th class="px-2 py-1.5 text-right font-medium">曝光</th><th class="px-2 py-1.5 text-right font-medium">点击</th><th class="px-2 py-1.5 text-right font-medium">资金</th><th class="px-2 py-1.5 text-right font-medium">违规</th></tr></thead><tbody class="divide-y divide-black/5">';
+    history.slice().reverse().forEach(h => {
+        html += '<tr><td class="px-2 py-1.5">' + h.snapshot_date + '</td><td class="px-2 py-1.5 text-right">' + (h.amount||0).toFixed(2) + '</td><td class="px-2 py-1.5 text-right">' + h.order_count + '</td><td class="px-2 py-1.5 text-right' + (h.refund_amount>0?' text-[#ff3b30]':'') + '">' + (h.refund_amount||0).toFixed(2) + '</td><td class="px-2 py-1.5 text-right">' + h.experience_score + '</td><td class="px-2 py-1.5 text-right">' + h.pending_ship + '</td><td class="px-2 py-1.5 text-right' + (h.overdue_ship>0?' text-[#ff3b30]':'') + '">' + h.overdue_ship + '</td><td class="px-2 py-1.5 text-right">' + h.exposure + '</td><td class="px-2 py-1.5 text-right">' + h.clicks + '</td><td class="px-2 py-1.5 text-right">' + (h.fund||0).toFixed(2) + '</td><td class="px-2 py-1.5 text-right' + (h.violation_count>0?' text-[#ff3b30]':'') + '">' + h.violation_count + '</td></tr>';
+    });
+    html += '</tbody></table></div>';
+    document.getElementById('shopModalBody').innerHTML = html;
+}
+function closeShopModal() { document.getElementById('shopModal').classList.add('hidden'); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeSummaryModal(); closeShopModal(); } });
+</script>
+{% endif %}
+{% endblock %}

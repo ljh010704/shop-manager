@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}统计报表{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="flex-between" style="margin-bottom:15px">
+        <h3>📊 统计报表</h3>
+        <div>
+            <a href="/stats?days=7" class="btn btn-sm {% if days == 7 %}btn-primary{% else %}btn-warning{% endif %}">近7天</a>
+            <a href="/stats?days=15" class="btn btn-sm {% if days == 15 %}btn-primary{% else %}btn-warning{% endif %}">近15天</a>
+            <a href="/stats?days=30" class="btn btn-sm {% if days == 30 %}btn-primary{% else %}btn-warning{% endif %}">近30天</a>
+        </div>
+    </div>
+
+    <h3 style="margin-bottom:10px">📈 每日完成率趋势</h3>
+    <table>
+        <thead>
+            <tr><th>日期</th><th>店铺数</th><th>完成任务数</th><th>总任务数</th><th>完成率</th></tr>
+        </thead>
+        <tbody>
+        {% for d in daily_stats %}
+        <tr>
+            <td>{{ d.task_date }}</td>
+            <td>{{ d.total_shops }}</td>
+            <td>{{ d.done_count }}</td>
+            <td>{{ d.total_count }}</td>
+            <td>
+                <div class="progress-bar" style="width:200px;display:inline-block;vertical-align:middle">
+                    <div class="progress-fill {% if d.completion_rate == 100 %}green{% elif d.completion_rate >= 50 %}yellow{% else %}red{% endif %}"
+                         style="width:{{ d.completion_rate }}%">{{ d.completion_rate }}%</div>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+        {% if not daily_stats %}
+        <tr><td colspan="5" class="empty">暂无数据</td></tr>
+        {% endif %}
+        </tbody>
+    </table>
+</div>
+
+{% if new_shops_progress %}
+<div class="card">
+    <h3 style="margin-bottom:10px">🆕 新店任务完成进度</h3>
+    <table>
+        <thead>
+            <tr><th>店铺名称</th><th>完成进度</th></tr>
+        </thead>
+        <tbody>
+        {% for ns in new_shops_progress %}
+        <tr>
+            <td>{{ ns.shop_name }}</td>
+            <td style="width:400px">
+                <div class="progress-bar">
+                    <div class="progress-fill {% if ns.progress == 100 %}green{% elif ns.progress >= 50 %}yellow{% else %}red{% endif %}"
+                         style="width:{{ ns.progress }}%">{{ ns.done }}/{{ ns.total }}</div>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+{% if license_stats %}
+<div class="card">
+    <h3 style="margin-bottom:10px">📄 营业执照下店铺统计</h3>
+    <table>
+        <thead>
+            <tr><th>执照名称</th><th>店铺数量</th></tr>
+        </thead>
+        <tbody>
+        {% for lic in license_stats %}
+        <tr>
+            <td>{{ lic.license_name }}</td>
+            <td><strong>{{ lic.shop_count }}</strong></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+{% endblock %}

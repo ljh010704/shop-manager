@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}导入 - 抖店数据看板{% endblock %}
+{% block content %}
+
+<div class="mb-6">
+<h1 class="text-2xl font-semibold tracking-tight">数据导入</h1></div>
+
+{% if msg %}
+<div class="bg-[#34c759]/10 text-[#248a3d] px-4 py-3 rounded-xl mb-6 text-sm">{{ msg }}</div>
+{% endif %}
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="card rounded-2xl p-5">
+<h2 class="text-base font-semibold mb-4">手动上传</h2>
+<form method="post" action="/api/import" enctype="multipart/form-data">
+<div class="mb-4">
+<label class="block text-sm font-medium mb-1.5">选择文件</label>
+<input type="file" name="file" accept=".xlsx" class="w-full text-sm text-[#6e6e73] file:mr-3 file:py-1.5 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-medium file:bg-[#0071e3] file:text-white hover:file:bg-[#0077ed] file:cursor-pointer">
+<p class="text-[11px] text-[#86868b] mt-1.5">支持 .xlsx，文件名需含日期</p>
+</div>
+<button type="submit" class="bg-[#0071e3] text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-[#0077ed] transition-colors">开始导入</button>
+</form></div>
+
+<div class="card rounded-2xl p-5">
+<h2 class="text-base font-semibold mb-4">自动导入</h2>
+<div class="text-sm text-[#6e6e73] space-y-2.5">
+<p>系统自动扫描报表目录下的 Excel 文件：</p>
+<div class="bg-[#f5f5f7] rounded-xl p-3 text-xs space-y-1">
+<div>路径: <code class="text-[#1d1d1f]">F:\报表\YYYY-MM\</code></div>
+<div>文件名: <code class="text-[#1d1d1f]">抖店店铺数据YYYY年MM月DD日...xlsx</code></div>
+</div>
+<p class="text-[#86868b] text-xs">访问首页时自动导入新文件</p>
+</div></div></div>
+
+{% if grouped_dates %}
+<div class="card rounded-2xl p-5 mt-4">
+<h2 class="text-sm font-semibold mb-4">已导入数据</h2>
+{% for year, months in grouped_dates.items() %}
+<div class="mb-4 last:mb-0">
+<div class="flex items-center space-x-2 mb-2">
+<span class="text-base font-semibold text-[#1d1d1f]">{{ year }}年</span>
+<span class="text-xs text-[#86868b]">{{ months.values()|map('length')|sum }}天</span>
+</div>
+{% for month, days in months.items() %}
+<div class="ml-4 mb-3 last:mb-0">
+<div class="flex items-center space-x-2 mb-1.5">
+<span class="text-sm font-medium text-[#6e6e73]">{{ month|int }}月</span>
+<span class="text-[10px] text-[#86868b]">{{ days|length }}天</span>
+</div>
+<div class="flex flex-wrap gap-1.5 ml-4">
+{% for d in days %}
+<a href="/?qdate={{ d }}" class="inline-block bg-[#0071e3]/10 text-[#0071e3] px-2.5 py-1 rounded-lg text-xs font-medium hover:bg-[#0071e3]/20 transition-colors">{{ d[5:] }}</a>
+{% endfor %}
+</div></div>
+{% endfor %}
+</div>
+{% endfor %}
+</div>
+{% endif %}
+{% endblock %}

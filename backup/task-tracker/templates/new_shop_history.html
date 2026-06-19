@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}已完成新店任务{% endblock %}
+{% block content %}
+<div class="card">
+    <h3>✅ 已完成新店任务</h3>
+    <div style="margin:15px 0">
+        <form method="get" class="form-inline">
+            <select name="shop_id" onchange="this.form.submit()">
+                <option value="">-- 选择店铺查看历史 --</option>
+                {% for shop in completed_shops %}
+                <option value="{{ shop.id }}" {% if selected_shop and selected_shop.id == shop.id %}selected{% endif %}>
+                    {{ shop.shop_name }}
+                </option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
+
+    {% if selected_shop %}
+    <div style="margin-bottom:15px; padding:10px; background:#e6f4ea; border-radius:6px;">
+        <strong>{{ selected_shop.shop_name }}</strong>
+        <span style="margin-left:10px; color:#666">新店任务已全部完成</span>
+    </div>
+
+    <table>
+        <thead>
+            <tr><th>任务名称</th><th>完成时间</th></tr>
+        </thead>
+        <tbody>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task.task_name }}</td>
+            <td style="color:#666">{{ task.completed_at or '-' }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% else %}
+    {% if completed_shops %}
+    <div class="empty">请选择一个店铺查看完成详情</div>
+    {% else %}
+    <div class="empty">暂无已完成新店任务的店铺</div>
+    {% endif %}
+    {% endif %}
+</div>
+{% endblock %}

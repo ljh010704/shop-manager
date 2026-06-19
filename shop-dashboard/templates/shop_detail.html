@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% block title %}{{ shop.shop_name }} - 抖店数据看板{% endblock %}
+{% block content %}
+
+<div class="flex items-center justify-between mb-6">
+<div>
+<a href="/" class="text-blue-600 hover:underline text-sm mb-2 inline-block">← 返回首页</a>
+<h1 class="text-2xl font-bold">{{ shop.shop_name }}</h1>
+<p class="text-gray-500 text-sm mt-1">分组: {{ shop.group_name or '未分组' }} | 店铺ID: {{ shop.shop_id or '-' }}</p>
+</div>
+<div class="flex space-x-2">
+<a href="/shop/{{ shop.shop_name }}?days=7" class="px-3 py-1 rounded-lg text-sm {% if days == 7 %}bg-blue-600 text-white{% else %}bg-gray-100 hover:bg-gray-200{% endif %}">近7天</a>
+<a href="/shop/{{ shop.shop_name }}?days=15" class="px-3 py-1 rounded-lg text-sm {% if days == 15 %}bg-blue-600 text-white{% else %}bg-gray-100 hover:bg-gray-200{% endif %}">近15天</a>
+<a href="/shop/{{ shop.shop_name }}?days=30" class="px-3 py-1 rounded-lg text-sm {% if days == 30 %}bg-blue-600 text-white{% else %}bg-gray-100 hover:bg-gray-200{% endif %}">近30天</a>
+</div></div>
+
+{% if latest %}
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
+<div class="bg-white rounded-xl shadow-sm border p-4">
+<div class="text-xs text-gray-500 mb-1">状态</div>
+<div class="text-lg font-bold {% if latest.status == '在线' %}text-green-600{% else %}text-red-600{% endif %}">{{ latest.status }}</div></div>
+<div class="bg-white rounded-xl shadow-sm border p-4">
+<div class="text-xs text-gray-500 mb-1">成交金额</div>
+<div class="text-lg font-bold text-blue-600">{{ "%.2f"|format(latest.amount) }}</div></div>
+<div class="bg-white rounded-xl shadow-sm border p-4">
+<div class="text-xs text-gray-500 mb-1">订单数</div>
+<div class="text-lg font-bold">{{ latest.order_count }}</div></div>
+<div class="bg-white rounded-xl shadow-sm border p-4">
+<div class="text-xs text-gray-500 mb-1">退款金额</div>
+<div class="text-lg font-bold {% if latest.refund_amount > 0 %}text-red-600{% else %}text-gray-400{% endif %}">{{ "%.2f"|format(latest.refund_amount) }}</div></div>
+<div class="bg-white rounded-xl shadow-sm border p-4">
+<div class="text-xs text-gray-500 mb-1">体验分</div>
+<div class="text-lg font-bold {% if latest.experience_score != '-' and latest.experience_score != '' and latest.experience_score|float < 70 %}text-red-600{% elif latest.experience_score != '-' and latest.experience_score != '' %}text-green-600{% else %}text-gray-400{% endif %}">{{ latest.experience_score }}</div></div>
+<div class="bg-white rounded-xl shadow-sm border p-4">
+<div class="text-xs text-gray-500 mb-1">待发货</div>
+<div class="text-lg font-bold text-orange-600">{{ latest.pending_ship }}</div></div>
+<div class="bg-white rounded-xl shadow-sm border p-4">
+<div class="text-xs text-gray-500 mb-1">超时未发货</div>
+<div class="text-lg font-bold {% if latest.overdue_ship > 0 %}text-red-600 alert-blink{% else %}text-gray-400{% endif %}">{{ latest.overdue_ship }}</div></div>
+<div class="bg-white rounded-xl shadow-sm border p-4">
+<div class="text-xs text-gray-500 mb-1">曝光人数</div>
+<div class="text-lg font-bold text-indigo-600">{{ latest.exposure }}</div></div>
+<div class="bg-white rounded-xl shadow-sm border p-4">
+<div class="text-xs text-gray-500 mb-1">点击人数</div>
+<div class="text-lg font-bold text-purple-600">{{ latest.clicks }}</div></div>
+<div class="bg-white rounded-xl shadow-sm border p-4">
+<div class="text-xs text-gray-500 mb-1">资金</div>
+<div class="text-lg font-bold text-green-700">{{ "%.2f"|format(latest.fund) }}</div></div>
+<div class="bg-white rounded-xl shadow-sm border p-4">
+<div class="text-xs text-gray-500 mb-1">在售商品</div>
+<div class="text-lg font-bold">{{ latest.on_sale }}</div></div>
+<div class="bg-white rounded-xl shadow-sm border p-4">
+<div class="text-xs text-gray-500 mb-1">30天有效订单</div>
+<div class="text-lg font-bold">{{ latest.valid_orders_30d }}</div></div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+<div class="bg-white rounded-xl shadow-sm border p-6">
+<h3 class="text-lg font-semibold mb-4">成交趋势</h3>
+<div class="relative" style="height:180px">
+<div class="absolute inset-0 flex items-end">
+{% set max_amount = history|map(attribute='amount')|max %}
+{% for d in history %}
+<div class="flex-1 mx-0.5 group relative">
+<div class="bg-blue-500 rounded-t hover:bg-blue-600 transition-all" style="height: {{ (d.amount / max_amount * 160) if max_amount > 0 else 0 }}px"></div>
+<div class="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded mb-1 whitespace-nowrap">
+{{ d.snapshot_date }}: {{ "%.2f"|format(d.amount) }}
+</div></div>
+{% endfor %}
+</div></div>
+<div class="flex justify-between text-xs text-gray-500 mt-2 px-1">
+{% for d in history %}<span>{{ d.snapshot_date[5:] }}</span>{% endfor %}
+</div></div>
+
+<div class="bg-white rounded-xl shadow-sm border p-6">
+<h3 class="text-lg font-semibold mb-4">订单趋势</h3>
+<div class="relative" style="height:180px">
+<div class="absolute inset-0 flex items-end">
+{% set max_orders = history|map(attribute='order_count')|max %}
+{% for d in history %}
+<div class="flex-1 mx-0.5 group relative">
+<div class="bg-green-500 rounded-t hover:bg-green-600 transition-all" style="height: {{ (d.order_count / max_orders * 160) if max_orders > 0 else 0 }}px"></div>
+<div class="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded mb-1 whitespace-nowrap">
+{{ d.snapshot_date }}: {{ d.order_count }}单
+</div></div>
+{% endfor %}
+</div></div>
+<div class="flex justify-between text-xs text-gray-500 mt-2 px-1">
+{% for d in history %}<span>{{ d.snapshot_date[5:] }}</span>{% endfor %}
+</div></div>
+</div>
+
+<div class="bg-white rounded-xl shadow-sm border overflow-hidden">
+<div class="px-6 py-4 border-b"><h2 class="text-lg font-semibold">详细数据</h2></div>
+<div class="overflow-x-auto">
+<table class="w-full text-sm">
+<thead class="bg-gray-50 text-gray-600">
+<tr>
+<th class="px-4 py-3 text-left">日期</th>
+<th class="px-4 py-3 text-right">成交</th>
+<th class="px-4 py-3 text-right">订单</th>
+<th class="px-4 py-3 text-right">退款</th>
+<th class="px-4 py-3 text-right">体验分</th>
+<th class="px-4 py-3 text-right">待发货</th>
+<th class="px-4 py-3 text-right">超时</th>
+<th class="px-4 py-3 text-right">曝光</th>
+<th class="px-4 py-3 text-right">点击</th>
+<th class="px-4 py-3 text-right">资金</th>
+<th class="px-4 py-3 text-right">违规</th>
+</tr></thead>
+<tbody>
+{% for d in history|reverse %}
+<tr class="border-t hover:bg-gray-50">
+<td class="px-4 py-3">{{ d.snapshot_date }}</td>
+<td class="px-4 py-3 text-right">{{ "%.2f"|format(d.amount) }}</td>
+<td class="px-4 py-3 text-right">{{ d.order_count }}</td>
+<td class="px-4 py-3 text-right {% if d.refund_amount > 0 %}text-red-600{% endif %}">{{ "%.2f"|format(d.refund_amount) }}</td>
+<td class="px-4 py-3 text-right {% if d.experience_score != '-' and d.experience_score != '' and d.experience_score|float < 70 %}text-red-600{% endif %}">{{ d.experience_score }}</td>
+<td class="px-4 py-3 text-right">{{ d.pending_ship }}</td>
+<td class="px-4 py-3 text-right {% if d.overdue_ship > 0 %}text-red-600{% endif %}">{{ d.overdue_ship }}</td>
+<td class="px-4 py-3 text-right">{{ d.exposure }}</td>
+<td class="px-4 py-3 text-right">{{ d.clicks }}</td>
+<td class="px-4 py-3 text-right">{{ "%.2f"|format(d.fund) }}</td>
+<td class="px-4 py-3 text-right {% if d.violation_count > 0 %}text-red-600{% endif %}">{{ d.violation_count }}</td>
+</tr>
+{% endfor %}
+</tbody></table></div></div>
+
+{% else %}
+<div class="text-center py-20 text-gray-500">该店铺暂无数据</div>
+{% endif %}
+{% endblock %}

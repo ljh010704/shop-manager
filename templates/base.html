@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}抖店管理系统{% endblock %}</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+    theme: {
+        extend: {
+            colors: {
+                apple: {
+                    blue: '#007AFF',
+                    green: '#34C759',
+                    red: '#FF3B30',
+                    orange: '#FF9500',
+                    purple: '#AF52DE',
+                    gray: {50:'#F9FAFB',100:'#F3F4F6',200:'#E5E7EB',300:'#D1D5DB',400:'#9CA3AF',500:'#6B7280',600:'#4B5563',700:'#374151',800:'#1F2937',900:'#111827'}
+                }
+            }
+        }
+    }
+}
+</script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+    min-height: 100vh;
+}
+.glass {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+.apple-shadow {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 0 1px rgba(0, 0, 0, 0.1);
+}
+.apple-shadow-lg {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0, 0, 0, 0.1);
+}
+.apple-btn {
+    transition: all 0.2s ease;
+}
+.apple-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+}
+.apple-btn:active {
+    transform: translateY(0);
+}
+input, select, textarea {
+    transition: all 0.2s ease;
+}
+input:focus, select:focus, textarea:focus {
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
+}
+</style>
+</head>
+<body class="min-h-screen">
+<nav class="glass sticky top-0 z-50 apple-shadow">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-16">
+<div class="flex items-center space-x-1">
+<a href="/" class="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-white/50 transition">
+<svg class="w-7 h-7 text-apple-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+<span class="text-xl font-semibold text-gray-800">抖店管理</span>
+</a>
+<div class="hidden md:flex items-center ml-6 space-x-1">
+<a href="/profit/" class="px-4 py-2 rounded-xl text-sm font-medium transition {{ 'bg-apple-blue text-white shadow-md shadow-apple-blue/30' if '/profit' in request.url.path else 'text-gray-600 hover:bg-white/60 hover:text-gray-900' }}">利润统计</a>
+<a href="/dashboard/" class="px-4 py-2 rounded-xl text-sm font-medium transition {{ 'bg-apple-blue text-white shadow-md shadow-apple-blue/30' if '/dashboard' in request.url.path else 'text-gray-600 hover:bg-white/60 hover:text-gray-900' }}">数据看板</a>
+<a href="/task/" class="px-4 py-2 rounded-xl text-sm font-medium transition {{ 'bg-apple-blue text-white shadow-md shadow-apple-blue/30' if '/task' in request.url.path else 'text-gray-600 hover:bg-white/60 hover:text-gray-900' }}">任务管理</a>
+<a href="/backup" class="px-4 py-2 rounded-xl text-sm font-medium transition {{ 'bg-apple-blue text-white shadow-md shadow-apple-blue/30' if request.url.path == '/backup' else 'text-gray-600 hover:bg-white/60 hover:text-gray-900' }}">
+<svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</div>
+</nav>
+{% block subnav %}{% endblock %}
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+{% block content %}{% endblock %}
+</main>
+<footer class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-12">
+<div class="text-center">
+<div class="w-10 h-10 mx-auto mb-3 rounded-full bg-gradient-to-br from-apple-blue to-blue-400 flex items-center justify-center">
+<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+</div>
+<p class="text-sm text-gray-400">抖店管理系统 v2.0</p>
+</div>
+</footer>
+{% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,49 @@
+﻿python : C:\Users\89728\AppData\Roaming\Python\Python312\site-packages\openpyxl\styles\stylesheet.py:237: UserWarning: 
+Workbook contains no default style, apply openpyxl's default
+所在位置 行:1 字符: 145
++ ... stem.Environment]::GetEnvironmentVariable("Path","User"); python -c "
++                                                               ~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (C:\Users\89728\...npyxl's default:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  warn("Workbook contains no default style, apply openpyxl's default")
+A(0): 订单号
+B(1): 系统单号
+C(2): 店铺名称
+D(3): 收件人姓名
+E(4): 收件人手机
+F(5): 收件人省
+G(6): 收件人市
+H(7): 收件人区县
+I(8): 收件人地址
+J(9): 下单时间
+K(10): 付款时间
+L(11): 发货时间
+M(12): 订单状态
+N(13): 买家备注
+O(14): 卖家备注
+P(15): 系统备注
+Q(16): 订单金额
+R(17): 物流公司名称
+S(18): 物流单号
+T(19): 商家名称
+U(20): 厂家名称
+V(21): 商品名称
+W(22): 商品简称
+X(23): 商品属性
+Y(24): 商家编码
+Z(25): SKU编码
+AA(26): 商品数量
+AB(27): 商品单价
+AC(28): sku简称
+AD(29): 子订单状态
+AE(30): 达人名称
+AF(31): 库位号
+AG(32): 订单实收金额
+AH(33): 商品id
+AI(34): skuId
+AJ(35): 重量
+AK(36): 库存名称
+AL(37): 库存编码
+AM(38): 商品实付
+AN(39): 达人id

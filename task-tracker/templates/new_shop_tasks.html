@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}新店任务模板{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="flex-between" style="margin-bottom:15px">
+        <h3>🆕 新店任务模板管理</h3>
+    </div>
+    <div style="margin-bottom:15px">
+        <form action="/api/new_shop_task_templates/add" method="post" class="form-inline">
+            <input type="text" name="task_name" placeholder="输入新任务名称" required style="width:300px">
+            <button type="submit" class="btn btn-primary">添加任务</button>
+        </form>
+    </div>
+    <table>
+        <thead>
+            <tr><th>排序</th><th>任务名称</th><th>状态</th><th>操作</th></tr>
+        </thead>
+        <tbody>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task.sort_order }}</td>
+            <td>{{ task.task_name }}</td>
+            <td>
+                {% if task.is_active %}
+                <span class="badge badge-normal">启用</span>
+                {% else %}
+                <span class="badge badge-closed">禁用</span>
+                {% endif %}
+            </td>
+            <td>
+                <form action="/api/new_shop_task_templates/{{ task.id }}/toggle" method="post" style="display:inline">
+                    <button class="btn btn-sm {% if task.is_active %}btn-warning{% else %}btn-success{% endif %}">
+                        {% if task.is_active %}禁用{% else %}启用{% endif %}
+                    </button>
+                </form>
+                <form action="/api/new_shop_task_templates/{{ task.id }}/delete" method="post" style="display:inline" onsubmit="return confirm('确定删除？')">
+                    <button class="btn btn-danger btn-sm">删除</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+        {% if not tasks %}
+        <tr><td colspan="4" class="empty">暂无任务</td></tr>
+        {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

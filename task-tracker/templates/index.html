@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}首页 - 店铺任务管理{% endblock %}
+{% block content %}
+<div class="grid">
+    <div class="card stat-card">
+        <div class="number">{{ total_shops }}</div>
+        <div class="label">店铺总数</div>
+    </div>
+    <div class="card stat-card">
+        <div class="number" style="color:#34a853">{{ total_done }}</div>
+        <div class="label">今日全部完成</div>
+    </div>
+    <div class="card stat-card">
+        <div class="number" style="color:#e37400">{{ new_shops|length }}</div>
+        <div class="label">待完成新店</div>
+    </div>
+</div>
+
+{% if new_shops %}
+<div class="card">
+    <h3>⚠️ 新店待完成任务</h3>
+    <table>
+        <thead><tr><th>店铺名称</th><th>新店任务进度</th><th>操作</th></tr></thead>
+        <tbody>
+        {% for shop in new_shops %}
+        <tr>
+            <td>{{ shop.shop_name }}</td>
+            <td style="width:300px">
+                <div class="progress-bar">
+                    <div class="progress-fill {% if shop.new_progress == 100 %}green{% elif shop.new_progress >= 50 %}yellow{% else %}red{% endif %}"
+                         style="width:{{ shop.new_progress }}%">{{ shop.new_done }}/{{ shop.new_total }}</div>
+                </div>
+            </td>
+            <td><a href="/new_shop_checkin?shop_id={{ shop.id }}" class="btn btn-primary btn-sm">去完成</a></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+<div class="card">
+    <div class="flex-between" style="margin-bottom:15px">
+        <h3>📋 今日任务完成情况 ({{ today }})</h3>
+        <a href="/checkin" class="btn btn-primary">去打卡</a>
+    </div>
+    <table>
+        <thead>
+            <tr><th>店铺名称</th><th>分组</th><th>状态</th><th>今日任务进度</th><th>操作</th></tr>
+        </thead>
+        <tbody>
+        {% for shop in shops %}
+        <tr>
+            <td><a href="/accounts?shop_id={{ shop.id }}" style="text-decoration:none;color:#1a73e8">{{ shop.shop_name }}</a></td>
+            <td>{{ shop.group_name or '-' }}</td>
+            <td>
+                {% if shop.status == 'new' %}<span class="badge badge-new">新店</span>
+                {% elif shop.status == 'normal' %}<span class="badge badge-normal">正常</span>
+                {% elif shop.status == 'paused' %}<span class="badge badge-paused">暂停</span>
+                {% else %}<span class="badge badge-closed">关闭</span>{% endif %}
+            </td>
+            <td style="width:300px">
+                <div class="progress-bar">
+                    <div class="progress-fill {% if shop.progress == 100 %}green{% elif shop.progress >= 50 %}yellow{% else %}red{% endif %}"
+                         style="width:{{ shop.progress }}%">{{ shop.done_tasks }}/{{ shop.total_tasks }}</div>
+                </div>
+            </td>
+            <td>
+                <a href="/checkin?shop_id={{ shop.id }}&qdate={{ today }}" class="btn btn-primary btn-sm">打卡</a>
+                {% if shop.status == 'new' %}
+                <a href="/new_shop_checkin?shop_id={{ shop.id }}" class="btn btn-warning btn-sm">新店任务</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+        {% if not shops %}
+        <tr><td colspan="5" class="empty">暂无店铺，请先添加店铺</td></tr>
+        {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

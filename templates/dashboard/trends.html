@@ -1,0 +1,137 @@
+{% extends "dashboard_base.html" %}
+{% block title %}趋势 - 抖店数据看板{% endblock %}
+{% block content %}
+
+<div class="flex items-center justify-between mb-6">
+<h1 class="text-2xl font-semibold tracking-tight">历史趋势</h1>
+<div class="flex items-center space-x-2">
+<select id="shopFilterTrend" onchange="loadShopTrend()" class="bg-[#f5f5f7] border-0 rounded-lg px-3 py-1.5 text-sm focus:ring-1 focus:ring-[#0071e3] outline-none">
+<option value="">全部店铺汇总</option>
+{% for s in all_shops %}<option value="{{ s.shop_name }}">{{ s.shop_name }}</option>{% endfor %}
+</select>
+</div></div>
+
+<div class="flex items-center space-x-1.5 mb-6">
+<a href="/dashboard/trends?days=7" class="px-3 py-1 rounded-full text-xs font-medium transition-colors {% if days == 7 %}bg-[#0071e3] text-white{% else %}bg-[#f5f5f7] hover:bg-[#e8e8ed]{% endif %}">近7天</a>
+<a href="/dashboard/trends?days=15" class="px-3 py-1 rounded-full text-xs font-medium transition-colors {% if days == 15 %}bg-[#0071e3] text-white{% else %}bg-[#f5f5f7] hover:bg-[#e8e8ed]{% endif %}">近15天</a>
+<a href="/dashboard/trends?days=30" class="px-3 py-1 rounded-full text-xs font-medium transition-colors {% if days == 30 %}bg-[#0071e3] text-white{% else %}bg-[#f5f5f7] hover:bg-[#e8e8ed]{% endif %}">近30天</a>
+</div>
+
+{% if daily %}
+<div id="globalTrends">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="card rounded-2xl p-5">
+<h3 class="text-sm font-semibold mb-3">成交金额</h3>
+<div class="relative" style="height:180px"><div class="absolute inset-0 flex items-end">
+{% set max_amount = daily|map(attribute='total_amount')|max %}
+{% for d in daily %}
+<div class="flex-1 mx-0.5 group relative">
+<div class="bg-[#0071e3] rounded-t-sm hover:bg-[#0077ed] transition-colors" style="height: {{ (d.total_amount / max_amount * 160) if max_amount > 0 else 0 }}px"></div>
+<div class="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 bg-[#1d1d1f] text-white text-[10px] px-2 py-1 rounded-md mb-1 whitespace-nowrap z-10">{{ d.snapshot_date }}: {{ "%.2f"|format(d.total_amount) }}</div></div>
+{% endfor %}
+</div></div>
+<div class="flex justify-between text-[10px] text-[#86868b] mt-2 px-1">{% for d in daily %}<span>{{ d.snapshot_date[5:] }}</span>{% endfor %}</div></div>
+
+<div class="card rounded-2xl p-5">
+<h3 class="text-sm font-semibold mb-3">订单数</h3>
+<div class="relative" style="height:180px"><div class="absolute inset-0 flex items-end">
+{% set max_orders = daily|map(attribute='total_orders')|max %}
+{% for d in daily %}
+<div class="flex-1 mx-0.5 group relative">
+<div class="bg-[#34c759] rounded-t-sm hover:bg-[#30d158] transition-colors" style="height: {{ (d.total_orders / max_orders * 160) if max_orders > 0 else 0 }}px"></div>
+<div class="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 bg-[#1d1d1f] text-white text-[10px] px-2 py-1 rounded-md mb-1 whitespace-nowrap z-10">{{ d.snapshot_date }}: {{ d.total_orders }}单</div></div>
+{% endfor %}
+</div></div>
+<div class="flex justify-between text-[10px] text-[#86868b] mt-2 px-1">{% for d in daily %}<span>{{ d.snapshot_date[5:] }}</span>{% endfor %}</div></div>
+
+<div class="card rounded-2xl p-5">
+<h3 class="text-sm font-semibold mb-3">退款金额</h3>
+<div class="relative" style="height:180px"><div class="absolute inset-0 flex items-end">
+{% set max_refund = daily|map(attribute='total_refund')|max %}
+{% for d in daily %}
+<div class="flex-1 mx-0.5 group relative">
+<div class="bg-[#ff3b30] rounded-t-sm hover:bg-[#ff453a] transition-colors" style="height: {{ (d.total_refund / max_refund * 160) if max_refund > 0 else 0 }}px"></div>
+<div class="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 bg-[#1d1d1f] text-white text-[10px] px-2 py-1 rounded-md mb-1 whitespace-nowrap z-10">{{ d.snapshot_date }}: {{ "%.2f"|format(d.total_refund) }}</div></div>
+{% endfor %}
+</div></div>
+<div class="flex justify-between text-[10px] text-[#86868b] mt-2 px-1">{% for d in daily %}<span>{{ d.snapshot_date[5:] }}</span>{% endfor %}</div></div>
+
+<div class="card rounded-2xl p-5">
+<h3 class="text-sm font-semibold mb-3">待发货 / 超时</h3>
+<div class="relative" style="height:180px"><div class="absolute inset-0 flex items-end">
+{% set max_ship = daily|map(attribute='total_pending_ship')|max %}
+{% for d in daily %}
+<div class="flex-1 mx-0.5 group relative flex items-end">
+<div class="flex-1 mx-0.5"><div class="bg-[#ff9500] rounded-t-sm hover:bg-[#ff9f0a] transition-colors" style="height: {{ (d.total_pending_ship / max_ship * 150) if max_ship > 0 else 0 }}px"></div></div>
+<div class="flex-1 mx-0.5"><div class="bg-[#ff3b30] rounded-t-sm hover:bg-[#ff453a] transition-colors" style="height: {{ (d.total_overdue_ship / max_ship * 150) if max_ship > 0 else 0 }}px"></div></div>
+<div class="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 bg-[#1d1d1f] text-white text-[10px] px-2 py-1 rounded-md mb-1 whitespace-nowrap z-10">待发: {{ d.total_pending_ship }} / 超时: {{ d.total_overdue_ship }}</div></div>
+{% endfor %}
+</div></div>
+<div class="flex items-center space-x-4 mt-2 text-[10px] text-[#86868b]">
+<span><span class="inline-block w-2.5 h-2.5 bg-[#ff9500] rounded-sm mr-1"></span>待发货</span>
+<span><span class="inline-block w-2.5 h-2.5 bg-[#ff3b30] rounded-sm mr-1"></span>超时</span></div></div>
+</div>
+
+<div class="card rounded-2xl overflow-hidden">
+<div class="px-5 py-3 border-b border-black/5"><h2 class="text-sm font-semibold">每日明细</h2></div>
+<div class="overflow-x-auto">
+<table class="w-full text-xs">
+<thead class="bg-[#fafafa] text-[#6e6e73]">
+<tr><th class="px-3 py-2 text-left font-medium">日期</th><th class="px-3 py-2 text-right font-medium">成交</th><th class="px-3 py-2 text-right font-medium">订单</th><th class="px-3 py-2 text-right font-medium">退款</th><th class="px-3 py-2 text-right font-medium">曝光</th><th class="px-3 py-2 text-right font-medium">点击</th><th class="px-3 py-2 text-right font-medium">待发</th><th class="px-3 py-2 text-right font-medium">超时</th></tr>
+</thead>
+<tbody class="divide-y divide-black/5">
+{% for d in daily|reverse %}
+<tr class="hover:bg-[#fafafa]"><td class="px-3 py-2">{{ d.snapshot_date }}</td><td class="px-3 py-2 text-right">{{ "%.2f"|format(d.total_amount) }}</td><td class="px-3 py-2 text-right">{{ d.total_orders }}</td><td class="px-3 py-2 text-right {% if d.total_refund > 0 %}text-[#ff3b30]{% endif %}">{{ "%.2f"|format(d.total_refund) }}</td><td class="px-3 py-2 text-right">{{ d.total_exposure }}</td><td class="px-3 py-2 text-right">{{ d.total_clicks }}</td><td class="px-3 py-2 text-right">{{ d.total_pending_ship }}</td><td class="px-3 py-2 text-right {% if d.total_overdue_ship > 0 %}text-[#ff3b30]{% endif %}">{{ d.total_overdue_ship }}</td></tr>
+{% endfor %}
+</tbody></table></div></div>
+</div>
+
+<div id="shopTrendPanel" class="hidden">
+<div id="shopTrendContent"></div>
+</div>
+
+{% else %}
+<div class="text-center py-20 text-[#86868b]">暂无历史数据</div>
+{% endif %}
+
+<script>
+const DAYS = {{ days }};
+async function loadShopTrend() {
+    const name = document.getElementById('shopFilterTrend').value;
+    const gp = document.getElementById('globalTrends');
+    const sp = document.getElementById('shopTrendPanel');
+    if (!name) { gp.classList.remove('hidden'); sp.classList.add('hidden'); return; }
+    gp.classList.add('hidden'); sp.classList.remove('hidden');
+    sp.innerHTML = '<div class="text-center py-8 text-[#86868b]">加载中...</div>';
+    const res = await fetch('/dashboard/api/shop/detail?shop_name=' + encodeURIComponent(name) + '&range=' + DAYS);
+    const data = await res.json();
+    if (data.error) { sp.innerHTML = '<div class="text-center py-8 text-[#86868b]">未找到</div>'; return; }
+    const history = data.history;
+    const latest = history[history.length - 1];
+    let html = '<h2 class="text-lg font-semibold mb-4">' + name + '</h2>';
+    if (latest) {
+        html += '<div class="grid grid-cols-3 md:grid-cols-6 gap-2.5 mb-6">';
+        [['成交', latest.amount, '#0071e3'],['订单', latest.order_count, '#1d1d1f'],['退款', latest.refund_amount, latest.refund_amount>0?'#ff3b30':'#86868b'],['体验分', latest.experience_score, '#1d1d1f'],['待发货', latest.pending_ship, '#ff9500'],['超时', latest.overdue_ship, latest.overdue_ship>0?'#ff3b30':'#86868b']].forEach(i => {
+            html += '<div class="card rounded-xl p-3"><div class="text-[10px] text-[#6e6e73] mb-0.5">' + i[0] + '</div><div class="text-base font-semibold" style="color:' + i[2] + '">' + i[1] + '</div></div>';
+        });
+        html += '</div>';
+    }
+    if (history.length > 1) {
+        html += '<div class="card rounded-2xl p-5 mb-4"><h3 class="text-sm font-semibold mb-3">成交趋势</h3>';
+        html += '<div class="relative" style="height:160px"><div class="absolute inset-0 flex items-end">';
+        const maxAmt = Math.max(...history.map(h => h.amount || 0));
+        history.forEach(h => {
+            const hh = maxAmt > 0 ? (h.amount / maxAmt * 140) : 0;
+            html += '<div class="flex-1 mx-0.5 group relative"><div class="bg-[#0071e3] rounded-t-sm hover:bg-[#0077ed] transition-colors" style="height:' + hh + 'px"></div><div class="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 bg-[#1d1d1f] text-white text-[10px] px-2 py-1 rounded-md mb-1 whitespace-nowrap z-10">' + h.snapshot_date + ': ' + (h.amount||0).toFixed(2) + '</div></div>';
+        });
+        html += '</div></div></div>';
+    }
+    html += '<div class="card rounded-2xl overflow-hidden"><div class="overflow-x-auto"><table class="w-full text-xs"><thead class="bg-[#fafafa] text-[#6e6e73]"><tr><th class="px-2 py-2 text-left font-medium">日期</th><th class="px-2 py-2 text-right font-medium">成交</th><th class="px-2 py-2 text-right font-medium">订单</th><th class="px-2 py-2 text-right font-medium">退款</th><th class="px-2 py-2 text-right font-medium">曝光</th><th class="px-2 py-2 text-right font-medium">点击</th><th class="px-2 py-2 text-right font-medium">待发</th><th class="px-2 py-2 text-right font-medium">超时</th></tr></thead><tbody class="divide-y divide-black/5">';
+    history.slice().reverse().forEach(h => {
+        html += '<tr><td class="px-2 py-1.5">' + h.snapshot_date + '</td><td class="px-2 py-1.5 text-right">' + (h.amount||0).toFixed(2) + '</td><td class="px-2 py-1.5 text-right">' + h.order_count + '</td><td class="px-2 py-1.5 text-right' + (h.refund_amount>0?' text-[#ff3b30]':'') + '">' + (h.refund_amount||0).toFixed(2) + '</td><td class="px-2 py-1.5 text-right">' + h.exposure + '</td><td class="px-2 py-1.5 text-right">' + h.clicks + '</td><td class="px-2 py-1.5 text-right">' + h.pending_ship + '</td><td class="px-2 py-1.5 text-right' + (h.overdue_ship>0?' text-[#ff3b30]':'') + '">' + h.overdue_ship + '</td></tr>';
+    });
+    html += '</tbody></table></div></div>';
+    sp.innerHTML = html;
+}
+</script>
+{% endblock %}

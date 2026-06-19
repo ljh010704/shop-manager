@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}营业执照管理{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="flex-between" style="margin-bottom:15px">
+        <h3>📄 营业执照管理</h3>
+        <button class="btn btn-primary" onclick="document.getElementById('addModal').style.display='block'">添加营业执照</button>
+    </div>
+    <table>
+        <thead>
+            <tr><th>执照名称</th><th>执照号</th><th>持有人</th><th>有效期</th><th>关联店铺数</th><th>备注</th><th>操作</th></tr>
+        </thead>
+        <tbody>
+        {% for lic in licenses %}
+        <tr>
+            <td>{{ lic.license_name }}</td>
+            <td>{{ lic.license_no or '-' }}</td>
+            <td>{{ lic.holder_name or '-' }}</td>
+            <td>{{ lic.expire_date or '-' }}</td>
+            <td><strong>{{ lic.shop_count }}</strong></td>
+            <td>{{ lic.remark or '-' }}</td>
+            <td>
+                <button class="btn btn-warning btn-sm" onclick="editLicense({{ lic.id }}, '{{ lic.license_name }}', '{{ lic.license_no }}', '{{ lic.holder_name }}', '{{ lic.expire_date }}', '{{ lic.remark }}')">编辑</button>
+                <form action="/api/licenses/{{ lic.id }}/delete" method="post" style="display:inline" onsubmit="return confirm('确定删除？')">
+                    <button class="btn btn-danger btn-sm">删除</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+        {% if not licenses %}
+        <tr><td colspan="7" class="empty">暂无营业执照</td></tr>
+        {% endif %}
+        </tbody>
+    </table>
+</div>
+
+<div id="addModal" class="modal">
+    <div class="modal-content">
+        <h3>添加营业执照</h3>
+        <form action="/api/licenses/add" method="post">
+            <div class="form-group"><label>执照名称 *</label><input type="text" name="license_name" required></div>
+            <div class="form-group"><label>执照号</label><input type="text" name="license_no"></div>
+            <div class="form-group"><label>持有人</label><input type="text" name="holder_name"></div>
+            <div class="form-group"><label>有效期</label><input type="date" name="expire_date"></div>
+            <div class="form-group"><label>备注</label><input type="text" name="remark"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn" onclick="this.closest('.modal').style.display='none'">取消</button>
+                <button type="submit" class="btn btn-primary">保存</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <h3>编辑营业执照</h3>
+        <form id="editForm" method="post">
+            <div class="form-group"><label>执照名称 *</label><input type="text" name="license_name" id="edit_name" required></div>
+            <div class="form-group"><label>执照号</label><input type="text" name="license_no" id="edit_no"></div>
+            <div class="form-group"><label>持有人</label><input type="text" name="holder_name" id="edit_holder"></div>
+            <div class="form-group"><label>有效期</label><input type="date" name="expire_date" id="edit_expire"></div>
+            <div class="form-group"><label>备注</label><input type="text" name="remark" id="edit_remark"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn" onclick="this.closest('.modal').style.display='none'">取消</button>
+                <button type="submit" class="btn btn-primary">保存</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function editLicense(id, name, no, holder, expire, remark) {
+    document.getElementById('editForm').action = '/api/licenses/' + id + '/edit';
+    document.getElementById('edit_name').value = name;
+    document.getElementById('edit_no').value = no;
+    document.getElementById('edit_holder').value = holder;
+    document.getElementById('edit_expire').value = expire;
+    document.getElementById('edit_remark').value = remark;
+    document.getElementById('editModal').style.display = 'block';
+}
+</script>
+{% endblock %}

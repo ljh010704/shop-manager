@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% block title %}预警 - 抖店数据看板{% endblock %}
+{% block content %}
+
+<div class="mb-6">
+<h1 class="text-2xl font-semibold tracking-tight">预警提醒</h1>
+<p class="text-[#6e6e73] text-sm mt-1">点击卡片查看对应店铺列表，点击店铺名查看详情</p></div>
+
+{% if alerts %}
+<div class="grid grid-cols-3 gap-3 mb-6">
+<div class="card rounded-2xl p-4 text-center cursor-pointer hover:bg-white transition-colors" onclick="showListModal('问题店铺', 'problem')">
+<div class="text-2xl font-semibold text-[#ff3b30] underline decoration-1 underline-offset-4 decoration-[#ff3b30]/30">{{ alerts|length }}</div>
+<div class="text-xs text-[#6e6e73]">问题店铺</div></div>
+<div class="card rounded-2xl p-4 text-center cursor-pointer hover:bg-white transition-colors" onclick="showListModal('全部问题', 'all')">
+<div class="text-2xl font-semibold text-[#ff9500] underline decoration-1 underline-offset-4 decoration-[#ff9500]/30">{{ alerts|map(attribute='reasons')|map('length')|sum }}</div>
+<div class="text-xs text-[#6e6e73]">问题总数</div></div>
+<div class="card rounded-2xl p-4 text-center cursor-pointer hover:bg-white transition-colors" onclick="showListModal('无超时店铺', 'no_overdue')">
+<div class="text-2xl font-semibold text-[#34c759] underline decoration-1 underline-offset-4 decoration-[#34c759]/30">{{ alerts|rejectattr('shop.overdue_ship')|list|length }}</div>
+<div class="text-xs text-[#6e6e73]">无超时店铺</div></div>
+</div>
+
+<div class="space-y-3">
+{% for a in alerts %}
+<div class="card rounded-2xl overflow-hidden fade-in" style="animation-delay: {{ loop.index0 * 0.05 }}s">
+<div class="px-5 py-3 flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#ff3b30]/10 text-[#ff3b30] text-sm font-bold">{{ a.reasons|length }}</span>
+<div>
+<h3 class="text-sm font-semibold text-[#0071e3] cursor-pointer hover:underline" onclick="showShopDetailModal('{{ a.shop.shop_name }}')">{{ a.shop.shop_name }}</h3>
+<div class="flex flex-wrap gap-1.5 mt-1.5">
+{% for reason in a.reasons %}
+<span class="inline-block bg-[#ff3b30]/8 text-[#ff3b30] text-[10px] px-2 py-0.5 rounded-full font-medium">{{ reason }}</span>
+{% endfor %}
+</div></div></div>
+<div class="text-right text-xs text-[#6e6e73]">
+<div>成交 <span class="font-medium text-[#1d1d1f]">{{ "%.2f"|format(a.shop.amount) }}</span></div>
+<div class="mt-0.5">体验分 <span class="font-medium {% if a.shop.experience_score not in ['-',''] and a.shop.experience_score|float < 70 %}text-[#ff3b30]{% else %}text-[#1d1d1f]{% endif %}">{{ a.shop.experience_score }}</span></div>
+</div></div></div>
+{% endfor %}
+</div>
+
+{% else %}
+<div class="text-center py-20">
+<div class="w-16 h-16 rounded-full bg-[#34c759]/10 flex items-center justify-center mx-auto mb-4"><svg class="w-8 h-8 text-[#34c759]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></div>
+<h2 class="text-xl font-semibold text-[#1d1d1f] mb-1">一切正常</h2>
+<p class="text-[#6e6e73] text-sm">暂无需要关注的问题</p>
+</div>
+{% endif %}
+
+<div id="listModal" class="hidden fixed inset-0 z-50">
+<div class="modal-overlay absolute inset-0 bg-black/30 backdrop-blur-sm" onclick="closeListModal()"></div>
+<div class="relative max-w-lg w-full mx-auto mt-[12vh]">
+<div class="modal-content card rounded-2xl shadow-2xl max-h-[70vh] flex flex-col overflow-hidden">
+<div class="px-5 py-3 border-b border-black/5 flex items-center justify-between">
+<h3 id="listModalTitle" class="text-base font-semibold"></h3>
+<button onclick="closeListModal()" class="w-7 h-7 flex items-center justify-center rounded-full bg-black/5 hover:bg-black/10 transition-colors text-sm">&times;</button></div>
+<div id="listModalBody" class="overflow-y-auto flex-1 p-5"></div></div></div></div>
+
+<div id="shopDetailModal" class="hidden fixed inset-0 z-50">
+<div class="modal-overlay absolute inset-0 bg-black/30 backdrop-blur-sm" onclick="closeShopDetailModal()"></div>
+<div class="relative max-w-4xl w-full mx-auto mt-[8vh]">
+<div class="modal-content card rounded-2xl shadow-2xl max-h-[82vh] flex flex-col overflow-hidden">
+<div class="px-5 py-3 border-b border-black/5 flex items-center justify-between">
+<h3 id="shopDetailTitle" class="text-base font-semibold"></h3>
+<button onclick="closeShopDetailModal()" class="w-7 h-7 flex items-center justify-center rounded-full bg-black/5 hover:bg-black/10 transition-colors text-sm">&times;</button></div>
+<div id="shopDetailBody" class="overflow-y-auto flex-1 p-5"></div></div></div></div>
+
+<script>
+const ALL_ALERTS = {{ alerts | tojson }};
+
+function showListModal(title, type) {
+    document.getElementById('listModalTitle').textContent = title;
+    let items = [];
+    if (type === 'problem') {
+        items = ALL_ALERTS.map(a => ({ name: a.shop.shop_name, val: a.reasons.length + '个问题', reasons: a.reasons }));
+    } else if (type === 'all') {
+        ALL_ALERTS.forEach(a => {
+            a.reasons.forEach(r => items.push({ name: a.shop.shop_name, val: r, reasons: [r] }));
+        });
+    } else if (type === 'no_overdue') {
+        items = ALL_ALERTS.filter(a => !a.shop.overdue_ship).map(a => ({ name: a.shop.shop_name, val: '体验分:' + a.shop.experience_score, reasons: a.reasons }));
+    }
+    let html = '';
+    if (items.length === 0) {
+        html = '<div class="text-center py-8 text-[#86868b]">暂无数据</div>';
+    } else {
+        html = '<div class="space-y-2">';
+        items.forEach(item => {
+            html += '<div class="flex items-center justify-between py-2 px-3 rounded-xl hover:bg-[#f5f5f7] cursor-pointer transition-colors" onclick="closeListModal();showShopDetailModal(\'' + item.name + '\')">';
+            html += '<div><span class="text-sm text-[#0071e3] font-medium">' + item.name + '</span>';
+            if (type === 'all' && item.reasons.length) {
+                html += '<div class="mt-1"><span class="inline-block bg-[#ff3b30]/8 text-[#ff3b30] text-[10px] px-2 py-0.5 rounded-full">' + item.reasons[0] + '</span></div>';
+            }
+            html += '</div>';
+            html += '<span class="text-xs text-[#6e6e73]">' + item.val + '</span>';
+            html += '</div>';
+        });
+        html += '</div>';
+    }
+    document.getElementById('listModalBody').innerHTML = html;
+    document.getElementById('listModal').classList.remove('hidden');
+}
+function closeListModal() { document.getElementById('listModal').classList.add('hidden'); }
+
+async function showShopDetailModal(name) {
+    const modal = document.getElementById('shopDetailModal');
+    document.getElementById('shopDetailTitle').textContent = name;
+    document.getElementById('shopDetailBody').innerHTML = '<div class="text-center py-8 text-[#86868b]">加载中...</div>';
+    modal.classList.remove('hidden');
+    const res = await fetch('/api/shop/detail?shop_name=' + encodeURIComponent(name) + '&range=7');
+    const data = await res.json();
+    if (data.error) { closeShopDetailModal(); return; }
+    const history = data.history;
+    const latest = history[history.length - 1];
+    const ranges = [{l:'今日',v:'1'},{l:'昨日',v:'2'},{l:'近7天',v:'7'},{l:'近15天',v:'15'},{l:'近30天',v:'30'}];
+    let html = '<div class="flex items-center space-x-1.5 mb-4">';
+    ranges.forEach(r => {
+        html += '<button onclick="loadAlertShopData(\'' + name + '\',\'' + r.v + '\')" class="px-3 py-1 rounded-full text-xs font-medium transition-colors ' + (r.v === '7' ? 'bg-[#0071e3] text-white' : 'bg-[#f5f5f7] text-[#1d1d1f] hover:bg-[#e8e8ed]') + '">' + r.l + '</button>';
+    });
+    html += '</div>';
+    if (latest) {
+        html += '<div class="grid grid-cols-3 md:grid-cols-6 gap-2.5 mb-4">';
+        [['成交', latest.amount, '#0071e3'],['订单', latest.order_count, '#1d1d1f'],['退款', latest.refund_amount, latest.refund_amount>0?'#ff3b30':'#86868b'],['体验分', latest.experience_score, '#1d1d1f'],['待发货', latest.pending_ship, '#ff9500'],['超时', latest.overdue_ship, latest.overdue_ship>0?'#ff3b30':'#86868b'],['曝光', latest.exposure, '#5856d6'],['点击', latest.clicks, '#af52de'],['资金', latest.fund?latest.fund.toFixed(2):'0', '#1d1d1f'],['在售', latest.on_sale, '#1d1d1f'],['违规', latest.violation_count, latest.violation_count>0?'#ff3b30':'#86868b'],['30天订单', latest.valid_orders_30d, '#1d1d1f']].forEach(i => {
+            html += '<div class="bg-[#f5f5f7] rounded-xl p-3"><div class="text-[10px] text-[#6e6e73] mb-0.5">' + i[0] + '</div><div class="text-base font-semibold" style="color:' + i[2] + '">' + i[1] + '</div></div>';
+        });
+        html += '</div>';
+    }
+    if (history.length > 1) {
+        html += '<h4 class="text-sm font-semibold mb-2">成交趋势</h4>';
+        html += '<div class="relative mb-4" style="height:140px"><div class="absolute inset-0 flex items-end">';
+        const maxAmt = Math.max(...history.map(h => h.amount || 0));
+        history.forEach(h => {
+            const hh = maxAmt > 0 ? (h.amount / maxAmt * 120) : 0;
+            html += '<div class="flex-1 mx-0.5 group relative"><div class="bg-[#0071e3] rounded-t-sm hover:bg-[#0077ed] transition-colors" style="height:' + hh + 'px"></div><div class="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 bg-[#1d1d1f] text-white text-[10px] px-2 py-1 rounded-md mb-1 whitespace-nowrap z-10">' + h.snapshot_date + ': ' + (h.amount||0).toFixed(2) + '</div></div>';
+        });
+        html += '</div></div>';
+    }
+    html += '<h4 class="text-sm font-semibold mb-2">详细数据</h4>';
+    html += '<div class="overflow-x-auto"><table class="w-full text-xs"><thead class="text-[#6e6e73]"><tr><th class="px-2 py-1.5 text-left font-medium">日期</th><th class="px-2 py-1.5 text-right font-medium">成交</th><th class="px-2 py-1.5 text-right font-medium">订单</th><th class="px-2 py-1.5 text-right font-medium">退款</th><th class="px-2 py-1.5 text-right font-medium">体验分</th><th class="px-2 py-1.5 text-right font-medium">待发</th><th class="px-2 py-1.5 text-right font-medium">超时</th><th class="px-2 py-1.5 text-right font-medium">违规</th></tr></thead><tbody class="divide-y divide-black/5">';
+    history.slice().reverse().forEach(h => {
+        html += '<tr><td class="px-2 py-1.5">' + h.snapshot_date + '</td><td class="px-2 py-1.5 text-right">' + (h.amount||0).toFixed(2) + '</td><td class="px-2 py-1.5 text-right">' + h.order_count + '</td><td class="px-2 py-1.5 text-right' + (h.refund_amount>0?' text-[#ff3b30]':'') + '">' + (h.refund_amount||0).toFixed(2) + '</td><td class="px-2 py-1.5 text-right">' + h.experience_score + '</td><td class="px-2 py-1.5 text-right">' + h.pending_ship + '</td><td class="px-2 py-1.5 text-right' + (h.overdue_ship>0?' text-[#ff3b30]':'') + '">' + h.overdue_ship + '</td><td class="px-2 py-1.5 text-right' + (h.violation_count>0?' text-[#ff3b30]':'') + '">' + h.violation_count + '</td></tr>';
+    });
+    html += '</tbody></table></div>';
+    document.getElementById('shopDetailBody').innerHTML = html;
+}
+
+async function loadAlertShopData(name, range) {
+    document.getElementById('shopDetailBody').innerHTML = '<div class="text-center py-8 text-[#86868b]">加载中...</div>';
+    const res = await fetch('/api/shop/detail?shop_name=' + encodeURIComponent(name) + '&range=' + range);
+    const data = await res.json();
+    if (data.error) { closeShopDetailModal(); return; }
+    const history = data.history;
+    const latest = history[history.length - 1];
+    const ranges = [{l:'今日',v:'1'},{l:'昨日',v:'2'},{l:'近7天',v:'7'},{l:'近15天',v:'15'},{l:'近30天',v:'30'}];
+    let html = '<div class="flex items-center space-x-1.5 mb-4">';
+    ranges.forEach(r => {
+        html += '<button onclick="loadAlertShopData(\'' + name + '\',\'' + r.v + '\')" class="px-3 py-1 rounded-full text-xs font-medium transition-colors ' + (range === r.v ? 'bg-[#0071e3] text-white' : 'bg-[#f5f5f7] text-[#1d1d1f] hover:bg-[#e8e8ed]') + '">' + r.l + '</button>';
+    });
+    html += '</div>';
+    if (latest) {
+        html += '<div class="grid grid-cols-3 md:grid-cols-6 gap-2.5 mb-4">';
+        [['成交', latest.amount, '#0071e3'],['订单', latest.order_count, '#1d1d1f'],['退款', latest.refund_amount, latest.refund_amount>0?'#ff3b30':'#86868b'],['体验分', latest.experience_score, '#1d1d1f'],['待发货', latest.pending_ship, '#ff9500'],['超时', latest.overdue_ship, latest.overdue_ship>0?'#ff3b30':'#86868b'],['曝光', latest.exposure, '#5856d6'],['点击', latest.clicks, '#af52de'],['资金', latest.fund?latest.fund.toFixed(2):'0', '#1d1d1f'],['在售', latest.on_sale, '#1d1d1f'],['违规', latest.violation_count, latest.violation_count>0?'#ff3b30':'#86868b'],['30天订单', latest.valid_orders_30d, '#1d1d1f']].forEach(i => {
+            html += '<div class="bg-[#f5f5f7] rounded-xl p-3"><div class="text-[10px] text-[#6e6e73] mb-0.5">' + i[0] + '</div><div class="text-base font-semibold" style="color:' + i[2] + '">' + i[1] + '</div></div>';
+        });
+        html += '</div>';
+    }
+    if (history.length > 1) {
+        html += '<h4 class="text-sm font-semibold mb-2">成交趋势</h4>';
+        html += '<div class="relative mb-4" style="height:140px"><div class="absolute inset-0 flex items-end">';
+        const maxAmt = Math.max(...history.map(h => h.amount || 0));
+        history.forEach(h => {
+            const hh = maxAmt > 0 ? (h.amount / maxAmt * 120) : 0;
+            html += '<div class="flex-1 mx-0.5 group relative"><div class="bg-[#0071e3] rounded-t-sm hover:bg-[#0077ed] transition-colors" style="height:' + hh + 'px"></div><div class="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 bg-[#1d1d1f] text-white text-[10px] px-2 py-1 rounded-md mb-1 whitespace-nowrap z-10">' + h.snapshot_date + ': ' + (h.amount||0).toFixed(2) + '</div></div>';
+        });
+        html += '</div></div>';
+    }
+    html += '<h4 class="text-sm font-semibold mb-2">详细数据</h4>';
+    html += '<div class="overflow-x-auto"><table class="w-full text-xs"><thead class="text-[#6e6e73]"><tr><th class="px-2 py-1.5 text-left font-medium">日期</th><th class="px-2 py-1.5 text-right font-medium">成交</th><th class="px-2 py-1.5 text-right font-medium">订单</th><th class="px-2 py-1.5 text-right font-medium">退款</th><th class="px-2 py-1.5 text-right font-medium">体验分</th><th class="px-2 py-1.5 text-right font-medium">待发</th><th class="px-2 py-1.5 text-right font-medium">超时</th><th class="px-2 py-1.5 text-right font-medium">违规</th></tr></thead><tbody class="divide-y divide-black/5">';
+    history.slice().reverse().forEach(h => {
+        html += '<tr><td class="px-2 py-1.5">' + h.snapshot_date + '</td><td class="px-2 py-1.5 text-right">' + (h.amount||0).toFixed(2) + '</td><td class="px-2 py-1.5 text-right">' + h.order_count + '</td><td class="px-2 py-1.5 text-right' + (h.refund_amount>0?' text-[#ff3b30]':'') + '">' + (h.refund_amount||0).toFixed(2) + '</td><td class="px-2 py-1.5 text-right">' + h.experience_score + '</td><td class="px-2 py-1.5 text-right">' + h.pending_ship + '</td><td class="px-2 py-1.5 text-right' + (h.overdue_ship>0?' text-[#ff3b30]':'') + '">' + h.overdue_ship + '</td><td class="px-2 py-1.5 text-right' + (h.violation_count>0?' text-[#ff3b30]':'') + '">' + h.violation_count + '</td></tr>';
+    });
+    html += '</tbody></table></div>';
+    document.getElementById('shopDetailBody').innerHTML = html;
+}
+
+function closeShopDetailModal() { document.getElementById('shopDetailModal').classList.add('hidden'); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeListModal(); closeShopDetailModal(); } });
+</script>
+{% endblock %}

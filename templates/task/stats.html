@@ -1,0 +1,149 @@
+{% extends "task_base.html" %}
+{% block title %}统计报表{% endblock %}
+{% block content %}
+<div class="mb-8">
+<h1 class="text-3xl font-bold text-gray-900 mb-2">统计报表</h1>
+<p class="text-gray-500">查看任务完成数据</p>
+</div>
+
+<div class="glass rounded-2xl apple-shadow p-6 mb-6">
+<div class="flex flex-wrap gap-2">
+<a href="/task/stats?days=7" class="px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-apple-blue text-white shadow-md shadow-apple-blue/30' if days == 7 else 'bg-white/80 text-gray-600 hover:bg-gray-100' }}">近7天</a>
+<a href="/task/stats?days=15" class="px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-apple-blue text-white shadow-md shadow-apple-blue/30' if days == 15 else 'bg-white/80 text-gray-600 hover:bg-gray-100' }}">近15天</a>
+<a href="/task/stats?days=30" class="px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-apple-blue text-white shadow-md shadow-apple-blue/30' if days == 30 else 'bg-white/80 text-gray-600 hover:bg-gray-100' }}">近30天</a>
+</div>
+</div>
+
+<div class="glass rounded-2xl apple-shadow p-6 mb-6">
+<h2 class="text-lg font-semibold text-gray-900 mb-4">每日完成率趋势</h2>
+<div class="overflow-x-auto">
+<table class="w-full text-sm">
+<thead class="bg-gray-50/80">
+<tr>
+<th class="px-5 py-4 font-medium text-gray-600 text-left">日期</th>
+<th class="px-5 py-4 font-medium text-gray-600 text-center">店铺数</th>
+<th class="px-5 py-4 font-medium text-gray-600 text-center">完成任务</th>
+<th class="px-5 py-4 font-medium text-gray-600 text-center">总任务</th>
+<th class="px-5 py-4 font-medium text-gray-600 text-left">完成率</th>
+</tr>
+</thead>
+<tbody>
+{% for d in daily_stats %}
+<tr class="border-t border-gray-100 hover:bg-blue-50/30 transition">
+<td class="px-5 py-4 font-medium text-gray-800">{{ d.task_date }}</td>
+<td class="px-5 py-4 text-center text-gray-600">{{ d.total_shops }}</td>
+<td class="px-5 py-4 text-center text-apple-green font-semibold">{{ d.done_count }}</td>
+<td class="px-5 py-4 text-center text-gray-600">{{ d.total_count }}</td>
+<td class="px-5 py-4">
+<div class="flex items-center gap-3">
+<div class="flex-1 bg-gray-200 rounded-full h-3 max-w-[200px]">
+<div class="h-3 rounded-full transition-all duration-500 {{ 'bg-apple-green' if d.completion_rate == 100 else 'bg-apple-orange' if d.completion_rate >= 50 else 'bg-apple-red' }}" style="width:{{ d.completion_rate }}%"></div>
+</div>
+<span class="text-sm font-medium text-gray-600 w-12">{{ d.completion_rate }}%</span>
+</div>
+</td>
+</tr>
+{% endfor %}
+{% if not daily_stats %}
+<tr><td colspan="5" class="text-center text-gray-400 py-16">
+<svg class="w-12 h-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+暂无数据
+</td></tr>
+{% endif %}
+</tbody>
+</table>
+</div>
+</div>
+
+{% if new_shops_progress %}
+<div class="glass rounded-2xl apple-shadow p-6 mb-6">
+<h2 class="text-lg font-semibold text-gray-900 mb-4">新店任务完成进度</h2>
+<div class="overflow-x-auto">
+<table class="w-full text-sm">
+<thead class="bg-gray-50/80">
+<tr>
+<th class="px-5 py-4 font-medium text-gray-600 text-left">店铺名称</th>
+<th class="px-5 py-4 font-medium text-gray-600 text-left">完成进度</th>
+</tr>
+</thead>
+<tbody>
+{% for ns in new_shops_progress %}
+<tr class="border-t border-gray-100 hover:bg-blue-50/30 transition">
+<td class="px-5 py-4 font-medium text-gray-800">{{ ns.shop_name }}</td>
+<td class="px-5 py-4">
+<div class="flex items-center gap-3">
+<div class="flex-1 bg-gray-200 rounded-full h-3 max-w-[300px]">
+<div class="h-3 rounded-full transition-all duration-500 {{ 'bg-apple-green' if ns.progress == 100 else 'bg-apple-orange' if ns.progress >= 50 else 'bg-apple-red' }}" style="width:{{ ns.progress }}%"></div>
+</div>
+<span class="text-sm font-medium text-gray-600 w-16">{{ ns.done }}/{{ ns.total }}</span>
+</div>
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+{% endif %}
+
+{% if license_stats %}
+<div class="glass rounded-2xl apple-shadow p-6 mb-6">
+<h2 class="text-lg font-semibold text-gray-900 mb-4">营业执照下店铺统计</h2>
+<div class="overflow-x-auto">
+<table class="w-full text-sm">
+<thead class="bg-gray-50/80">
+<tr>
+<th class="px-5 py-4 font-medium text-gray-600 text-left">执照名称</th>
+<th class="px-5 py-4 font-medium text-gray-600 text-center">店铺数量</th>
+</tr>
+</thead>
+<tbody>
+{% for lic in license_stats %}
+<tr class="border-t border-gray-100 hover:bg-blue-50/30 transition">
+<td class="px-5 py-4 font-medium text-gray-800">{{ lic.license_name }}</td>
+<td class="px-5 py-4 text-center"><span class="bg-apple-blue/10 text-apple-blue px-3 py-1 rounded-full text-xs font-semibold">{{ lic.shop_count }}</span></td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+{% endif %}
+
+{% if group_stats %}
+<div class="glass rounded-2xl apple-shadow p-6">
+<h2 class="text-lg font-semibold text-gray-900 mb-4">分组任务统计</h2>
+<div class="overflow-x-auto">
+<table class="w-full text-sm">
+<thead class="bg-gray-50/80">
+<tr>
+<th class="px-5 py-4 font-medium text-gray-600 text-left">分组名称</th>
+<th class="px-5 py-4 font-medium text-gray-600 text-center">店铺数</th>
+<th class="px-5 py-4 font-medium text-gray-600 text-center">完成任务</th>
+<th class="px-5 py-4 font-medium text-gray-600 text-center">总任务</th>
+<th class="px-5 py-4 font-medium text-gray-600 text-left">完成率</th>
+</tr>
+</thead>
+<tbody>
+{% for g in group_stats %}
+<tr class="border-t border-gray-100 hover:bg-blue-50/30 transition">
+<td class="px-5 py-4 font-medium text-gray-800">{{ g.group_name }}</td>
+<td class="px-5 py-4 text-center text-gray-600">{{ g.shop_count }}</td>
+<td class="px-5 py-4 text-center text-apple-green font-semibold">{{ g.done_tasks or 0 }}</td>
+<td class="px-5 py-4 text-center text-gray-600">{{ g.total_tasks or 0 }}</td>
+<td class="px-5 py-4">
+<div class="flex items-center gap-3">
+<div class="flex-1 bg-gray-200 rounded-full h-3 max-w-[200px]">
+<div class="h-3 rounded-full transition-all duration-500 {{ 'bg-apple-green' if g.completion_rate == 100 else 'bg-apple-orange' if g.completion_rate >= 50 else 'bg-apple-red' }}" style="width:{{ g.completion_rate }}%"></div>
+</div>
+<span class="text-sm font-medium text-gray-600 w-12">{{ g.completion_rate }}%</span>
+</div>
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+{% endif %}
+{% endblock %}

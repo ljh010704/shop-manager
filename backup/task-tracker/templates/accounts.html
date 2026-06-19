@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}账号管理{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="flex-between" style="margin-bottom:15px">
+        <h3>🔑 平台账号管理</h3>
+        <button class="btn btn-primary" onclick="document.getElementById('addModal').style.display='block'">添加账号</button>
+    </div>
+    <div style="margin-bottom:15px">
+        <form method="get" class="form-inline">
+            <select name="shop_id" onchange="this.form.submit()">
+                <option value="">-- 全部店铺 --</option>
+                {% for shop in shops %}
+                <option value="{{ shop.id }}" {% if selected_shop == shop.id|string %}selected{% endif %}>{{ shop.shop_name }}</option>
+                {% endfor %}
+            </select>
+            <select name="platform" onchange="this.form.submit()">
+                <option value="">-- 全部平台 --</option>
+                {% for p in all_platforms %}
+                <option value="{{ p }}" {% if selected_platform == p %}selected{% endif %}>{{ p }}</option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
+    <table>
+        <thead>
+            <tr><th>店铺名称</th><th>平台</th><th>账号</th><th>密码</th><th>备注</th><th>操作</th></tr>
+        </thead>
+        <tbody>
+        {% for acc in accounts %}
+        <tr>
+            <td>{{ acc.shop_name }}</td>
+            <td><strong>{{ acc.platform_name }}</strong></td>
+            <td>{{ acc.account or '-' }}</td>
+            <td>
+                <span class="pwd-mask" onclick="togglePwd(this, '{{ acc.id }}')">••••••</span>
+                <span class="pwd-value" style="display:none" data-id="{{ acc.id }}">{{ acc.password_dec }}</span>
+                <button class="btn btn-sm" onclick="copyPwd('{{ acc.id }}')">复制</button>
+            </td>
+            <td>{{ acc.remark or '-' }}</td>
+            <td>
+                <button class="btn btn-warning btn-sm" onclick="editAccount({{ acc.id }}, '{{ acc.platform_name }}', '{{ acc.account }}', '{{ acc.password_dec }}', '{{ acc.remark }}')">编辑</button>
+                <form action="/api/accounts/{{ acc.id }}/delete" method="post" style="display:inline" onsubmit="return confirm('确定删除？')">
+                    <button class="btn btn-danger btn-sm">删除</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+        {% if not accounts %}
+        <tr><td colspan="6" class="empty">暂无账号记录</td></tr>
+        {% endif %}
+        </tbody>
+    </table>
+</div>
+
+<div id="addModal" class="modal">
+    <div class="modal-content">
+        <h3>添加账号</h3>
+        <form action="/api/accounts/add" method="post">
+            <div class="form-group">
+                <label>店铺 *</label>
+                <select name="shop_id" required>
+                    <option value="">-- 选择店铺 --</option>
+                    {% for shop in shops %}
+                    <option value="{{ shop.id }}" {% if selected_shop == shop.id|string %}selected{% endif %}>{{ shop.shop_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group"><label>平台名称 *</label><input type="text" name="platform_name" required placeholder="如：抖音、快手、拼多多"></div>
+            <div class="form-group"><label>账号</label><input type="text" name="account"></div>
+            <div class="form-group"><label>密码</label><input type="text" name="password"></div>
+            <div class="form-group"><label>备注</label><input type="text" name="remark"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn" onclick="this.closest('.modal').style.display='none'">取消</button>
+                <button type="submit" class="btn btn-primary">保存</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <h3>编辑账号</h3>
+        <form id="editForm" method="post">
+            <div class="form-group"><label>平台名称 *</label><input type="text" name="platform_name" id="edit_platform" required></div>
+            <div class="form-group"><label>账号</label><input type="text" name="account" id="edit_account"></div>
+            <div class="form-group"><label>密码</label><input type="text" name="password" id="edit_password"></div>
+            <div class="form-group"><label>备注</label><input type="text" name="remark" id="edit_remark"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn" onclick="this.closest('.modal').style.display='none'">取消</button>
+                <button type="submit" class="btn btn-primary">保存</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function togglePwd(el, id) {
+    const val = el.nextElementSibling;
+    if (val.style.display === 'none') {
+        el.textContent = val.textContent;
+        val.style.display = 'inline';
+    } else {
+        el.textContent = '••••••';
+        val.style.display = 'none';
+    }
+}
+function copyPwd(id) {
+    const val = document.querySelector('.pwd-value[data-id="'+id+'"]');
+    if (val) {
+        navigator.clipboard.writeText(val.textContent).then(() => alert('已复制'));
+    }
+}
+function editAccount(id, platform, account, password, remark) {
+    document.getElementById('editForm').action = '/api/accounts/' + id + '/edit';
+    document.getElementById('edit_platform').value = platform;
+    document.getElementById('edit_account').value = account;
+    document.getElementById('edit_password').value = password;
+    document.getElementById('edit_remark').value = remark;
+    document.getElementById('editModal').style.display = 'block';
+}
+</script>
+{% endblock %}

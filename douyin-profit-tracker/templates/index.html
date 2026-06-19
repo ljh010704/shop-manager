@@ -1,0 +1,429 @@
+{% extends "base.html" %}
+{% block title %}首页 - 抖音小店利润统计{% endblock %}
+{% block content %}
+<div class="mb-8">
+<h1 class="text-3xl font-bold text-gray-900 mb-2">数据看板</h1>
+<p class="text-gray-500">实时监控您的店铺利润数据</p>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+  <div class="glass rounded-2xl apple-shadow p-6 hover:apple-shadow-lg transition-all duration-300">
+    <div class="flex items-center justify-between mb-4">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-apple-green to-green-400 flex items-center justify-center">
+        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      </div>
+      <span class="text-xs font-medium text-apple-green bg-green-50 px-3 py-1 rounded-full">今日</span>
+    </div>
+    <div class="text-4xl font-bold mb-2 {{ 'text-apple-green' if td.profit >= 0 else 'text-apple-red' }}">¥{{ "%.2f"|format(td.profit) }}</div>
+    <div class="text-sm text-gray-500 mb-4">{{ td.cnt }} 笔订单</div>
+    <div class="grid grid-cols-2 gap-3">
+      <div class="bg-green-50/50 rounded-xl p-3"><div class="text-xs text-gray-500 mb-1">收入</div><div class="font-semibold text-apple-green">¥{{ "%.2f"|format(td.dy) }}</div></div>
+      <div class="bg-red-50/50 rounded-xl p-3"><div class="text-xs text-gray-500 mb-1">采购</div><div class="font-semibold text-apple-red">¥{{ "%.2f"|format(td.tb) }}</div></div>
+      <div class="bg-orange-50/50 rounded-xl p-3"><div class="text-xs text-gray-500 mb-1">佣金</div><div class="font-semibold text-apple-orange">¥{{ "%.2f"|format(td.commission) }}</div></div>
+      <div class="bg-purple-50/50 rounded-xl p-3"><div class="text-xs text-gray-500 mb-1">运费</div><div class="font-semibold text-apple-purple">¥{{ "%.2f"|format(td.freight) }}</div></div>
+    </div>
+  </div>
+
+  <div class="glass rounded-2xl apple-shadow p-6 hover:apple-shadow-lg transition-all duration-300">
+    <div class="flex items-center justify-between mb-4">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-apple-blue to-blue-400 flex items-center justify-center">
+        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+      </div>
+      <span class="text-xs font-medium text-apple-blue bg-blue-50 px-3 py-1 rounded-full">本周</span>
+    </div>
+    <div class="text-4xl font-bold mb-2 {{ 'text-apple-green' if wk.profit >= 0 else 'text-apple-red' }}">¥{{ "%.2f"|format(wk.profit) }}</div>
+    <div class="text-sm text-gray-500 mb-4">{{ wk.cnt }} 笔订单</div>
+    <div class="grid grid-cols-2 gap-3">
+      <div class="bg-green-50/50 rounded-xl p-3"><div class="text-xs text-gray-500 mb-1">收入</div><div class="font-semibold text-apple-green">¥{{ "%.2f"|format(wk.dy) }}</div></div>
+      <div class="bg-red-50/50 rounded-xl p-3"><div class="text-xs text-gray-500 mb-1">采购</div><div class="font-semibold text-apple-red">¥{{ "%.2f"|format(wk.tb) }}</div></div>
+      <div class="bg-orange-50/50 rounded-xl p-3"><div class="text-xs text-gray-500 mb-1">佣金</div><div class="font-semibold text-apple-orange">¥{{ "%.2f"|format(wk.commission) }}</div></div>
+      <div class="bg-purple-50/50 rounded-xl p-3"><div class="text-xs text-gray-500 mb-1">运费</div><div class="font-semibold text-apple-purple">¥{{ "%.2f"|format(wk.freight) }}</div></div>
+    </div>
+  </div>
+
+  <div class="glass rounded-2xl apple-shadow p-6 hover:apple-shadow-lg transition-all duration-300">
+    <div class="flex items-center justify-between mb-4">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-apple-purple to-purple-400 flex items-center justify-center">
+        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+      </div>
+      <span class="text-xs font-medium text-apple-purple bg-purple-50 px-3 py-1 rounded-full">本月</span>
+    </div>
+    <div class="text-4xl font-bold mb-2 {{ 'text-apple-green' if mn.profit >= 0 else 'text-apple-red' }}">¥{{ "%.2f"|format(mn.profit) }}</div>
+    <div class="text-sm text-gray-500 mb-4">{{ mn.cnt }} 笔订单</div>
+    <div class="grid grid-cols-2 gap-3">
+      <div class="bg-green-50/50 rounded-xl p-3"><div class="text-xs text-gray-500 mb-1">收入</div><div class="font-semibold text-apple-green">¥{{ "%.2f"|format(mn.dy) }}</div></div>
+      <div class="bg-red-50/50 rounded-xl p-3"><div class="text-xs text-gray-500 mb-1">采购</div><div class="font-semibold text-apple-red">¥{{ "%.2f"|format(mn.tb) }}</div></div>
+      <div class="bg-orange-50/50 rounded-xl p-3"><div class="text-xs text-gray-500 mb-1">佣金</div><div class="font-semibold text-apple-orange">¥{{ "%.2f"|format(mn.commission) }}</div></div>
+      <div class="bg-purple-50/50 rounded-xl p-3"><div class="text-xs text-gray-500 mb-1">运费</div><div class="font-semibold text-apple-purple">¥{{ "%.2f"|format(mn.freight) }}</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+  <div class="lg:col-span-2 glass rounded-2xl apple-shadow p-6">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-lg font-semibold text-gray-900">利润趋势</h2>
+      <div class="flex items-center gap-3">
+        <select id="trendShop" onchange="loadTrend()" class="bg-white/80 border border-gray-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue">
+          <option value="">全部店铺</option>
+          {% for sp in shop_profit %}<option value="{{ sp.id }}">{{ sp.name }}</option>{% endfor %}
+        </select>
+        <select id="trendGroup" onchange="loadTrend()" class="bg-white/80 border border-gray-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue">
+          <option value="">全部分组</option>
+          {% for g in groups %}<option value="{{ g }}">{{ g }}</option>{% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="flex gap-2 mb-6">
+      <button onclick="setTrendDays('today', this)" class="trend-btn px-4 py-2 rounded-xl text-sm font-medium bg-apple-blue text-white shadow-md shadow-apple-blue/30">今日</button>
+      <button onclick="setTrendDays(7, this)" class="trend-btn px-4 py-2 rounded-xl text-sm font-medium bg-white/80 text-gray-600 hover:bg-gray-100 transition">近7天</button>
+      <button onclick="setTrendDays(15, this)" class="trend-btn px-4 py-2 rounded-xl text-sm font-medium bg-white/80 text-gray-600 hover:bg-gray-100 transition">近15天</button>
+      <button onclick="setTrendDays(30, this)" class="trend-btn px-4 py-2 rounded-xl text-sm font-medium bg-white/80 text-gray-600 hover:bg-gray-100 transition">近30天</button>
+    </div>
+    <div id="trendChart" class="h-72"></div>
+  </div>
+
+  <div class="glass rounded-2xl apple-shadow p-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-6">店铺利润</h2>
+    {% for g in groups %}
+    <div class="mb-5">
+      <div class="flex items-center gap-2 mb-3 cursor-pointer group" onclick="toggleGroup(this)">
+        <svg class="w-4 h-4 text-gray-400 transform transition-transform group-hover:text-apple-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        <span class="text-sm font-semibold text-gray-700 uppercase tracking-wider">{{ g }}</span>
+      </div>
+      <div class="space-y-2 ml-6 group-shops">
+        {% for sp in shop_profit if sp.group_name == g %}
+        <div class="flex items-center justify-between p-3 rounded-xl hover:bg-white/60 cursor-pointer transition-all duration-200" onclick="showShopModal({{ sp.id }}, '{{ sp.name }}')">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-apple-blue to-blue-400 flex items-center justify-center text-white text-sm font-semibold">{{ sp.name[0] }}</div>
+            <span class="font-medium text-gray-800">{{ sp.name }}</span>
+          </div>
+          <span class="font-semibold {{ 'text-apple-green' if sp.profit >= 0 else 'text-apple-red' }}">¥{{ "%.2f"|format(sp.profit) }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+    <div class="mb-5">
+      <div class="flex items-center gap-2 mb-3 cursor-pointer group" onclick="toggleGroup(this)">
+        <svg class="w-4 h-4 text-gray-400 transform transition-transform group-hover:text-apple-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        <span class="text-sm font-semibold text-gray-700 uppercase tracking-wider">未分组</span>
+      </div>
+      <div class="space-y-2 ml-6 group-shops">
+        {% for sp in shop_profit if not sp.group_name %}
+        <div class="flex items-center justify-between p-3 rounded-xl hover:bg-white/60 cursor-pointer transition-all duration-200" onclick="showShopModal({{ sp.id }}, '{{ sp.name }}')">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-gray-400 to-gray-500 flex items-center justify-center text-white text-sm font-semibold">{{ sp.name[0] }}</div>
+            <span class="font-medium text-gray-800">{{ sp.name }}</span>
+          </div>
+          <span class="font-semibold {{ 'text-apple-green' if sp.profit >= 0 else 'text-apple-red' }}">¥{{ "%.2f"|format(sp.profit) }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% if not shop_profit %}
+    <div class="text-center py-12">
+      <svg class="w-12 h-12 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
+      <p class="text-gray-400">暂无数据</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- 店铺详情弹窗 -->
+<div id="shopModal" class="fixed inset-0 bg-black/30 backdrop-blur-sm hidden z-50 flex items-center justify-center">
+<div class="glass rounded-2xl apple-shadow-lg max-w-5xl w-full mx-4 flex flex-col" style="max-height:90vh">
+<div class="flex justify-between items-center p-6 border-b border-gray-100">
+<h2 class="text-xl font-semibold text-gray-900" id="shopModalTitle">店铺详情</h2>
+<button onclick="closeShopModal()" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition">
+<svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+</button>
+</div>
+<div class="p-6 overflow-y-auto flex-1" id="shopModalContent">
+<div class="flex items-center justify-center py-12">
+<div class="w-8 h-8 border-2 border-apple-blue border-t-transparent rounded-full animate-spin"></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- 订单详情弹窗 -->
+<div id="orderModal" class="fixed inset-0 bg-black/30 backdrop-blur-sm hidden z-[60] flex items-center justify-center">
+<div class="glass rounded-2xl apple-shadow-lg max-w-2xl w-full mx-4 flex flex-col" style="max-height:90vh">
+<div class="flex justify-between items-center p-6 border-b border-gray-100">
+<h2 class="text-xl font-semibold text-gray-900">订单详情</h2>
+<button onclick="closeOrderModal()" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition">
+<svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+</button>
+</div>
+<div class="p-6 overflow-y-auto flex-1" id="orderModalContent">
+<div class="flex items-center justify-center py-12">
+<div class="w-8 h-8 border-2 border-apple-blue border-t-transparent rounded-full animate-spin"></div>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+var trendData = {{ trend|tojson }};
+var currentDays = 'today';
+
+function toggleGroup(el) {
+    var shops = el.nextElementSibling;
+    var arrow = el.querySelector('svg');
+    if (shops.classList.contains('hidden')) {
+        shops.classList.remove('hidden');
+        arrow.style.transform = 'rotate(90deg)';
+    } else {
+        shops.classList.add('hidden');
+        arrow.style.transform = 'rotate(0deg)';
+    }
+}
+
+function renderTrend(data) {
+    var c = document.getElementById('trendChart');
+    if (!data || data.length === 0) {
+        c.innerHTML = '<div class="flex items-center justify-center h-full"><p class="text-gray-400">暂无数据</p></div>';
+        return;
+    }
+    var mx = Math.max(...data.map(x => Math.abs(x.profit)), 1);
+    var minProfit = Math.min(...data.map(x => x.profit));
+    var maxProfit = Math.max(...data.map(x => x.profit));
+    var range = maxProfit - minProfit || 1;
+    var padding = 40;
+    var width = 600;
+    var height = 250;
+    var chartWidth = width - padding * 2;
+    var chartHeight = height - padding * 2;
+    
+    var points = data.map((x, i) => {
+        var px = padding + (i / (data.length - 1 || 1)) * chartWidth;
+        var py = padding + ((maxProfit - x.profit) / range) * chartHeight;
+        return {x: px, y: py, profit: x.profit, date: x.order_date};
+    });
+    
+    var pathD = points.map((p, i) => (i === 0 ? 'M' : 'L') + p.x + ',' + p.y).join(' ');
+    var areaD = pathD + ' L' + points[points.length-1].x + ',' + (height - padding) + ' L' + points[0].x + ',' + (height - padding) + ' Z';
+    
+    var html = '<svg viewBox="0 0 ' + width + ' ' + height + '" class="w-full h-full">';
+    // Grid lines
+    for (var i = 0; i <= 4; i++) {
+        var y = padding + (i / 4) * chartHeight;
+        var val = maxProfit - (i / 4) * range;
+        html += '<line x1="' + padding + '" y1="' + y + '" x2="' + (width - padding) + '" y2="' + y + '" stroke="#f3f4f6" stroke-width="1"/>';
+        html += '<text x="' + (padding - 8) + '" y="' + (y + 4) + '" text-anchor="end" class="text-xs fill-gray-400">¥' + val.toFixed(0) + '</text>';
+    }
+    // Area gradient
+    html += '<defs><linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">';
+    var lastProfit = points[points.length-1].profit;
+    if (lastProfit >= 0) {
+        html += '<stop offset="0%" stop-color="#34C759" stop-opacity="0.3"/><stop offset="100%" stop-color="#34C759" stop-opacity="0.02"/>';
+    } else {
+        html += '<stop offset="0%" stop-color="#FF3B30" stop-opacity="0.3"/><stop offset="100%" stop-color="#FF3B30" stop-opacity="0.02"/>';
+    }
+    html += '</linearGradient></defs>';
+    // Area
+    html += '<path d="' + areaD + '" fill="url(#areaGrad)"/>';
+    // Line
+    html += '<path d="' + pathD + '" fill="none" stroke="' + (lastProfit >= 0 ? '#34C759' : '#FF3B30') + '" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>';
+    // Dots and labels
+    points.forEach(function(p) {
+        var color = p.profit >= 0 ? '#34C759' : '#FF3B30';
+        html += '<circle cx="' + p.x + '" cy="' + p.y + '" r="5" fill="white" stroke="' + color + '" stroke-width="2.5"/>';
+        html += '<text x="' + p.x + '" y="' + (p.y - 12) + '" text-anchor="middle" class="text-xs font-medium" fill="' + color + '">¥' + p.profit.toFixed(0) + '</text>';
+        html += '<text x="' + p.x + '" y="' + (height - 10) + '" text-anchor="middle" class="text-xs fill-gray-500">' + p.date.slice(5) + '</text>';
+    });
+    html += '</svg>';
+    c.innerHTML = html;
+}
+
+function setTrendDays(days, btn) {
+    currentDays = days;
+    document.querySelectorAll('.trend-btn').forEach(b => {
+        b.classList.remove('bg-apple-blue', 'text-white', 'shadow-md', 'shadow-apple-blue/30');
+        b.classList.add('bg-white/80', 'text-gray-600');
+    });
+    btn.classList.remove('bg-white/80', 'text-gray-600');
+    btn.classList.add('bg-apple-blue', 'text-white', 'shadow-md', 'shadow-apple-blue/30');
+    loadTrend();
+}
+
+function loadTrend() {
+    var shopId = document.getElementById('trendShop').value;
+    var group = document.getElementById('trendGroup').value;
+    var url;
+    if (currentDays === 'today') {
+        var today = new Date().toISOString().slice(0, 10);
+        url = '/api/trend?date_from=' + today + '&date_to=' + today;
+    } else {
+        var d = new Date();
+        d.setDate(d.getDate() - currentDays + 1);
+        url = '/api/trend?date_from=' + d.toISOString().slice(0, 10);
+    }
+    if (shopId) url += '&shop_id=' + shopId;
+    if (group) url += '&group=' + encodeURIComponent(group);
+    fetch(url).then(r => r.json()).then(data => renderTrend(data));
+}
+
+renderTrend(trendData);
+
+function showShopModal(shopId, shopName) {
+    var modal = document.getElementById('shopModal');
+    var content = document.getElementById('shopModalContent');
+    document.getElementById('shopModalTitle').textContent = shopName;
+    modal.classList.remove('hidden');
+    content.innerHTML = '<div class="mb-6"><div class="flex gap-2 mb-6">' +
+        '<button onclick="loadShopTrend(' + shopId + ', \'today\', this)" class="shop-trend-btn px-4 py-2 rounded-xl text-sm font-medium bg-apple-blue text-white shadow-md shadow-apple-blue/30">今日</button>' +
+        '<button onclick="loadShopTrend(' + shopId + ', 7, this)" class="shop-trend-btn px-4 py-2 rounded-xl text-sm font-medium bg-white/80 text-gray-600 hover:bg-gray-100">近7天</button>' +
+        '<button onclick="loadShopTrend(' + shopId + ', 15, this)" class="shop-trend-btn px-4 py-2 rounded-xl text-sm font-medium bg-white/80 text-gray-600 hover:bg-gray-100">近15天</button>' +
+        '<button onclick="loadShopTrend(' + shopId + ', 30, this)" class="shop-trend-btn px-4 py-2 rounded-xl text-sm font-medium bg-white/80 text-gray-600 hover:bg-gray-100">近30天</button>' +
+        '</div><div id="shopTrendChart" class="h-48 mb-6"></div>' +
+        '<div id="shopOrdersList"></div></div>';
+    loadShopTrend(shopId, 'today', content.querySelector('.shop-trend-btn'));
+}
+
+function renderShopTrend(data) {
+    var c = document.getElementById('shopTrendChart');
+    if (!data || data.length === 0) {
+        c.innerHTML = '<div class="flex items-center justify-center h-full"><p class="text-gray-400">暂无数据</p></div>';
+        return;
+    }
+    var range = Math.max(...data.map(x => x.profit)) - Math.min(...data.map(x => x.profit)) || 1;
+    var minP = Math.min(...data.map(x => x.profit));
+    var maxP = Math.max(...data.map(x => x.profit));
+    var padding = 30, width = 500, height = 180;
+    var cw = width - padding * 2, ch = height - padding * 2;
+    var points = data.map((x, i) => ({x: padding + (i / (data.length - 1 || 1)) * cw, y: padding + ((maxP - x.profit) / range) * ch, profit: x.profit, date: x.order_date}));
+    var pathD = points.map((p, i) => (i === 0 ? 'M' : 'L') + p.x + ',' + p.y).join(' ');
+    var areaD = pathD + ' L' + points[points.length-1].x + ',' + (height - padding) + ' L' + points[0].x + ',' + (height - padding) + ' Z';
+    var lastP = points[points.length-1].profit;
+    var color = lastP >= 0 ? '#34C759' : '#FF3B30';
+    var html = '<svg viewBox="0 0 ' + width + ' ' + height + '" class="w-full h-full">';
+    html += '<defs><linearGradient id="sGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="' + color + '" stop-opacity="0.3"/><stop offset="100%" stop-color="' + color + '" stop-opacity="0.02"/></linearGradient></defs>';
+    html += '<path d="' + areaD + '" fill="url(#sGrad)"/>';
+    html += '<path d="' + pathD + '" fill="none" stroke="' + color + '" stroke-width="2" stroke-linecap="round"/>';
+    points.forEach(function(p) {
+        html += '<circle cx="' + p.x + '" cy="' + p.y + '" r="4" fill="white" stroke="' + color + '" stroke-width="2"/>';
+        html += '<text x="' + p.x + '" y="' + (p.y - 10) + '" text-anchor="middle" class="text-xs" fill="' + color + '">¥' + p.profit.toFixed(0) + '</text>';
+        html += '<text x="' + p.x + '" y="' + (height - 8) + '" text-anchor="middle" class="text-xs fill-gray-400">' + p.date.slice(5) + '</text>';
+    });
+    html += '</svg>';
+    c.innerHTML = html;
+}
+
+function loadShopTrend(shopId, days, btn) {
+    document.querySelectorAll('.shop-trend-btn').forEach(b => {
+        b.classList.remove('bg-apple-blue', 'text-white', 'shadow-md', 'shadow-apple-blue/30');
+        b.classList.add('bg-white/80', 'text-gray-600');
+    });
+    btn.classList.remove('bg-white/80', 'text-gray-600');
+    btn.classList.add('bg-apple-blue', 'text-white', 'shadow-md', 'shadow-apple-blue/30');
+    var url;
+    if (days === 'today') {
+        var today = new Date().toISOString().slice(0, 10);
+        url = '/api/trend?date_from=' + today + '&date_to=' + today + '&shop_id=' + shopId;
+    } else {
+        var d = new Date();
+        d.setDate(d.getDate() - days + 1);
+        url = '/api/trend?date_from=' + d.toISOString().slice(0, 10) + '&shop_id=' + shopId;
+    }
+    fetch(url).then(r => r.json()).then(data => {
+        renderShopTrend(data);
+    });
+    fetch('/api/shop/' + shopId + '/orders').then(r => r.json()).then(data => {
+        var list = document.getElementById('shopOrdersList');
+        if (!data.orders.length) {
+            list.innerHTML = '<div class="text-center py-8"><p class="text-gray-400">暂无订单</p></div>';
+            return;
+        }
+        var totalProfit = data.orders.reduce((sum, o) => sum + o.profit, 0);
+        var html = '<div class="glass rounded-xl p-4 mb-4 flex justify-between items-center"><span class="text-sm text-gray-600">共 <strong class="text-gray-900">' + data.orders.length + '</strong> 笔订单</span><span class="font-semibold ' + (totalProfit >= 0 ? 'text-apple-green' : 'text-apple-red') + '">¥' + totalProfit.toFixed(2) + '</span></div>';
+        html += '<div class="glass rounded-xl overflow-hidden"><table class="w-full text-sm"><thead class="bg-gray-50/80"><tr>' +
+            '<th class="px-4 py-3 text-left font-medium text-gray-600">订单号</th><th class="px-4 py-3 text-left font-medium text-gray-600">商品</th>' +
+            '<th class="px-4 py-3 text-right font-medium text-gray-600">抖音</th><th class="px-4 py-3 text-right font-medium text-gray-600">淘宝</th>' +
+            '<th class="px-4 py-3 text-right font-medium text-gray-600">利润</th><th class="px-4 py-3 text-center font-medium text-gray-600">状态</th>' +
+            '<th class="px-4 py-3 text-center font-medium text-gray-600">日期</th></tr></thead><tbody>';
+        data.orders.forEach(o => {
+            html += '<tr class="border-t border-gray-100 hover:bg-blue-50/30 cursor-pointer transition" onclick="showOrderDetail(\'' + o.douyin_order_no + '\')">' +
+                '<td class="px-4 py-3 font-mono text-xs text-apple-blue">' + o.douyin_order_no + '</td>' +
+                '<td class="px-4 py-3 text-gray-700">' + (o.product_name || '') + '</td>' +
+                '<td class="px-4 py-3 text-right text-gray-700">¥' + o.douyin_amount.toFixed(2) + '</td>' +
+                '<td class="px-4 py-3 text-right text-gray-700">¥' + o.taobao_amount.toFixed(2) + '</td>' +
+                '<td class="px-4 py-3 text-right font-semibold ' + (o.profit >= 0 ? 'text-apple-green' : 'text-apple-red') + '">¥' + o.profit.toFixed(2) + '</td>' +
+                '<td class="px-4 py-3 text-center"><span class="text-xs px-3 py-1 rounded-full font-medium ' +
+                (o.refund_status == '退货退款' ? 'text-apple-red bg-red-50' : o.refund_status == '已发货退款' ? 'text-apple-orange bg-orange-50' : o.refund_status == '已发货' ? 'text-apple-blue bg-blue-50' : 'text-gray-600 bg-gray-100') +
+                '">' + o.refund_status + '</span></td>' +
+                '<td class="px-4 py-3 text-center text-gray-500 text-xs">' + o.order_date + '</td></tr>';
+        });
+        html += '</tbody></table></div>';
+        list.innerHTML = html;
+    });
+}
+
+function closeShopModal() { document.getElementById('shopModal').classList.add('hidden'); }
+document.getElementById('shopModal').addEventListener('click', function(e) { if (e.target === this) closeShopModal(); });
+
+function showOrderDetail(dyNo) {
+    var modal = document.getElementById('orderModal');
+    var content = document.getElementById('orderModalContent');
+    modal.classList.remove('hidden');
+    content.innerHTML = '<div class="flex items-center justify-center py-12"><div class="w-8 h-8 border-2 border-apple-blue border-t-transparent rounded-full animate-spin"></div></div>';
+    fetch('/api/orders/' + dyNo + '/json').then(r => r.json()).then(data => {
+        var o = data.order, shops = data.shops;
+        var commission = (o.is_influencer == '是' && o.refund_status != '退货退款' && o.refund_status != '已发货退款') ? o.douyin_amount * 0.25 : 0;
+        var shipCost = (o.warehouse_status == '已到达仓库未发货' || o.warehouse_status == '已到仓库已发货') ? 5.5 : 0;
+        var returnCost = o.refund_status == '退货退款' ? 3.5 : 0;
+        var refund = o.refund_status == '退货退款' ? o.douyin_amount : 0;
+        var freight = 6.9, profit = o.douyin_amount - o.taobao_amount - freight - refund - commission - shipCost - returnCost;
+        var shopOptions = shops.map(s => '<option value="' + s.id + '"' + (s.id == o.shop_id ? ' selected' : '') + '>' + s.name + '</option>').join('');
+        content.innerHTML = '<form method="post" action="/api/orders/' + o.douyin_order_no + '">' +
+            '<div class="grid grid-cols-2 gap-4">' +
+            '<div><label class="block text-sm font-medium text-gray-700 mb-2">抖音订单号</label><input type="text" value="' + o.douyin_order_no + '" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-0 text-gray-500" readonly></div>' +
+            '<div><label class="block text-sm font-medium text-gray-700 mb-2">店铺</label><select name="shop_id" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue">' + shopOptions + '</select></div>' +
+            '<div><label class="block text-sm font-medium text-gray-700 mb-2">商品名称</label><input type="text" name="product_name" value="' + (o.product_name||'') + '" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue"></div>' +
+            '<div><label class="block text-sm font-medium text-gray-700 mb-2">订单日期</label><input type="date" name="order_date" value="' + o.order_date + '" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue"></div>' +
+            '<div><label class="block text-sm font-medium text-gray-700 mb-2">抖音金额</label><input type="number" step="0.01" name="douyin_amount" value="' + o.douyin_amount + '" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue"></div>' +
+            '<div><label class="block text-sm font-medium text-gray-700 mb-2">淘宝订单号</label><input type="text" name="taobao_order_no" value="' + (o.taobao_order_no||'') + '" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue"></div>' +
+            '<div><label class="block text-sm font-medium text-gray-700 mb-2">淘宝金额</label><input type="number" step="0.01" name="taobao_amount" value="' + (o.taobao_amount||0) + '" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue"></div>' +
+            '<div><label class="block text-sm font-medium text-gray-700 mb-2">订单状态</label><select name="refund_status" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue">' +
+            '<option value="待发货"' + (o.refund_status=='待发货'?' selected':'') + '>待发货</option>' +
+            '<option value="已发货"' + (o.refund_status=='已发货'?' selected':'') + '>已发货</option>' +
+            '<option value="已发货退款"' + (o.refund_status=='已发货退款'?' selected':'') + '>已发货退款</option>' +
+            '<option value="退货退款"' + (o.refund_status=='退货退款'?' selected':'') + '>退货退款</option></select></div>' +
+            '<div><label class="block text-sm font-medium text-gray-700 mb-2">达人带货</label><select name="is_influencer" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue">' +
+            '<option value="否"' + (o.is_influencer=='否'?' selected':'') + '>否</option>' +
+            '<option value="是"' + (o.is_influencer=='是'?' selected':'') + '>是（25%佣金）</option></select></div>' +
+            '<div><label class="block text-sm font-medium text-gray-700 mb-2">仓库状态</label><select name="warehouse_status" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue">' +
+            '<option value="未到仓库"' + (o.warehouse_status=='未到仓库'?' selected':'') + '>未到仓库</option>' +
+            '<option value="已到达仓库未发货"' + (o.warehouse_status=='已到达仓库未发货'?' selected':'') + '>已到达仓库未发货</option>' +
+            '<option value="已到仓库已发货"' + (o.warehouse_status=='已到仓库已发货'?' selected':'') + '>已到仓库已发货</option></select></div>' +
+            '</div>' +
+            '<div class="grid grid-cols-2 gap-4 mt-4">' +
+            '<div><label class="block text-sm font-medium text-gray-700 mb-2">买家备注</label><input type="text" name="buyer_note" value="' + (o.buyer_note||'') + '" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue"></div>' +
+            '<div><label class="block text-sm font-medium text-gray-700 mb-2">系统备注</label><input type="text" name="system_note" value="' + (o.system_note||'') + '" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue"></div>' +
+            '<div><label class="block text-sm font-medium text-gray-700 mb-2">物流公司</label><input type="text" name="logistics_company" value="' + (o.logistics_company||'') + '" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue"></div>' +
+            '<div><label class="block text-sm font-medium text-gray-700 mb-2">物流单号</label><input type="text" name="logistics_no" value="' + (o.logistics_no||'') + '" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue"></div>' +
+            '</div>' +
+            '<div class="mt-6 glass rounded-xl p-5">' +
+            '<h3 class="font-semibold text-gray-900 mb-4">利润明细</h3>' +
+            '<div class="grid grid-cols-2 md:grid-cols-4 gap-3">' +
+            '<div class="bg-white/60 rounded-lg p-3"><div class="text-xs text-gray-500 mb-1">抖音</div><div class="font-semibold text-gray-900">¥' + o.douyin_amount.toFixed(2) + '</div></div>' +
+            '<div class="bg-white/60 rounded-lg p-3"><div class="text-xs text-gray-500 mb-1">淘宝</div><div class="font-semibold text-gray-900">¥' + o.taobao_amount.toFixed(2) + '</div></div>' +
+            '<div class="bg-white/60 rounded-lg p-3"><div class="text-xs text-gray-500 mb-1">运费</div><div class="font-semibold text-apple-red">-¥' + freight.toFixed(2) + '</div></div>' +
+            '<div class="bg-white/60 rounded-lg p-3"><div class="text-xs text-gray-500 mb-1">佣金</div><div class="font-semibold text-apple-red">-¥' + commission.toFixed(2) + '</div></div>' +
+            '<div class="bg-white/60 rounded-lg p-3"><div class="text-xs text-gray-500 mb-1">发货</div><div class="font-semibold text-apple-red">-¥' + shipCost.toFixed(2) + '</div></div>' +
+            '<div class="bg-white/60 rounded-lg p-3"><div class="text-xs text-gray-500 mb-1">退款</div><div class="font-semibold text-apple-red">-¥' + refund.toFixed(2) + '</div></div>' +
+            '<div class="bg-white/60 rounded-lg p-3"><div class="text-xs text-gray-500 mb-1">退货成本</div><div class="font-semibold text-apple-red">-¥' + returnCost.toFixed(2) + '</div></div>' +
+            '<div class="bg-gradient-to-br from-apple-blue to-blue-400 rounded-lg p-3 text-white"><div class="text-xs opacity-80 mb-1">净利润</div><div class="font-bold text-xl">¥' + profit.toFixed(2) + '</div></div>' +
+            '</div></div>' +
+            '<div class="flex gap-3 mt-6">' +
+            '<button type="submit" class="flex-1 bg-apple-blue text-white py-3 rounded-xl font-medium apple-btn">保存修改</button>' +
+            '<button type="button" onclick="closeOrderModal()" class="px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-medium hover:bg-gray-200 transition">关闭</button>' +
+            '</div></form>';
+    });
+}
+
+function closeOrderModal() { document.getElementById('orderModal').classList.add('hidden'); }
+document.getElementById('orderModal').addEventListener('click', function(e) { if (e.target === this) closeOrderModal(); });
+</script>
+{% endblock %}
