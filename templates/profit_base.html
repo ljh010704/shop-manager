@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% block subnav %}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-<div class="flex items-center gap-1 glass rounded-xl p-1 apple-shadow">
-<a href="/profit/" class="px-4 py-2 rounded-lg text-sm font-medium transition {{ 'bg-apple-blue text-white shadow-md' if request.url.path == '/profit/' else 'text-gray-600 hover:bg-white/60' }}">首页</a>
-<a href="/profit/orders" class="px-4 py-2 rounded-lg text-sm font-medium transition {{ 'bg-apple-blue text-white shadow-md' if '/profit/orders' in request.url.path else 'text-gray-600 hover:bg-white/60' }}">订单</a>
-<a href="/profit/shops" class="px-4 py-2 rounded-lg text-sm font-medium transition {{ 'bg-apple-blue text-white shadow-md' if request.url.path == '/profit/shops' else 'text-gray-600 hover:bg-white/60' }}">店铺</a>
-<a href="/profit/import" class="px-4 py-2 rounded-lg text-sm font-medium transition {{ 'bg-apple-blue text-white shadow-md' if request.url.path == '/profit/import' else 'text-gray-600 hover:bg-white/60' }}">导入</a>
-<a href="/profit/stats" class="px-4 py-2 rounded-lg text-sm font-medium transition {{ 'bg-apple-blue text-white shadow-md' if request.url.path == '/profit/stats' else 'text-gray-600 hover:bg-white/60' }}">统计</a>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 relative z-10">
+<div class="flex items-center gap-1 glass rounded-xl p-1">
+<a href="/profit/" class="nav-link {{ 'active' if request.url.path == '/profit/' }}">首页</a>
+<a href="/profit/orders" class="nav-link {{ 'active' if '/profit/orders' in request.url.path }}">订单</a>
+<a href="/profit/shops" class="nav-link {{ 'active' if request.url.path == '/profit/shops' }}">店铺</a>
+<a href="/profit/import" class="nav-link {{ 'active' if request.url.path == '/profit/import' }}">导入</a>
+<a href="/profit/stats" class="nav-link {{ 'active' if request.url.path == '/profit/stats' }}">统计</a>
 </div>
 </div>
 {% endblock %}

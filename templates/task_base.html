@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 {% block subnav %}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-<div class="flex items-center gap-1 glass rounded-xl p-1 apple-shadow flex-wrap">
-<a href="/task/" class="px-4 py-2 rounded-lg text-sm font-medium transition {{ 'bg-apple-blue text-white shadow-md' if request.url.path == '/task/' else 'text-gray-600 hover:bg-white/60' }}">首页</a>
-<a href="/task/checkin" class="px-4 py-2 rounded-lg text-sm font-medium transition {{ 'bg-apple-blue text-white shadow-md' if '/checkin' in request.url.path and 'new' not in request.url.path else 'text-gray-600 hover:bg-white/60' }}">每日打卡</a>
-<a href="/task/new_shop_checkin" class="px-4 py-2 rounded-lg text-sm font-medium transition {{ 'bg-apple-blue text-white shadow-md' if '/new_shop_checkin' in request.url.path else 'text-gray-600 hover:bg-white/60' }}">新店任务</a>
-<a href="/task/new_shop_history" class="px-4 py-2 rounded-lg text-sm font-medium transition {{ 'bg-apple-blue text-white shadow-md' if '/new_shop_history' in request.url.path else 'text-gray-600 hover:bg-white/60' }}">新店历史</a>
-<a href="/task/shops" class="px-4 py-2 rounded-lg text-sm font-medium transition {{ 'bg-apple-blue text-white shadow-md' if request.url.path == '/task/shops' else 'text-gray-600 hover:bg-white/60' }}">店铺管理</a>
-<a href="/task/accounts" class="px-4 py-2 rounded-lg text-sm font-medium transition {{ 'bg-apple-blue text-white shadow-md' if '/accounts' in request.url.path else 'text-gray-600 hover:bg-white/60' }}">账号管理</a>
-<a href="/task/licenses" class="px-4 py-2 rounded-lg text-sm font-medium transition {{ 'bg-apple-blue text-white shadow-md' if '/licenses' in request.url.path else 'text-gray-600 hover:bg-white/60' }}">营业执照</a>
-<a href="/task/daily_task_templates" class="px-4 py-2 rounded-lg text-sm font-medium transition {{ 'bg-apple-blue text-white shadow-md' if '/daily_task_templates' in request.url.path else 'text-gray-600 hover:bg-white/60' }}">每日任务</a>
-<a href="/task/new_shop_task_templates" class="px-4 py-2 rounded-lg text-sm font-medium transition {{ 'bg-apple-blue text-white shadow-md' if '/new_shop_task_templates' in request.url.path else 'text-gray-600 hover:bg-white/60' }}">新店任务模板</a>
-<a href="/task/stats" class="px-4 py-2 rounded-lg text-sm font-medium transition {{ 'bg-apple-blue text-white shadow-md' if request.url.path == '/task/stats' else 'text-gray-600 hover:bg-white/60' }}">统计</a>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 relative z-10">
+<div class="flex items-center gap-1 glass rounded-xl p-1 flex-wrap">
+<a href="/task/" class="nav-link {{ 'active' if request.url.path == '/task/' }}">首页</a>
+<a href="/task/checkin" class="nav-link {{ 'active' if '/checkin' in request.url.path and 'new' not in request.url.path }}">每日打卡</a>
+<a href="/task/new_shop_checkin" class="nav-link {{ 'active' if '/new_shop_checkin' in request.url.path }}">新店任务</a>
+<a href="/task/new_shop_history" class="nav-link {{ 'active' if '/new_shop_history' in request.url.path }}">新店历史</a>
+<a href="/task/shops" class="nav-link {{ 'active' if request.url.path == '/task/shops' }}">店铺管理</a>
+<a href="/task/accounts" class="nav-link {{ 'active' if '/accounts' in request.url.path }}">账号管理</a>
+<a href="/task/licenses" class="nav-link {{ 'active' if '/licenses' in request.url.path }}">营业执照</a>
+<a href="/task/daily_task_templates" class="nav-link {{ 'active' if '/daily_task_templates' in request.url.path }}">每日任务</a>
+<a href="/task/new_shop_task_templates" class="nav-link {{ 'active' if '/new_shop_task_templates' in request.url.path }}">新店任务模板</a>
+<a href="/task/stats" class="nav-link {{ 'active' if request.url.path == '/task/stats' }}">统计</a>
 </div>
 </div>
 {% endblock %}

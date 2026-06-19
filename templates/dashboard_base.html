@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% block subnav %}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-<div class="flex items-center gap-1 glass rounded-xl p-1 apple-shadow">
-<a href="/dashboard/" class="px-4 py-2 rounded-lg text-sm font-medium transition {{ 'bg-apple-blue text-white shadow-md' if request.url.path == '/dashboard/' else 'text-gray-600 hover:bg-white/60' }}">首页</a>
-<a href="/dashboard/ranking" class="px-4 py-2 rounded-lg text-sm font-medium transition {{ 'bg-apple-blue text-white shadow-md' if '/ranking' in request.url.path else 'text-gray-600 hover:bg-white/60' }}">排行榜</a>
-<a href="/dashboard/trends" class="px-4 py-2 rounded-lg text-sm font-medium transition {{ 'bg-apple-blue text-white shadow-md' if '/trends' in request.url.path else 'text-gray-600 hover:bg-white/60' }}">趋势</a>
-<a href="/dashboard/alerts" class="px-4 py-2 rounded-lg text-sm font-medium transition {{ 'bg-apple-blue text-white shadow-md' if '/alerts' in request.url.path else 'text-gray-600 hover:bg-white/60' }}">预警</a>
-<a href="/dashboard/import" class="px-4 py-2 rounded-lg text-sm font-medium transition {{ 'bg-apple-blue text-white shadow-md' if request.url.path == '/dashboard/import' else 'text-gray-600 hover:bg-white/60' }}">导入</a>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 relative z-10">
+<div class="flex items-center gap-1 glass rounded-xl p-1">
+<a href="/dashboard/" class="nav-link {{ 'active' if request.url.path == '/dashboard/' }}">首页</a>
+<a href="/dashboard/ranking" class="nav-link {{ 'active' if '/ranking' in request.url.path }}">排行榜</a>
+<a href="/dashboard/trends" class="nav-link {{ 'active' if '/trends' in request.url.path }}">趋势</a>
+<a href="/dashboard/alerts" class="nav-link {{ 'active' if '/alerts' in request.url.path }}">预警</a>
+<a href="/dashboard/import" class="nav-link {{ 'active' if request.url.path == '/dashboard/import' }}">导入</a>
 </div>
 </div>
 {% endblock %}
