@@ -6,14 +6,14 @@
 <p class="text-gray-500">管理您的店铺和分组</p>
 </div>
 
-{% if msg %}<div class="glass rounded-2xl apple-shadow p-4 mb-6 flex items-center gap-3">
-<div class="w-8 h-8 rounded-full bg-apple-green/10 flex items-center justify-center">
-<svg class="w-5 h-5 text-apple-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+{% if msg %}<div class="tech-card glow-warm p-4 mb-6 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center">
+<svg class="w-5 h-5 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
 </div>
 <span class="text-gray-700">{{ msg }}</span>
 </div>{% endif %}
 
-<div class="glass rounded-2xl apple-shadow p-6 mb-6">
+<div class="tech-card glow-warm p-6 mb-6">
 <div class="flex items-center gap-3 mb-5">
 <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-apple-blue to-blue-400 flex items-center justify-center">
 <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
@@ -21,14 +21,14 @@
 <h2 class="text-lg font-semibold text-gray-900">添加店铺</h2>
 </div>
 <form method="post" action="/profit/api/shops/add" class="flex gap-3">
-<div class="flex-1"><input type="text" name="name" placeholder="店铺名称" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue" required></div>
-<div class="w-48"><input type="text" name="group_name" placeholder="分组名称" list="groupList" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue">
+<div class="flex-1"><input type="text" name="name" placeholder="店铺名称" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" required></div>
+<div class="w-48"><input type="text" name="group_name" placeholder="分组名称" list="groupList" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">
 <datalist id="groupList">{% for g in groups %}<option value="{{ g }}">{% endfor %}</datalist></div>
-<button type="submit" class="bg-apple-blue text-white px-6 py-3 rounded-xl font-medium apple-btn">添加</button>
+<button type="submit" class="bg-amber-500 text-white px-6 py-3 rounded-xl font-medium cyber-btn">添加</button>
 </form>
 </div>
 
-<div class="glass rounded-2xl apple-shadow overflow-hidden">
+<div class="tech-card glow-warm overflow-hidden">
 <table class="w-full text-sm">
 <thead class="bg-gray-50/80">
 <tr><th class="px-6 py-4 font-medium text-gray-600 text-left w-16">ID</th><th class="px-6 py-4 font-medium text-gray-600 text-left">店铺名称</th><th class="px-6 py-4 font-medium text-gray-600 text-left">分组</th><th class="px-6 py-4 font-medium text-gray-600 text-center w-32">操作</th></tr>
@@ -38,19 +38,19 @@
 <td class="px-6 py-4"><span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-lg text-xs font-medium">{{ s.id }}</span></td>
 <td class="px-6 py-4">
 <form method="post" action="/profit/api/shops/{{ s.id }}/update" class="flex gap-3 items-center">
-<input type="text" name="name" value="{{ s.name }}" class="px-3 py-2 rounded-lg bg-white border border-gray-200 text-sm w-40 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue">
+<input type="text" name="name" value="{{ s.name }}" class="px-3 py-2 rounded-lg bg-white border border-gray-200 text-sm w-40 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">
 </td>
 <td class="px-6 py-4">
-<input type="text" name="group_name" value="{{ s.group_name }}" list="groupList" class="px-3 py-2 rounded-lg bg-white border border-gray-200 text-sm w-32 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue" placeholder="未分组">
+<input type="text" name="group_name" value="{{ s.group_name }}" list="groupList" class="px-3 py-2 rounded-lg bg-white border border-gray-200 text-sm w-32 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500" placeholder="未分组">
 </td>
 <td class="px-6 py-4">
 <div class="flex items-center justify-center gap-2">
-<button type="submit" class="text-apple-blue hover:text-blue-700 transition p-2 rounded-lg hover:bg-blue-50">
+<button type="submit" class="text-amber-700 hover:text-blue-700 transition p-2 rounded-lg hover:bg-blue-50">
 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
 </button>
 </form>
 <form method="post" action="/profit/api/shops/{{ s.id }}/delete" onsubmit="return confirm('确认删除？')" class="inline">
-<button class="text-apple-red hover:text-red-700 transition p-2 rounded-lg hover:bg-red-50">
+<button class="text-red-600 hover:text-red-700 transition p-2 rounded-lg hover:bg-red-50">
 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
 </button></form>
 </div></td>

@@ -2,67 +2,67 @@
 {% block title %}任务管理{% endblock %}
 {% block content %}
 <div class="mb-8">
-<h1 class="text-3xl font-bold text-gray-900 mb-2">任务管理</h1>
-<p class="text-gray-500">按任务查看各店铺完成情况</p>
+<h1 class="text-3xl font-bold text-amber-800 mb-2">任务管理</h1>
+<p class="text-amber-700/70">按任务查看各店铺完成情况</p>
 </div>
 
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-  <div class="glass rounded-2xl apple-shadow p-6 hover:apple-shadow-lg transition-all duration-300">
+  <div class="tech-card p-6">
     <div class="flex items-center justify-between mb-4">
-      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-apple-blue to-blue-400 flex items-center justify-center">
-        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+      <div class="icon-cyber">
+        <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
       </div>
-      <span class="text-xs font-medium text-apple-blue bg-blue-50 px-3 py-1 rounded-full">总计</span>
+      <span class="cyber-badge cyber-badge-yellow">总计</span>
     </div>
-    <div class="text-4xl font-bold mb-2 text-apple-blue">{{ total_shops }}</div>
-    <div class="text-sm text-gray-500">店铺总数</div>
+    <div class="text-4xl font-bold mb-2 text-amber-700 counter">{{ total_shops }}</div>
+    <div class="text-sm text-amber-800/60">店铺总数</div>
   </div>
 
-  <div class="glass rounded-2xl apple-shadow p-6 hover:apple-shadow-lg transition-all duration-300">
+  <div class="tech-card p-6">
     <div class="flex items-center justify-between mb-4">
-      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-apple-green to-green-400 flex items-center justify-center">
-        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      <div class="icon-cyber">
+        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
       </div>
-      <span class="text-xs font-medium text-apple-green bg-green-50 px-3 py-1 rounded-full">今日</span>
+      <span class="cyber-badge cyber-badge-green">今日</span>
     </div>
-    <div class="text-4xl font-bold mb-2 text-apple-green">{{ total_done }}</div>
-    <div class="text-sm text-gray-500">今日全部完成</div>
+    <div class="text-4xl font-bold mb-2 text-green-600 counter">{{ total_done }}</div>
+    <div class="text-sm text-amber-800/60">今日全部完成</div>
   </div>
 
-  <div class="glass rounded-2xl apple-shadow p-6 hover:apple-shadow-lg transition-all duration-300">
+  <div class="tech-card p-6">
     <div class="flex items-center justify-between mb-4">
-      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-apple-orange to-orange-400 flex items-center justify-center">
-        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"></path></svg>
+      <div class="icon-cyber">
+        <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"></path></svg>
       </div>
-      <span class="text-xs font-medium text-apple-orange bg-orange-50 px-3 py-1 rounded-full">待处理</span>
+      <span class="cyber-badge cyber-badge-orange">待处理</span>
     </div>
-    <div class="text-4xl font-bold mb-2 text-apple-orange">{{ new_shops|length }}</div>
-    <div class="text-sm text-gray-500">待完成新店</div>
+    <div class="text-4xl font-bold mb-2 text-amber-500 counter">{{ new_shops|length }}</div>
+    <div class="text-sm text-amber-800/60">待完成新店</div>
   </div>
 </div>
 
 {% if new_shops %}
-<div class="glass rounded-2xl apple-shadow p-6 mb-6">
-  <h2 class="text-lg font-semibold text-gray-900 mb-4">新店待完成任务</h2>
+<div class="tech-card p-6 mb-6">
+  <h2 class="text-lg font-semibold text-amber-800 mb-4">新店待完成任务</h2>
   <div class="overflow-x-auto">
   <table class="w-full text-sm">
-    <thead class="bg-gray-50/80">
-      <tr><th class="px-5 py-4 font-medium text-gray-600 text-left">店铺名称</th><th class="px-5 py-4 font-medium text-gray-600 text-left">新店任务进度</th><th class="px-5 py-4 font-medium text-gray-600 text-center">操作</th></tr>
+    <thead class="bg-amber-50">
+      <tr><th class="px-5 py-4 font-medium text-amber-700 text-left">店铺名称</th><th class="px-5 py-4 font-medium text-amber-700 text-left">新店任务进度</th><th class="px-5 py-4 font-medium text-amber-700 text-center">操作</th></tr>
     </thead>
     <tbody>
     {% for shop in new_shops %}
-    <tr class="border-t border-gray-100 hover:bg-blue-50/30 transition">
-      <td class="px-5 py-4 font-medium text-gray-800">{{ shop.name }}</td>
+    <tr class="border-t border-amber-100 hover:bg-amber-50/50 transition stagger-item">
+      <td class="px-5 py-4 font-medium text-amber-900">{{ shop.name }}</td>
       <td class="px-5 py-4">
         <div class="flex items-center gap-3">
-          <div class="flex-1 bg-gray-200 rounded-full h-3">
-            <div class="h-3 rounded-full transition-all duration-500 {{ 'bg-apple-green' if shop.new_progress == 100 else 'bg-apple-orange' if shop.new_progress >= 50 else 'bg-apple-red' }}" style="width:{{ shop.new_progress }}%"></div>
+          <div class="cyber-progress flex-1">
+            <div class="cyber-progress-fill" style="width:{{ shop.new_progress }}%"></div>
           </div>
-          <span class="text-sm font-medium text-gray-600 w-16">{{ shop.new_done }}/{{ shop.new_total }}</span>
+          <span class="text-sm font-medium text-amber-700 w-16">{{ shop.new_done }}/{{ shop.new_total }}</span>
         </div>
       </td>
       <td class="px-5 py-4 text-center">
-        <a href="/task/new_shop_checkin?shop_id={{ shop.id }}" class="bg-apple-blue text-white px-4 py-2 rounded-xl text-sm font-medium apple-btn inline-block">去完成</a>
+        <a href="/task/new_shop_checkin?shop_id={{ shop.id }}" class="cyber-btn text-sm py-2 px-4 inline-block">去完成</a>
       </td>
     </tr>
     {% endfor %}
@@ -72,63 +72,66 @@
 </div>
 {% endif %}
 
-<div class="glass rounded-2xl apple-shadow p-6 mb-6">
+<div class="tech-card p-6 mb-6">
   <div class="flex items-center justify-between mb-4">
-    <h2 class="text-lg font-semibold text-gray-900">今日任务完成情况 ({{ today }})</h2>
-    <a href="/task/checkin" class="bg-apple-blue text-white px-5 py-2.5 rounded-xl text-sm font-medium apple-btn">去打卡</a>
+    <h2 class="text-lg font-semibold text-amber-800">今日任务完成情况 ({{ today }})</h2>
+    <a href="/task/checkin" class="cyber-btn text-sm py-2 px-5">去打卡</a>
   </div>
-
-  {% if all_groups %}
-  <div class="flex flex-wrap gap-2 mb-5 pb-4 border-b border-gray-100">
-    <button onclick="filterByGroup('')" class="group-pill px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 bg-apple-blue text-white shadow-md" data-group="">全部</button>
-    {% for g in all_groups %}
-    <button onclick="filterByGroup('{{ g }}')" class="group-pill px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 bg-gray-100 text-gray-600 hover:bg-gray-200" data-group="{{ g }}">{{ g }}</button>
-    {% endfor %}
-  </div>
-  {% endif %}
 
   {% for task in task_stats %}
-  <div class="mb-6 last:mb-0 task-section" data-task-id="{{ loop.index }}">
-    <div class="flex items-center justify-between mb-3 pb-2 border-b border-gray-100">
-      <h3 class="text-base font-semibold text-gray-800">{{ task.task_name }}</h3>
-      <span class="text-sm text-gray-500 task-progress" data-task="{{ loop.index }}">{{ task.done_count }}/{{ task.total_count }} 完成</span>
+  <div class="mb-6 last:mb-0 task-section stagger-item" data-task-id="{{ loop.index }}">
+    <div class="flex items-center justify-between mb-3 pb-2 border-b border-amber-100">
+      <h3 class="text-base font-semibold text-amber-800">{{ task.task_name }}</h3>
+      <div class="flex items-center gap-3">
+        {% if all_groups %}
+        <select onchange="filterTaskByGroup({{ loop.index }}, this.value)" class="cyber-input text-sm py-1 px-3" style="width:150px">
+          <option value="">全部分组</option>
+          {% for g in all_groups %}<option value="{{ g }}">{{ g }}</option>{% endfor %}
+        </select>
+        {% endif %}
+        <span class="text-sm text-amber-600 task-progress" data-task="{{ loop.index }}">{{ task.done_count }}/{{ task.total_count }} 完成</span>
+      </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 task-shops" data-task="{{ loop.index }}">
-      {% for shop in task.shops %}
-      <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50/80 hover:bg-blue-50/30 transition-all duration-200 shop-card" data-group="{{ shop.group_name or '' }}" data-shop-id="{{ shop.shop_id }}" data-task-index="{{ loop.index }}">
-        <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-apple-blue to-blue-400 flex items-center justify-center text-white text-xs font-semibold">{{ shop.name[0] }}</div>
-          <div>
-            <div class="text-sm font-medium text-gray-800">{{ shop.name }}</div>
-            <div class="text-xs text-gray-500">{{ shop.group_name or '未分组' }}</div>
+    <div class="task-shops-container" data-task="{{ loop.index }}" style="max-height: 480px; overflow-y: auto;">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 task-shops" data-task="{{ loop.index }}">
+        {% for shop in task.shops %}
+        <div class="flex items-center justify-between p-3 rounded-xl bg-amber-50/50 hover:bg-amber-100/50 transition-all duration-200 shop-card stagger-item" data-group="{{ shop.group_name or '' }}" data-shop-id="{{ shop.shop_id }}" data-task-index="{{ loop.index }}">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-amber-500 flex items-center justify-center text-white text-xs font-semibold">{{ shop.name[0] }}</div>
+            <div>
+              <div class="text-sm font-medium text-amber-900">{{ shop.name }}</div>
+              <div class="text-xs text-amber-600">{{ shop.group_name or '未分组' }}</div>
+            </div>
           </div>
+          <button onclick="toggleTask(this, {{ shop.shop_id }}, {{ task.task_id }}, '{{ today }}')" class="task-btn px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 {{ 'bg-green-500 text-white hover:bg-green-600' if shop.is_completed else 'bg-amber-200 text-amber-800 hover:bg-amber-300' }}" data-completed="{{ 1 if shop.is_completed else 0 }}">
+            {% if shop.is_completed %}
+            <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> 已完成
+            {% else %}
+            <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg> 标记完成
+            {% endif %}
+          </button>
         </div>
-        <button onclick="toggleTask(this, {{ shop.shop_id }}, {{ task.task_id }}, '{{ today }}')" class="task-btn px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 {{ 'bg-apple-green text-white hover:bg-green-600' if shop.is_completed else 'bg-orange-100 text-apple-orange hover:bg-orange-200' }}" data-completed="{{ 1 if shop.is_completed else 0 }}">
-          {% if shop.is_completed %}
-          <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> 已完成
-          {% else %}
-          <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg> 标记完成
-          {% endif %}
-        </button>
+        {% endfor %}
       </div>
-      {% endfor %}
     </div>
+    {% if task.shops|length > 12 %}
+    <div class="text-center text-xs text-amber-500 mt-2">共 {{ task.shops|length }} 家店铺，向下滚动查看更多</div>
+    {% endif %}
   </div>
   {% endfor %}
 
   {% if not task_stats %}
-  <div class="text-center text-gray-400 py-16">
-    <svg class="w-12 h-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+  <div class="text-center text-amber-400 py-16">
+    <svg class="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
     暂无任务数据
   </div>
   {% endif %}
 </div>
 
-<!-- Toast notification -->
-<div id="toast" class="fixed bottom-6 right-6 bg-gray-800 text-white px-5 py-3 rounded-xl shadow-lg text-sm font-medium hidden z-50 transition-all duration-300 transform translate-y-2 opacity-0">
+<div id="toast" class="fixed bottom-6 right-6 bg-amber-800 text-amber-50 px-5 py-3 rounded-xl shadow-lg text-sm font-medium hidden z-50 transition-all duration-300 transform translate-y-2 opacity-0">
   <span id="toastMsg"></span>
-  <button onclick="undoLast()" id="undoBtn" class="ml-3 text-apple-blue hover:underline font-semibold hidden">撤销</button>
+  <button onclick="undoLast()" id="undoBtn" class="ml-3 text-amber-300 hover:underline font-semibold hidden">撤销</button>
 </div>
 {% endblock %}
 
@@ -138,26 +141,22 @@ let lastAction = null;
 let undoTimer = null;
 
 function filterByGroup(group) {
-    // Update pill styles
     document.querySelectorAll('.group-pill').forEach(function(pill) {
         if (pill.dataset.group === group) {
-            pill.className = 'group-pill px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 bg-apple-blue text-white shadow-md';
+            pill.className = 'group-pill px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 bg-amber-500 text-white shadow-md';
         } else {
-            pill.className = 'group-pill px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 bg-gray-100 text-gray-600 hover:bg-gray-200';
+            pill.className = 'group-pill px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 bg-amber-100 text-amber-700 hover:bg-amber-200';
         }
     });
-    // Filter all shop cards across all tasks
     document.querySelectorAll('.shop-card').forEach(function(card) {
         if (!group || card.dataset.group === group) {
             card.style.opacity = '1';
             card.style.transform = 'scale(1)';
-            card.style.display = '';
         } else {
             card.style.opacity = '0.3';
             card.style.transform = 'scale(0.95)';
         }
     });
-    // Update progress counts for each task
     document.querySelectorAll('.task-section').forEach(function(section) {
         var cards = section.querySelectorAll('.shop-card');
         var visible = 0, done = 0;
@@ -172,36 +171,43 @@ function filterByGroup(group) {
     });
 }
 
+function filterTaskByGroup(taskIndex, group) {
+    var container = document.querySelector('.task-shops[data-task="' + taskIndex + '"]');
+    if (!container) return;
+    container.querySelectorAll('.shop-card').forEach(function(card) {
+        if (!group || card.dataset.group === group) {
+            card.style.display = '';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+    updateProgress(taskIndex);
+}
+
 function toggleTask(btn, shopId, taskId, taskDate) {
     var wasCompleted = btn.dataset.completed === '1';
     var taskIndex = btn.closest('.shop-card').dataset.taskIndex;
 
-    // Optimistic UI update
     if (wasCompleted) {
         btn.dataset.completed = '0';
-        btn.className = 'task-btn px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 bg-orange-100 text-apple-orange hover:bg-orange-200';
+        btn.className = 'task-btn px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 bg-amber-200 text-amber-800 hover:bg-amber-300';
         btn.innerHTML = '<svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg> 标记完成';
     } else {
         btn.dataset.completed = '1';
-        btn.className = 'task-btn px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 bg-apple-green text-white hover:bg-green-600';
+        btn.className = 'task-btn px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 bg-green-500 text-white hover:bg-green-600';
         btn.innerHTML = '<svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> 已完成';
     }
 
-    // Save for undo
     lastAction = { btn: btn, wasCompleted: wasCompleted, shopId: shopId, taskId: taskId, taskDate: taskDate };
 
-    // Show toast with undo
     var toast = document.getElementById('toast');
     var msg = document.getElementById('toastMsg');
     var undoBtn = document.getElementById('undoBtn');
     msg.textContent = wasCompleted ? '已取消完成' : '已标记完成';
     undoBtn.classList.remove('hidden');
     toast.classList.remove('hidden');
-    setTimeout(function() {
-        toast.classList.remove('translate-y-2', 'opacity-0');
-    }, 10);
+    setTimeout(function() { toast.classList.remove('translate-y-2', 'opacity-0'); }, 10);
 
-    // Auto hide toast after 5s
     clearTimeout(undoTimer);
     undoTimer = setTimeout(function() {
         toast.classList.add('translate-y-2', 'opacity-0');
@@ -209,19 +215,14 @@ function toggleTask(btn, shopId, taskId, taskDate) {
         lastAction = null;
     }, 5000);
 
-    // Update progress count
     updateProgress(taskIndex);
 
-    // Send to server
     fetch('/task/api/checkin/toggle', {
         method: 'POST',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: 'shop_id=' + shopId + '&task_id=' + taskId + '&task_date=' + taskDate
     }).then(function(r) { return r.json(); }).then(function(d) {
-        if (!d.ok) {
-            // Revert on error
-            toggleTask(btn, shopId, taskId, taskDate);
-        }
+        if (!d.ok) { toggleTask(btn, shopId, taskId, taskDate); }
     });
 }
 
@@ -230,13 +231,8 @@ function undoLast() {
     clearTimeout(undoTimer);
     var a = lastAction;
     lastAction = null;
-
-    // Hide toast
-    var toast = document.getElementById('toast');
-    toast.classList.add('translate-y-2', 'opacity-0');
-    setTimeout(function() { toast.classList.add('hidden'); }, 300);
-
-    // Revert UI
+    document.getElementById('toast').classList.add('translate-y-2', 'opacity-0');
+    setTimeout(function() { document.getElementById('toast').classList.add('hidden'); }, 300);
     toggleTask(a.btn, a.shopId, a.taskId, a.taskDate);
 }
 
@@ -245,9 +241,8 @@ function updateProgress(taskIndex) {
     if (!section) return;
     var cards = section.querySelectorAll('.shop-card');
     var visible = 0, done = 0;
-    var group = document.querySelector('.group-pill.bg-apple-blue')?.dataset.group || '';
     cards.forEach(function(c) {
-        if (!group || c.dataset.group === group) {
+        if (c.style.display !== 'none') {
             visible++;
             if (c.querySelector('.task-btn').dataset.completed === '1') done++;
         }

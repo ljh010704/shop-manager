@@ -2,56 +2,53 @@
 {% block title %}新店任务模板{% endblock %}
 {% block content %}
 <div class="mb-8">
-<h1 class="text-3xl font-bold text-gray-900 mb-2">新店任务模板</h1>
-<p class="text-gray-500">管理新店任务模板</p>
+<h1 class="text-3xl font-bold text-amber-800 mb-2">新店任务模板</h1>
+<p class="text-amber-700/70">管理新店任务模板</p>
 </div>
 
-<div class="glass rounded-2xl apple-shadow p-6 mb-6">
+<div class="tech-card p-6 mb-6">
 <form action="/task/api/new_shop_task_templates/add" method="post" class="flex gap-3">
-<input type="text" name="task_name" placeholder="输入新任务名称" required class="flex-1 px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue">
-<button type="submit" class="bg-apple-blue text-white px-6 py-3 rounded-xl font-medium apple-btn">添加任务</button>
+<input type="text" name="task_name" placeholder="输入新任务名称" required class="flex-1 px-4 py-3 rounded-xl bg-white border border-amber-200 text-amber-900 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">
+<button type="submit" class="cyber-btn">添加任务</button>
 </form>
 </div>
 
-<div class="glass rounded-2xl apple-shadow overflow-hidden">
+<div class="tech-card overflow-hidden">
 <div class="overflow-x-auto">
 <table class="w-full text-sm">
-<thead class="bg-gray-50/80">
+<thead class="bg-amber-50">
 <tr>
-<th class="px-5 py-4 font-medium text-gray-600 text-center w-20">排序</th>
-<th class="px-5 py-4 font-medium text-gray-600 text-left">任务名称</th>
-<th class="px-5 py-4 font-medium text-gray-600 text-center">状态</th>
-<th class="px-5 py-4 font-medium text-gray-600 text-center">操作</th>
+<th class="px-5 py-4 font-medium text-amber-700 text-center w-20">排序</th>
+<th class="px-5 py-4 font-medium text-amber-700 text-left">任务名称</th>
+<th class="px-5 py-4 font-medium text-amber-700 text-center">状态</th>
+<th class="px-5 py-4 font-medium text-amber-700 text-center">操作</th>
 </tr>
 </thead>
 <tbody>
 {% for task in tasks %}
-<tr class="border-t border-gray-100 hover:bg-blue-50/30 transition">
-<td class="px-5 py-4 text-center text-gray-500">{{ task.sort_order }}</td>
-<td class="px-5 py-4 font-medium text-gray-800">{{ task.task_name }}</td>
+<tr class="border-t border-amber-100 hover:bg-amber-50/50 transition stagger-item">
+<td class="px-5 py-4 text-center text-amber-600">{{ task.sort_order }}</td>
+<td class="px-5 py-4 font-medium text-amber-900">{{ task.task_name }}</td>
 <td class="px-5 py-4 text-center">
-{% if task.is_active %}<span class="text-xs px-3 py-1 rounded-full font-medium text-apple-green bg-green-50">启用</span>
-{% else %}<span class="text-xs px-3 py-1 rounded-full font-medium text-apple-red bg-red-50">禁用</span>{% endif %}
+{% if task.is_active %}<span class="cyber-badge cyber-badge-green">启用</span>
+{% else %}<span class="cyber-badge cyber-badge-red">禁用</span>{% endif %}
 </td>
 <td class="px-5 py-4 text-center">
 <div class="flex items-center justify-center gap-2">
 <form action="/task/api/new_shop_task_templates/{{ task.id }}/toggle" method="post" style="display:inline">
-<button class="{{ 'bg-apple-orange text-white' if task.is_active else 'bg-apple-green text-white' }} px-4 py-2 rounded-xl text-sm font-medium apple-btn">
+<button class="{{ 'bg-amber-500 text-white' if task.is_active else 'bg-green-500 text-white' }} px-4 py-2 rounded-xl text-sm font-medium apple-btn">
 {{ '禁用' if task.is_active else '启用' }}
 </button>
 </form>
 <form action="/task/api/new_shop_task_templates/{{ task.id }}/delete" method="post" style="display:inline" onsubmit="return confirm('确定删除？')">
-<button class="bg-apple-red text-white px-4 py-2 rounded-xl text-sm font-medium apple-btn">删除</button>
+<button class="bg-red-500 text-white px-4 py-2 rounded-xl text-sm font-medium apple-btn">删除</button>
 </form>
 </div>
 </td>
 </tr>
 {% endfor %}
 {% if not tasks %}
-<tr><td colspan="4" class="text-center text-gray-400 py-16">
-<svg class="w-12 h-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
-暂无任务
-</td></tr>
+<tr><td colspan="4" class="text-center text-amber-400 py-16">暂无任务</td></tr>
 {% endif %}
 </tbody>
 </table>

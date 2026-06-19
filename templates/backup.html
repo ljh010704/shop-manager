@@ -2,7 +2,7 @@
 {% block title %}数据备份{% endblock %}
 {% block subnav %}
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-<div class="flex items-center gap-1 glass rounded-xl p-1 apple-shadow">
+<div class="flex items-center gap-1 glass rounded-xl p-1 glow-warm">
 <a href="/profit/" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-white/60">利润统计</a>
 <a href="/dashboard/" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-white/60">数据看板</a>
 <a href="/task/" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-white/60">任务管理</a>
@@ -16,16 +16,16 @@
 </div>
 
 {% if msg %}
-<div class="glass rounded-2xl apple-shadow p-4 mb-6 flex items-center gap-3">
-<div class="w-8 h-8 rounded-full bg-apple-green/10 flex items-center justify-center">
-<svg class="w-5 h-5 text-apple-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+<div class="tech-card glow-warm p-4 mb-6 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center">
+<svg class="w-5 h-5 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
 </div>
 <span class="text-gray-700">{{ msg }}</span>
 </div>
 {% endif %}
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-<div class="glass rounded-2xl apple-shadow p-6">
+<div class="tech-card glow-warm p-6">
 <div class="flex items-center gap-3 mb-6">
 <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-apple-blue to-blue-400 flex items-center justify-center">
 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
@@ -35,20 +35,20 @@
 <p class="text-sm text-gray-500">下载数据库和密钥文件</p>
 </div>
 </div>
-<a href="/api/backup/download" class="inline-flex items-center gap-3 glass px-6 py-4 rounded-xl hover:bg-gray-100 transition border border-gray-200 w-full justify-center apple-btn">
-<svg class="w-6 h-6 text-apple-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+<a href="/api/backup/download" class="inline-flex items-center gap-3 glass px-6 py-4 rounded-xl hover:bg-gray-100 transition border border-gray-200 w-full justify-center cyber-btn">
+<svg class="w-6 h-6 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
 <span class="font-medium text-gray-700">下载备份文件</span>
 </a>
 <div class="glass rounded-xl p-5 mt-4">
 <h3 class="font-semibold text-gray-900 mb-3">备份包含</h3>
 <div class="space-y-2 text-sm">
-<div class="flex items-center gap-3"><span class="w-2 h-2 bg-apple-blue rounded-full"></span><span class="text-gray-600"><strong>data.db</strong> - 所有店铺、订单、任务数据</span></div>
-<div class="flex items-center gap-3"><span class="w-2 h-2 bg-apple-green rounded-full"></span><span class="text-gray-600"><strong>secret.key</strong> - 账号密码加密密钥</span></div>
+<div class="flex items-center gap-3"><span class="w-2 h-2 bg-amber-500 rounded-full"></span><span class="text-gray-600"><strong>data.db</strong> - 所有店铺、订单、任务数据</span></div>
+<div class="flex items-center gap-3"><span class="w-2 h-2 bg-green-500 rounded-full"></span><span class="text-gray-600"><strong>secret.key</strong> - 账号密码加密密钥</span></div>
 </div>
 </div>
 </div>
 
-<div class="glass rounded-2xl apple-shadow p-6">
+<div class="tech-card glow-warm p-6">
 <div class="flex items-center gap-3 mb-6">
 <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-apple-green to-green-400 flex items-center justify-center">
 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
@@ -63,13 +63,13 @@
 <div class="border-2 border-dashed border-gray-200 rounded-2xl p-8 text-center hover:border-apple-green transition cursor-pointer group" onclick="document.getElementById('restoreFile').click()">
 <input type="file" id="restoreFile" name="file" accept=".zip" class="hidden" required onchange="document.getElementById('restoreFileName').textContent=this.files[0].name">
 <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gray-50 group-hover:bg-green-50 flex items-center justify-center transition">
-<svg class="w-8 h-8 text-gray-400 group-hover:text-apple-green transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+<svg class="w-8 h-8 text-gray-400 group-hover:text-green-700 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
 </div>
-<span id="restoreFileName" class="text-sm text-gray-500 group-hover:text-apple-green transition">点击选择或拖拽备份文件到此处</span>
+<span id="restoreFileName" class="text-sm text-gray-500 group-hover:text-green-700 transition">点击选择或拖拽备份文件到此处</span>
 <p class="text-xs text-gray-400 mt-2">支持 .zip 格式（从本系统导出的备份）</p>
 </div>
 </div>
-<button type="submit" class="w-full bg-gradient-to-r from-apple-green to-green-500 text-white py-3.5 rounded-xl font-medium apple-btn">
+<button type="submit" class="w-full bg-gradient-to-r from-apple-green to-green-500 text-white py-3.5 rounded-xl font-medium cyber-btn">
 开始恢复
 </button>
 </form>
@@ -78,7 +78,7 @@
 <div class="space-y-2 text-sm">
 <div class="flex items-center gap-3"><span class="w-2 h-2 bg-apple-orange rounded-full"></span><span class="text-gray-600">恢复会<strong>覆盖</strong>当前所有数据</span></div>
 <div class="flex items-center gap-3"><span class="w-2 h-2 bg-apple-orange rounded-full"></span><span class="text-gray-600">恢复后需要<strong>重启应用</strong>才能生效</span></div>
-<div class="flex items-center gap-3"><span class="w-2 h-2 bg-apple-blue rounded-full"></span><span class="text-gray-600">建议先备份当前数据再恢复</span></div>
+<div class="flex items-center gap-3"><span class="w-2 h-2 bg-amber-500 rounded-full"></span><span class="text-gray-600">建议先备份当前数据再恢复</span></div>
 </div>
 </div>
 </div>

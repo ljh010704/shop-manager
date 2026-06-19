@@ -6,31 +6,31 @@
 <p class="text-gray-500">查看利润数据分析</p>
 </div>
 
-<div class="glass rounded-2xl apple-shadow p-6 mb-6">
+<div class="tech-card glow-warm p-6 mb-6">
 <div class="flex flex-wrap gap-2 mb-5">
-<a href="/profit/stats?days=7" class="px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-apple-blue text-white shadow-md shadow-apple-blue/30' if f_days == 7 else 'bg-white/80 text-gray-600 hover:bg-gray-100' }}">近7天</a>
-<a href="/profit/stats?days=15" class="px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-apple-blue text-white shadow-md shadow-apple-blue/30' if f_days == 15 else 'bg-white/80 text-gray-600 hover:bg-gray-100' }}">近15天</a>
-<a href="/profit/stats?days=30" class="px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-apple-blue text-white shadow-md shadow-apple-blue/30' if f_days == 30 else 'bg-white/80 text-gray-600 hover:bg-gray-100' }}">近30天</a>
+<a href="/profit/stats?days=7" class="px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-amber-500 text-white shadow-md shadow-amber-500/30' if f_days == 7 else 'bg-white/80 text-gray-600 hover:bg-gray-100' }}">近7天</a>
+<a href="/profit/stats?days=15" class="px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-amber-500 text-white shadow-md shadow-amber-500/30' if f_days == 15 else 'bg-white/80 text-gray-600 hover:bg-gray-100' }}">近15天</a>
+<a href="/profit/stats?days=30" class="px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-amber-500 text-white shadow-md shadow-amber-500/30' if f_days == 30 else 'bg-white/80 text-gray-600 hover:bg-gray-100' }}">近30天</a>
 </div>
 <form method="get" class="flex flex-wrap gap-3 items-end">
-<div><label class="block text-xs font-medium text-gray-500 mb-1.5">开始</label><input type="date" name="date_from" value="{{ f_df }}" class="bg-white/80 border border-gray-200 rounded-xl px-4 py-2.5 text-sm w-36 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue"></div>
-<div><label class="block text-xs font-medium text-gray-500 mb-1.5">结束</label><input type="date" name="date_to" value="{{ f_dt }}" class="bg-white/80 border border-gray-200 rounded-xl px-4 py-2.5 text-sm w-36 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue"></div>
+<div><label class="block text-xs font-medium text-gray-500 mb-1.5">开始</label><input type="date" name="date_from" value="{{ f_df }}" class="bg-white/80 border border-gray-200 rounded-xl px-4 py-2.5 text-sm w-36 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"></div>
+<div><label class="block text-xs font-medium text-gray-500 mb-1.5">结束</label><input type="date" name="date_to" value="{{ f_dt }}" class="bg-white/80 border border-gray-200 rounded-xl px-4 py-2.5 text-sm w-36 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"></div>
 <div><label class="block text-xs font-medium text-gray-500 mb-1.5">店铺</label>
-<select name="shop_id" class="bg-white/80 border border-gray-200 rounded-xl px-4 py-2.5 text-sm w-40 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue">
+<select name="shop_id" class="bg-white/80 border border-gray-200 rounded-xl px-4 py-2.5 text-sm w-40 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">
 <option value="">全部</option>
 {% for s in shops %}<option value="{{ s.id }}" {{ 'selected' if f_sid|string == s.id|string }}>{{ s.name }}</option>{% endfor %}
 </select></div>
 <div><label class="block text-xs font-medium text-gray-500 mb-1.5">分组</label>
-<select name="group" class="bg-white/80 border border-gray-200 rounded-xl px-4 py-2.5 text-sm w-32 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue">
+<select name="group" class="bg-white/80 border border-gray-200 rounded-xl px-4 py-2.5 text-sm w-32 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">
 <option value="">全部</option>
 {% for g in groups %}<option value="{{ g }}" {{ 'selected' if f_group == g }}>{{ g }}</option>{% endfor %}
 </select></div>
-<button type="submit" class="bg-apple-blue text-white px-5 py-2.5 rounded-xl text-sm font-medium apple-btn">查询</button>
+<button type="submit" class="bg-amber-500 text-white px-5 py-2.5 rounded-xl text-sm font-medium cyber-btn">查询</button>
 </form>
 </div>
 
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-<div class="glass rounded-2xl apple-shadow overflow-hidden">
+<div class="tech-card glow-warm overflow-hidden">
 <table class="w-full text-sm">
 <thead class="bg-gray-50/80">
 <tr><th class="px-5 py-4 font-medium text-gray-600 text-left">日期</th><th class="px-5 py-4 font-medium text-gray-600 text-center">订单</th><th class="px-5 py-4 font-medium text-gray-600 text-right">抖音收入</th><th class="px-5 py-4 font-medium text-gray-600 text-right">淘宝支出</th><th class="px-5 py-4 font-medium text-gray-600 text-right">退款</th><th class="px-5 py-4 font-medium text-gray-600 text-right">净利润</th></tr>
@@ -38,11 +38,11 @@
 {% for row in daily %}
 <tr class="border-t border-gray-100 hover:bg-blue-50/30 transition">
 <td class="px-5 py-4 font-medium text-gray-800">{{ row.order_date }}</td>
-<td class="px-5 py-4 text-center"><button onclick="showDateOrders('{{ row.order_date }}')" class="bg-blue-50 text-apple-blue px-3 py-1 rounded-full text-xs font-medium hover:bg-blue-100 transition cursor-pointer">{{ row.order_count }}</button></td>
-<td class="px-5 py-4 text-right text-apple-green font-medium">¥{{ "%.2f"|format(row.total_douyin) }}</td>
-<td class="px-5 py-4 text-right text-apple-orange font-medium">¥{{ "%.2f"|format(row.total_taobao) }}</td>
-<td class="px-5 py-4 text-right text-apple-red font-medium">¥{{ "%.2f"|format(row.total_return) }}</td>
-<td class="px-5 py-4 text-right font-semibold {{ 'text-apple-green' if row.profit >= 0 else 'text-apple-red' }}">¥{{ "%.2f"|format(row.profit) }}</td>
+<td class="px-5 py-4 text-center"><button onclick="showDateOrders('{{ row.order_date }}')" class="bg-blue-50 text-amber-700 px-3 py-1 rounded-full text-xs font-medium hover:bg-blue-100 transition cursor-pointer">{{ row.order_count }}</button></td>
+<td class="px-5 py-4 text-right text-green-700 font-medium">¥{{ "%.2f"|format(row.total_douyin) }}</td>
+<td class="px-5 py-4 text-right text-amber-600 font-medium">¥{{ "%.2f"|format(row.total_taobao) }}</td>
+<td class="px-5 py-4 text-right text-red-600 font-medium">¥{{ "%.2f"|format(row.total_return) }}</td>
+<td class="px-5 py-4 text-right font-semibold {{ 'text-green-700' if row.profit >= 0 else 'text-red-600' }}">¥{{ "%.2f"|format(row.profit) }}</td>
 </tr>{% endfor %}
 {% if not daily %}<tr><td colspan="6" class="text-center text-gray-400 py-16">
 <svg class="w-12 h-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
@@ -50,7 +50,7 @@
 </tbody></table>
 </div>
 
-<div class="glass rounded-2xl apple-shadow p-6">
+<div class="tech-card glow-warm p-6">
 <h2 class="text-lg font-semibold text-gray-900 mb-6">利润趋势图</h2>
 {% if daily %}
 <div id="chart" class="h-72"></div>
@@ -107,7 +107,7 @@ function showDateOrders(dateStr) {
             var totalProfit = data.orders.reduce((s, o) => s + o.profit, 0);
             var html = '<div class="glass rounded-xl p-4 mb-4 flex justify-between items-center">' +
                 '<span class="text-sm text-gray-600">共 <strong class="text-gray-900">' + data.orders.length + '</strong> 笔</span>' +
-                '<span class="font-semibold ' + (totalProfit >= 0 ? 'text-apple-green' : 'text-apple-red') + '">利润：¥' + totalProfit.toFixed(2) + '</span></div>';
+                '<span class="font-semibold ' + (totalProfit >= 0 ? 'text-green-700' : 'text-red-600') + '">利润：¥' + totalProfit.toFixed(2) + '</span></div>';
             html += '<div class="overflow-x-auto"><table class="w-full text-sm"><thead class="bg-gray-50/80"><tr>' +
                 '<th class="px-3 py-2 text-left text-gray-600 font-medium">订单号</th>' +
                 '<th class="px-3 py-2 text-left text-gray-600 font-medium">店铺</th>' +
@@ -118,14 +118,14 @@ function showDateOrders(dateStr) {
                 '<th class="px-3 py-2 text-center text-gray-600 font-medium">状态</th></tr></thead><tbody>';
             data.orders.forEach(o => {
                 html += '<tr class="border-t border-gray-100 hover:bg-blue-50/30">' +
-                    '<td class="px-3 py-2 font-mono text-xs text-apple-blue">' + o.douyin_order_no + '</td>' +
+                    '<td class="px-3 py-2 font-mono text-xs text-amber-700">' + o.douyin_order_no + '</td>' +
                     '<td class="px-3 py-2 text-gray-700">' + o.shop_name + '</td>' +
                     '<td class="px-3 py-2 text-gray-700 truncate max-w-[120px]">' + (o.product_name || '') + '</td>' +
                     '<td class="px-3 py-2 text-right">¥' + o.douyin_amount.toFixed(2) + '</td>' +
                     '<td class="px-3 py-2 text-right">¥' + o.taobao_amount.toFixed(2) + '</td>' +
-                    '<td class="px-3 py-2 text-right font-semibold ' + (o.profit >= 0 ? 'text-apple-green' : 'text-apple-red') + '">¥' + o.profit.toFixed(2) + '</td>' +
+                    '<td class="px-3 py-2 text-right font-semibold ' + (o.profit >= 0 ? 'text-green-700' : 'text-red-600') + '">¥' + o.profit.toFixed(2) + '</td>' +
                     '<td class="px-3 py-2 text-center"><span class="text-xs px-2 py-0.5 rounded-full ' +
-                    (o.refund_status == '退货退款' ? 'text-apple-red bg-red-50' : o.refund_status == '已发货退款' ? 'text-apple-orange bg-orange-50' : o.refund_status == '已发货' ? 'text-apple-blue bg-blue-50' : 'text-gray-600 bg-gray-100') +
+                    (o.refund_status == '退货退款' ? 'text-red-600 bg-red-50' : o.refund_status == '已发货退款' ? 'text-amber-600 bg-orange-50' : o.refund_status == '已发货' ? 'text-amber-700 bg-blue-50' : 'text-gray-600 bg-gray-100') +
                     '">' + o.refund_status + '</span></td></tr>';
             });
             html += '</tbody></table></div>';
@@ -136,7 +136,7 @@ function showDateOrders(dateStr) {
 
 <!-- 订单详情弹窗 -->
 <div id="orderModal" class="fixed inset-0 bg-black/30 backdrop-blur-sm hidden z-50 flex items-center justify-center">
-<div class="glass rounded-2xl apple-shadow-lg max-w-4xl w-full mx-4 flex flex-col" style="max-height:90vh">
+<div class="tech-card glow-warm-lg max-w-4xl w-full mx-4 flex flex-col" style="max-height:90vh">
 <div class="flex justify-between items-center p-6 border-b border-gray-100">
 <h2 class="text-xl font-semibold text-gray-900" id="modalTitle">订单列表</h2>
 <button onclick="closeOrderModal()" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition">

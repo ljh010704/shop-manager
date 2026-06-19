@@ -2,93 +2,85 @@
 {% block title %}营业执照管理{% endblock %}
 {% block content %}
 <div class="mb-8">
-<div class="flex items-center justify-between">
-<div>
-<h1 class="text-3xl font-bold text-gray-900 mb-2">营业执照管理</h1>
-<p class="text-gray-500">管理所有营业执照信息</p>
-</div>
-<button onclick="document.getElementById('addModal').classList.remove('hidden')" class="bg-apple-blue text-white px-6 py-3 rounded-xl font-medium apple-btn flex items-center gap-2">
-<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-添加营业执照
-</button>
-</div>
+<h1 class="text-3xl font-bold text-amber-800 mb-2">营业执照管理</h1>
+<p class="text-amber-700/70">管理所有营业执照信息</p>
 </div>
 
-<div class="glass rounded-2xl apple-shadow overflow-hidden">
+<div class="tech-card p-6 mb-6">
+  <div class="flex items-center gap-3 mb-4">
+    <div class="icon-cyber">
+      <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+    </div>
+    <h2 class="text-lg font-semibold text-amber-800">添加营业执照</h2>
+  </div>
+  <form method="post" action="/task/api/licenses/add" class="flex gap-3 flex-wrap">
+    <input type="text" name="license_name" placeholder="执照名称 *" required class="flex-1 min-w-[150px] px-4 py-3 rounded-xl bg-white border border-amber-200 text-amber-900 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">
+    <input type="text" name="license_no" placeholder="执照号" class="w-40 px-4 py-3 rounded-xl bg-white border border-amber-200 text-amber-900 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">
+    <input type="text" name="holder_name" placeholder="持有人" class="w-32 px-4 py-3 rounded-xl bg-white border border-amber-200 text-amber-900 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">
+    <input type="date" name="expire_date" class="px-4 py-3 rounded-xl bg-white border border-amber-200 text-amber-900 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">
+    <input type="text" name="remark" placeholder="备注" class="w-32 px-4 py-3 rounded-xl bg-white border border-amber-200 text-amber-900 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">
+    <button type="submit" class="cyber-btn">添加</button>
+  </form>
+</div>
+
+<div class="tech-card overflow-hidden">
 <div class="overflow-x-auto">
 <table class="w-full text-sm">
-<thead class="bg-gray-50/80">
+<thead class="bg-amber-50">
 <tr>
-<th class="px-5 py-4 font-medium text-gray-600 text-left">执照名称</th>
-<th class="px-5 py-4 font-medium text-gray-600 text-left">执照号</th>
-<th class="px-5 py-4 font-medium text-gray-600 text-left">持有人</th>
-<th class="px-5 py-4 font-medium text-gray-600 text-left">有效期</th>
-<th class="px-5 py-4 font-medium text-gray-600 text-center">关联店铺</th>
-<th class="px-5 py-4 font-medium text-gray-600 text-left">备注</th>
-<th class="px-5 py-4 font-medium text-gray-600 text-center">操作</th>
+<th class="px-5 py-4 font-medium text-amber-700 text-left">执照名称</th>
+<th class="px-5 py-4 font-medium text-amber-700 text-left">执照号</th>
+<th class="px-5 py-4 font-medium text-amber-700 text-left">持有人</th>
+<th class="px-5 py-4 font-medium text-amber-700 text-left">有效期</th>
+<th class="px-5 py-4 font-medium text-amber-700 text-center">关联店铺</th>
+<th class="px-5 py-4 font-medium text-amber-700 text-left">备注</th>
+<th class="px-5 py-4 font-medium text-amber-700 text-center">操作</th>
 </tr>
 </thead>
 <tbody>
 {% for lic in licenses %}
-<tr class="border-t border-gray-100 hover:bg-blue-50/30 transition">
-<td class="px-5 py-4 font-medium text-gray-800">{{ lic.license_name }}</td>
-<td class="px-5 py-4 text-gray-600">{{ lic.license_no or '-' }}</td>
-<td class="px-5 py-4 text-gray-600">{{ lic.holder_name or '-' }}</td>
-<td class="px-5 py-4 text-gray-600">{{ lic.expire_date or '-' }}</td>
-<td class="px-5 py-4 text-center"><span class="bg-apple-blue/10 text-apple-blue px-3 py-1 rounded-full text-xs font-semibold">{{ lic.shop_count }}</span></td>
-<td class="px-5 py-4 text-gray-600">{{ lic.remark or '-' }}</td>
+<tr class="border-t border-amber-100 hover:bg-amber-50/50 transition stagger-item">
+<td class="px-5 py-4 font-medium text-amber-900">{{ lic.license_name }}</td>
+<td class="px-5 py-4 text-amber-700">{{ lic.license_no or '-' }}</td>
+<td class="px-5 py-4 text-amber-700">{{ lic.holder_name or '-' }}</td>
+<td class="px-5 py-4 text-amber-700">{{ lic.expire_date or '-' }}</td>
+<td class="px-5 py-4 text-center"><span class="cyber-badge cyber-badge-yellow">{{ lic.shop_count }}</span></td>
+<td class="px-5 py-4 text-amber-700">{{ lic.remark or '-' }}</td>
 <td class="px-5 py-4 text-center">
 <div class="flex items-center justify-center gap-2">
-<button onclick="editLicense({{ lic.id }}, '{{ lic.license_name }}', '{{ lic.license_no }}', '{{ lic.holder_name }}', '{{ lic.expire_date }}', '{{ lic.remark }}')" class="bg-apple-orange text-white px-4 py-2 rounded-xl text-sm font-medium apple-btn">编辑</button>
+<button onclick="editLicense({{ lic.id }}, '{{ lic.license_name }}', '{{ lic.license_no }}', '{{ lic.holder_name }}', '{{ lic.expire_date }}', '{{ lic.remark }}')" class="bg-amber-500 text-white px-4 py-2 rounded-xl text-sm font-medium apple-btn">编辑</button>
 <form action="/task/api/licenses/{{ lic.id }}/delete" method="post" style="display:inline" onsubmit="return confirm('确定删除？')">
-<button class="bg-apple-red text-white px-4 py-2 rounded-xl text-sm font-medium apple-btn">删除</button>
+<button class="bg-red-500 text-white px-4 py-2 rounded-xl text-sm font-medium apple-btn">删除</button>
 </form>
 </div>
 </td>
 </tr>
 {% endfor %}
 {% if not licenses %}
-<tr><td colspan="7" class="text-center text-gray-400 py-16">
-<svg class="w-12 h-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-暂无营业执照
-</td></tr>
+<tr><td colspan="7" class="text-center text-amber-400 py-16">暂无营业执照</td></tr>
 {% endif %}
 </tbody>
 </table>
 </div>
 </div>
 
-<div id="addModal" class="fixed inset-0 bg-black/30 backdrop-blur-sm hidden z-50 flex items-center justify-center">
-<div class="glass rounded-2xl apple-shadow-lg max-w-lg w-full mx-4">
-<div class="flex justify-between items-center p-6 border-b border-gray-100">
-<h2 class="text-xl font-semibold text-gray-900">添加营业执照</h2>
-<button onclick="document.getElementById('addModal').classList.add('hidden')" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition"><svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+<div id="editModal" class="fixed inset-0 z-50 hidden">
+<div class="modal-overlay absolute inset-0" onclick="document.getElementById('editModal').classList.add('hidden')"></div>
+<div class="relative max-w-lg w-full mx-auto mt-[10vh]">
+<div class="tech-card p-6">
+<h3 class="text-lg font-semibold text-amber-800 mb-4">编辑营业执照</h3>
+<form id="editForm" method="post">
+<div class="mb-4"><label class="block text-sm font-medium text-amber-700 mb-2">执照名称 *</label><input type="text" name="license_name" id="edit_name" required class="w-full px-4 py-3 rounded-xl bg-white border border-amber-200 text-amber-900 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"></div>
+<div class="mb-4"><label class="block text-sm font-medium text-amber-700 mb-2">执照号</label><input type="text" name="license_no" id="edit_no" class="w-full px-4 py-3 rounded-xl bg-white border border-amber-200 text-amber-900 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"></div>
+<div class="mb-4"><label class="block text-sm font-medium text-amber-700 mb-2">持有人</label><input type="text" name="holder_name" id="edit_holder" class="w-full px-4 py-3 rounded-xl bg-white border border-amber-200 text-amber-900 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"></div>
+<div class="mb-4"><label class="block text-sm font-medium text-amber-700 mb-2">有效期</label><input type="date" name="expire_date" id="edit_expire" class="w-full px-4 py-3 rounded-xl bg-white border border-amber-200 text-amber-900 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"></div>
+<div class="mb-4"><label class="block text-sm font-medium text-amber-700 mb-2">备注</label><input type="text" name="remark" id="edit_remark" class="w-full px-4 py-3 rounded-xl bg-white border border-amber-200 text-amber-900 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"></div>
+<div class="flex gap-3 mt-6">
+<button type="submit" class="flex-1 cyber-btn">保存</button>
+<button type="button" onclick="document.getElementById('editModal').classList.add('hidden')" class="px-6 py-3 bg-amber-100 text-amber-700 rounded-xl font-medium hover:bg-amber-200 transition">取消</button>
 </div>
-<form action="/task/api/licenses/add" method="post" class="p-6">
-<div class="mb-4"><label class="block text-sm font-medium text-gray-700 mb-2">执照名称 *</label><input type="text" name="license_name" required class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue"></div>
-<div class="mb-4"><label class="block text-sm font-medium text-gray-700 mb-2">执照号</label><input type="text" name="license_no" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue"></div>
-<div class="mb-4"><label class="block text-sm font-medium text-gray-700 mb-2">持有人</label><input type="text" name="holder_name" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue"></div>
-<div class="mb-4"><label class="block text-sm font-medium text-gray-700 mb-2">有效期</label><input type="date" name="expire_date" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue"></div>
-<div class="mb-4"><label class="block text-sm font-medium text-gray-700 mb-2">备注</label><input type="text" name="remark" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue"></div>
-<div class="flex gap-3 mt-6"><button type="submit" class="flex-1 bg-apple-blue text-white py-3 rounded-xl font-medium apple-btn">保存</button><button type="button" onclick="document.getElementById('addModal').classList.add('hidden')" class="px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-medium hover:bg-gray-200 transition">取消</button></div>
 </form>
 </div>
-</div>
-
-<div id="editModal" class="fixed inset-0 bg-black/30 backdrop-blur-sm hidden z-50 flex items-center justify-center">
-<div class="glass rounded-2xl apple-shadow-lg max-w-lg w-full mx-4">
-<div class="flex justify-between items-center p-6 border-b border-gray-100">
-<h2 class="text-xl font-semibold text-gray-900">编辑营业执照</h2>
-<button onclick="document.getElementById('editModal').classList.add('hidden')" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition"><svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
-</div>
-<form id="editForm" method="post" class="p-6">
-<div class="mb-4"><label class="block text-sm font-medium text-gray-700 mb-2">执照名称 *</label><input type="text" name="license_name" id="edit_name" required class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue"></div>
-<div class="mb-4"><label class="block text-sm font-medium text-gray-700 mb-2">执照号</label><input type="text" name="license_no" id="edit_no" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue"></div>
-<div class="mb-4"><label class="block text-sm font-medium text-gray-700 mb-2">持有人</label><input type="text" name="holder_name" id="edit_holder" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue"></div>
-<div class="mb-4"><label class="block text-sm font-medium text-gray-700 mb-2">有效期</label><input type="date" name="expire_date" id="edit_expire" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue"></div>
-<div class="mb-4"><label class="block text-sm font-medium text-gray-700 mb-2">备注</label><input type="text" name="remark" id="edit_remark" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue"></div>
-<div class="flex gap-3 mt-6"><button type="submit" class="flex-1 bg-apple-blue text-white py-3 rounded-xl font-medium apple-btn">保存</button><button type="button" onclick="document.getElementById('editModal').classList.add('hidden')" class="px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-medium hover:bg-gray-200 transition">取消</button></div>
-</form>
 </div>
 </div>
 

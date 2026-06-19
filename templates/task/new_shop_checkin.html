@@ -2,15 +2,15 @@
 {% block title %}新店任务打卡{% endblock %}
 {% block content %}
 <div class="mb-8">
-<h1 class="text-3xl font-bold text-gray-900 mb-2">新店任务打卡</h1>
-<p class="text-gray-500">完成新店一次性任务</p>
+<h1 class="text-3xl font-bold text-amber-800 mb-2">新店任务打卡</h1>
+<p class="text-amber-700/70">完成新店一次性任务</p>
 </div>
 
-<div class="glass rounded-2xl apple-shadow p-6 mb-6">
+<div class="tech-card p-6 mb-6">
 <form method="get" class="flex flex-wrap gap-3 items-end">
 <div class="flex-1 min-w-[200px]">
-<label class="block text-xs font-medium text-gray-500 mb-1.5">选择新店</label>
-<select name="shop_id" onchange="this.form.submit()" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-apple-blue/20 focus:border-apple-blue">
+<label class="block text-xs font-medium text-amber-700 mb-1.5">选择新店</label>
+<select name="shop_id" onchange="this.form.submit()" class="w-full px-4 py-3 rounded-xl bg-white border border-amber-200 text-amber-900 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">
 <option value="">-- 选择新店 --</option>
 {% for shop in new_shops %}
 <option value="{{ shop.id }}" {% if selected_shop and selected_shop.id == shop.id %}selected{% endif %}>{{ shop.name }}</option>
@@ -21,52 +21,49 @@
 </div>
 
 {% if selected_shop %}
-<div class="glass rounded-2xl apple-shadow p-6">
+<div class="tech-card p-6">
 <div class="flex items-center justify-between mb-6">
 <div>
-<h2 class="text-lg font-semibold text-gray-900">{{ selected_shop.name }}</h2>
-<p class="text-sm text-gray-500">新店一次性任务</p>
+<h2 class="text-lg font-semibold text-amber-800">{{ selected_shop.name }}</h2>
+<p class="text-sm text-amber-600">新店一次性任务</p>
 </div>
-<button onclick="completeAll()" class="bg-apple-green text-white px-5 py-2.5 rounded-xl text-sm font-medium apple-btn">一键完成全部</button>
+<button onclick="completeAll()" class="cyber-btn text-sm py-2 px-5">一键完成全部</button>
 </div>
 
 <div class="overflow-x-auto">
 <table class="w-full text-sm">
-<thead class="bg-gray-50/80">
+<thead class="bg-amber-50">
 <tr>
-<th class="px-5 py-4 font-medium text-gray-600 text-center w-16">完成</th>
-<th class="px-5 py-4 font-medium text-gray-600 text-left">任务名称</th>
-<th class="px-5 py-4 font-medium text-gray-600 text-left">完成时间</th>
+<th class="px-5 py-4 font-medium text-amber-700 text-center w-16">完成</th>
+<th class="px-5 py-4 font-medium text-amber-700 text-left">任务名称</th>
+<th class="px-5 py-4 font-medium text-amber-700 text-left">完成时间</th>
 </tr>
 </thead>
 <tbody>
 {% for task in tasks %}
-<tr class="border-t border-gray-100 hover:bg-blue-50/30 transition">
+<tr class="border-t border-amber-100 hover:bg-amber-50/50 transition stagger-item">
 <td class="px-5 py-4 text-center">
 <input type="checkbox" {% if task.is_completed %}checked{% endif %}
        onchange="toggleTask({{ selected_shop.id }}, {{ task.id }}, this)"
-       class="w-5 h-5 rounded border-gray-300 text-apple-green focus:ring-apple-green/20 cursor-pointer">
+       class="w-5 h-5 rounded border-amber-300 text-green-500 focus:ring-green-500/20 cursor-pointer">
 </td>
-<td class="px-5 py-4 font-medium {{ 'text-gray-400 line-through' if task.is_completed else 'text-gray-800' }}">
+<td class="px-5 py-4 font-medium {{ 'text-amber-400 line-through' if task.is_completed else 'text-amber-900' }}">
 {{ task.task_name }}
 </td>
-<td class="px-5 py-4 text-sm text-gray-500">{{ task.completed_at or '-' }}</td>
+<td class="px-5 py-4 text-sm text-amber-600">{{ task.completed_at or '-' }}</td>
 </tr>
 {% endfor %}
 {% if not tasks %}
-<tr><td colspan="3" class="text-center text-gray-400 py-16">
-<svg class="w-12 h-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
-暂无任务
-</td></tr>
+<tr><td colspan="3" class="text-center text-amber-400 py-16">暂无任务</td></tr>
 {% endif %}
 </tbody>
 </table>
 </div>
 </div>
 {% else %}
-<div class="glass rounded-2xl apple-shadow p-16 text-center">
-<svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-<p class="text-gray-400 text-lg">{{ '请选择一个新店' if new_shops else '暂无新店，新店创建后会自动显示在此处' }}</p>
+<div class="tech-card p-16 text-center">
+<svg class="w-16 h-16 text-amber-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+<p class="text-amber-500 text-lg">{{ '请选择一个新店' if new_shops else '暂无新店' }}</p>
 </div>
 {% endif %}
 
@@ -75,20 +72,20 @@ function toggleTask(shopId, taskId, checkbox) {
     fetch('/task/api/new_shop_checkin/toggle', {
         method: 'POST',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: `shop_id=${shopId}&task_id=${taskId}`
-    }).then(r => r.json()).then(d => {
+        body: 'shop_id=' + shopId + '&task_id=' + taskId
+    }).then(function(r) { return r.json(); }).then(function(d) {
         if (d.ok) location.reload();
     });
 }
 function completeAll() {
-    const shopId = '{{ selected_shop.id if selected_shop else "" }}';
+    var shopId = '{{ selected_shop.id if selected_shop else "" }}';
     if (!shopId) return;
-    if (!confirm('确定完成全部新店任务？店铺将自动转为正常状态。')) return;
+    if (!confirm('确定完成全部新店任务？')) return;
     fetch('/task/api/new_shop_checkin/complete_all', {
         method: 'POST',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: `shop_id=${shopId}`
-    }).then(r => r.json()).then(d => {
+        body: 'shop_id=' + shopId
+    }).then(function(r) { return r.json(); }).then(function(d) {
         if (d.ok) location.reload();
     });
 }
