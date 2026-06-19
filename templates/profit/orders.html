@@ -15,12 +15,12 @@
 </div>
 
 <div class="tech-card glow-warm p-6 mb-6">
-<div class="flex flex-wrap gap-2 mb-5">
-<a href="/profit/orders?date_from={{ today }}&date_to={{ today }}&group={{ f_group }}" class="px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-amber-500 text-white shadow-md shadow-amber-500/30' if f_df == today and f_dt == today else 'bg-white/80 text-gray-600 hover:bg-gray-100' }}">今天</a>
-<a href="/profit/orders?date_from={{ yesterday }}&date_to={{ yesterday }}&group={{ f_group }}" class="px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-amber-500 text-white shadow-md shadow-amber-500/30' if f_df == yesterday and f_dt == yesterday else 'bg-white/80 text-gray-600 hover:bg-gray-100' }}">昨天</a>
-<a href="/profit/orders?date_from={{ d7 }}&date_to={{ today }}&group={{ f_group }}" class="px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-amber-500 text-white shadow-md shadow-amber-500/30' if f_df == d7 and f_dt == today else 'bg-white/80 text-gray-600 hover:bg-gray-100' }}">近7天</a>
-<a href="/profit/orders?date_from={{ d15 }}&date_to={{ today }}&group={{ f_group }}" class="px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-amber-500 text-white shadow-md shadow-amber-500/30' if f_df == d15 and f_dt == today else 'bg-white/80 text-gray-600 hover:bg-gray-100' }}">近15天</a>
-<a href="/profit/orders?date_from={{ d30 }}&date_to={{ today }}&group={{ f_group }}" class="px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-amber-500 text-white shadow-md shadow-amber-500/30' if f_df == d30 and f_dt == today else 'bg-white/80 text-gray-600 hover:bg-gray-100' }}">近30天</a>
+<div class="flex flex-wrap gap-3 mb-5">
+<a href="/profit/orders?date_from={{ today }}&date_to={{ today }}&group={{ f_group }}" class="px-6 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-amber-500 text-white shadow-md shadow-amber-500/30' if f_df == today and f_dt == today else 'bg-white/80 text-gray-600 hover:bg-gray-100' }}">今天</a>
+<a href="/profit/orders?date_from={{ yesterday }}&date_to={{ yesterday }}&group={{ f_group }}" class="px-6 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-amber-500 text-white shadow-md shadow-amber-500/30' if f_df == yesterday and f_dt == yesterday else 'bg-white/80 text-gray-600 hover:bg-gray-100' }}">昨天</a>
+<a href="/profit/orders?date_from={{ d7 }}&date_to={{ today }}&group={{ f_group }}" class="px-6 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-amber-500 text-white shadow-md shadow-amber-500/30' if f_df == d7 and f_dt == today else 'bg-white/80 text-gray-600 hover:bg-gray-100' }}">近7天</a>
+<a href="/profit/orders?date_from={{ d15 }}&date_to={{ today }}&group={{ f_group }}" class="px-6 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-amber-500 text-white shadow-md shadow-amber-500/30' if f_df == d15 and f_dt == today else 'bg-white/80 text-gray-600 hover:bg-gray-100' }}">近15天</a>
+<a href="/profit/orders?date_from={{ d30 }}&date_to={{ today }}&group={{ f_group }}" class="px-6 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-amber-500 text-white shadow-md shadow-amber-500/30' if f_df == d30 and f_dt == today else 'bg-white/80 text-gray-600 hover:bg-gray-100' }}">近30天</a>
 </div>
 <form method="get" class="flex flex-wrap gap-3 items-end">
 <div><label class="block text-xs font-medium text-gray-500 mb-1.5">店铺</label>

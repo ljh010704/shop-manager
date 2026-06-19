@@ -7,10 +7,10 @@
 </div>
 
 <div class="tech-card glow-warm p-6 mb-6">
-<div class="flex flex-wrap gap-2 mb-5">
-<a href="/profit/stats?days=7" class="px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-amber-500 text-white shadow-md shadow-amber-500/30' if f_days == 7 else 'bg-white/80 text-gray-600 hover:bg-gray-100' }}">近7天</a>
-<a href="/profit/stats?days=15" class="px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-amber-500 text-white shadow-md shadow-amber-500/30' if f_days == 15 else 'bg-white/80 text-gray-600 hover:bg-gray-100' }}">近15天</a>
-<a href="/profit/stats?days=30" class="px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-amber-500 text-white shadow-md shadow-amber-500/30' if f_days == 30 else 'bg-white/80 text-gray-600 hover:bg-gray-100' }}">近30天</a>
+<div class="flex flex-wrap gap-3 mb-5">
+<a href="/profit/stats?days=7" class="px-6 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-amber-500 text-white shadow-md shadow-amber-500/30' if f_days == 7 else 'bg-white/80 text-gray-600 hover:bg-gray-100' }}">近7天</a>
+<a href="/profit/stats?days=15" class="px-6 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-amber-500 text-white shadow-md shadow-amber-500/30' if f_days == 15 else 'bg-white/80 text-gray-600 hover:bg-gray-100' }}">近15天</a>
+<a href="/profit/stats?days=30" class="px-6 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 {{ 'bg-amber-500 text-white shadow-md shadow-amber-500/30' if f_days == 30 else 'bg-white/80 text-gray-600 hover:bg-gray-100' }}">近30天</a>
 </div>
 <form method="get" class="flex flex-wrap gap-3 items-end">
 <div><label class="block text-xs font-medium text-gray-500 mb-1.5">开始</label><input type="date" name="date_from" value="{{ f_df }}" class="bg-white/80 border border-gray-200 rounded-xl px-4 py-2.5 text-sm w-36 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"></div>

@@ -74,7 +74,7 @@
         </select>
       </div>
     </div>
-    <div class="flex gap-2 mb-6">
+    <div class="flex gap-3 mb-6">
       <button onclick="setTrendDays('today', this)" class="trend-btn px-4 py-2 rounded-xl text-sm font-medium bg-amber-500 text-white shadow-md shadow-amber-500/30">今日</button>
       <button onclick="setTrendDays(7, this)" class="trend-btn px-4 py-2 rounded-xl text-sm font-medium bg-white/80 text-gray-600 hover:bg-gray-100 transition">近7天</button>
       <button onclick="setTrendDays(15, this)" class="trend-btn px-4 py-2 rounded-xl text-sm font-medium bg-white/80 text-gray-600 hover:bg-gray-100 transition">近15天</button>
@@ -272,7 +272,7 @@ function showShopModal(shopId, shopName) {
     var content = document.getElementById('shopModalContent');
     document.getElementById('shopModalTitle').textContent = shopName;
     modal.classList.remove('hidden');
-    content.innerHTML = '<div class="mb-6"><div class="flex gap-2 mb-6">' +
+    content.innerHTML = '<div class="mb-6"><div class="flex gap-3 mb-6">' +
         '<button onclick="loadShopTrend(' + shopId + ', \'today\', this)" class="shop-trend-btn px-4 py-2 rounded-xl text-sm font-medium bg-amber-500 text-white shadow-md shadow-amber-500/30">今日</button>' +
         '<button onclick="loadShopTrend(' + shopId + ', 7, this)" class="shop-trend-btn px-4 py-2 rounded-xl text-sm font-medium bg-white/80 text-gray-600 hover:bg-gray-100">近7天</button>' +
         '<button onclick="loadShopTrend(' + shopId + ', 15, this)" class="shop-trend-btn px-4 py-2 rounded-xl text-sm font-medium bg-white/80 text-gray-600 hover:bg-gray-100">近15天</button>' +

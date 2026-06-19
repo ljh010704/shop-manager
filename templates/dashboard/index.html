@@ -31,7 +31,7 @@
 <div id="calGrid" class="grid grid-cols-7 gap-1"></div>
 </div></div></div></div>
 
-<div class="flex items-center space-x-1.5 mb-4">
+<div class="flex items-center gap-3 mb-4">
 <button onclick="switchRange('day')" id="range-day" class="range-btn px-3 py-1 rounded-full text-xs font-medium bg-[#0071e3] text-white">当日</button>
 <button onclick="switchRange('7d')" id="range-7d" class="range-btn px-3 py-1 rounded-full text-xs font-medium bg-[#f5f5f7] hover:bg-[#e8e8ed]">近7天</button>
 <button onclick="switchRange('15d')" id="range-15d" class="range-btn px-3 py-1 rounded-full text-xs font-medium bg-[#f5f5f7] hover:bg-[#e8e8ed]">近15天</button>
@@ -54,7 +54,7 @@
 <div class="card rounded-2xl overflow-hidden fade-in">
 <div class="px-5 py-3 border-b border-black/5 flex items-center justify-between">
 <h2 class="text-base font-semibold">店铺列表</h2>
-<div class="flex items-center space-x-2">
+<div class="flex items-center gap-3">
 <select id="groupFilter" onchange="filterShops()" class="bg-[#f5f5f7] border-0 rounded-lg px-3 py-1.5 text-sm focus:ring-1 focus:ring-[#0071e3] outline-none">
 <option value="">全部分组</option>
 {% for g in groups %}<option value="{{ g }}">{{ g }}</option>{% endfor %}
@@ -312,9 +312,9 @@ async function loadShopData(name, range) {
     const history = data.history;
     const latest = history[history.length - 1];
     const ranges = [{l:'今日',v:'1'},{l:'昨日',v:'2'},{l:'近7天',v:'7'},{l:'近15天',v:'15'},{l:'近30天',v:'30'}];
-    let html = '<div class="flex items-center space-x-1.5 mb-4">';
+    let html = '<div class="flex items-center gap-3 mb-4">';
     ranges.forEach(r => {
-        html += '<button onclick="loadShopData(\'' + name + '\',\'' + r.v + '\')" class="px-3 py-1 rounded-full text-xs font-medium transition-colors ' + (range === r.v ? 'bg-[#0071e3] text-white' : 'bg-[#f5f5f7] text-[#1d1d1f] hover:bg-[#e8e8ed]') + '">' + r.l + '</button>';
+        html += '<button onclick="loadShopData(\'' + name + '\',\'' + r.v + '\')" class="px-4 py-1.5 rounded-full text-xs font-medium transition-colors ' + (range === r.v ? 'bg-[#0071e3] text-white' : 'bg-[#f5f5f7] text-[#1d1d1f] hover:bg-[#e8e8ed]') + '">' + r.l + '</button>';
     });
     html += '</div>';
     if (latest) {
