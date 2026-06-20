@@ -18,9 +18,11 @@ import crypto
 
 # Handle PyInstaller bundled resources
 if getattr(sys, 'frozen', False):
+    BUNDLE_DIR = sys._MEIPASS
     BASE_DIR = os.path.dirname(sys.executable)
 else:
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    BUNDLE_DIR = os.path.dirname(os.path.abspath(__file__))
+    BASE_DIR = BUNDLE_DIR
 
 DB_PATH = os.path.join(BASE_DIR, "data.db")
 
@@ -34,11 +36,12 @@ app = FastAPI()
 
 # Ensure directories exist
 static_dir = os.path.join(BASE_DIR, "static")
-templates_dir = os.path.join(BASE_DIR, "templates")
+templates_dir = os.path.join(BUNDLE_DIR, "templates")
+static_bundle_dir = os.path.join(BUNDLE_DIR, "static")
 os.makedirs(static_dir, exist_ok=True)
 os.makedirs(templates_dir, exist_ok=True)
 
-app.mount("/static", StaticFiles(directory=static_dir), name="static")
+app.mount("/static", StaticFiles(directory=static_bundle_dir), name="static")
 templates = Jinja2Templates(directory=templates_dir)
 
 profit_router = APIRouter(prefix="/profit")
