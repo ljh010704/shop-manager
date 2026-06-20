@@ -41,6 +41,7 @@ var currentGroup = '{{ selected_group or "" }}';
 function onGroupChange(group) {
     currentGroup = group;
     var select = document.getElementById('shopSelect');
+    var prevValue = select.value;
     var options = select.options;
     for (var i = 0; i < options.length; i++) {
         if (i === 0) continue;
@@ -49,6 +50,13 @@ function onGroupChange(group) {
             options[i].style.display = '';
         } else {
             options[i].style.display = 'none';
+        }
+    }
+    if (prevValue) {
+        var prevOption = select.querySelector('option[value="' + prevValue + '"]');
+        if (prevOption && prevOption.style.display !== 'none') {
+            select.value = prevValue;
+            return;
         }
     }
     select.value = '';
