@@ -6,7 +6,7 @@
 <div class="text-center py-20">
 <h2 class="text-3xl font-semibold text-[#1d1d1f] mb-3">暂无数据</h2>
 <p class="text-[#6e6e73] mb-6">将 Excel 文件放入报表目录，或手动上传</p>
-<a href="/dashboard/import" class="inline-block bg-[#0071e3] text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-[#0077ed] transition-colors">去导入</a>
+<a href="/dashboard/import" class="inline-block bg-amber-500 text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-amber-600 transition-colors">去导入</a>
 </div>
 {% else %}
 
@@ -19,51 +19,51 @@
 <span class="font-medium">{{ selected_date }}</span>
 <svg class="w-3.5 h-3.5 text-[#6e6e73]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
 </button>
-<div id="calendarPanel" class="hidden absolute right-0 top-full mt-2 card rounded-2xl shadow-2xl z-50 p-4 w-72">
+<div id="calendarPanel" class="hidden absolute right-0 top-full mt-2 bg-white rounded-2xl shadow-2xl z-50 p-4 w-72 border border-amber-200">
 <div class="flex items-center justify-between mb-3">
-<button onclick="calNav(-1)" class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-black/5 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
-<span id="calTitle" class="font-semibold text-sm"></span>
-<button onclick="calNav(1)" class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-black/5 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
+<button onclick="calNav(-1)" class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-amber-100 transition-colors text-amber-700"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+<span id="calTitle" class="font-semibold text-sm text-amber-800"></span>
+<button onclick="calNav(1)" class="w-7 h-7 flex items-center justify-center rounded-full hover:bg-amber-100 transition-colors text-amber-700"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
 </div>
-<div class="grid grid-cols-7 gap-1 text-center text-xs text-[#6e6e73] mb-1">
+<div class="grid grid-cols-7 gap-1 text-center text-xs text-amber-500 mb-1">
 <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
 </div>
 <div id="calGrid" class="grid grid-cols-7 gap-1"></div>
 </div></div></div></div>
 
 <div class="flex items-center gap-3 mb-4">
-<button onclick="switchRange('day')" id="range-day" class="range-btn px-3 py-1 rounded-full text-xs font-medium bg-[#0071e3] text-white">当日</button>
-<button onclick="switchRange('7d')" id="range-7d" class="range-btn px-3 py-1 rounded-full text-xs font-medium bg-[#f5f5f7] hover:bg-[#e8e8ed]">近7天</button>
-<button onclick="switchRange('15d')" id="range-15d" class="range-btn px-3 py-1 rounded-full text-xs font-medium bg-[#f5f5f7] hover:bg-[#e8e8ed]">近15天</button>
-<button onclick="switchRange('30d')" id="range-30d" class="range-btn px-3 py-1 rounded-full text-xs font-medium bg-[#f5f5f7] hover:bg-[#e8e8ed]">近30天</button>
+<button onclick="switchRange('day')" id="range-day" class="range-btn px-3 py-1 rounded-full text-xs font-medium bg-amber-500 text-white">当日</button>
+<button onclick="switchRange('7d')" id="range-7d" class="range-btn px-3 py-1 rounded-full text-xs font-medium bg-amber-50 hover:bg-amber-100">近7天</button>
+<button onclick="switchRange('15d')" id="range-15d" class="range-btn px-3 py-1 rounded-full text-xs font-medium bg-amber-50 hover:bg-amber-100">近15天</button>
+<button onclick="switchRange('30d')" id="range-30d" class="range-btn px-3 py-1 rounded-full text-xs font-medium bg-amber-50 hover:bg-amber-100">近30天</button>
 </div>
 
 <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6" id="summaryCards">
 <div class="card rounded-2xl p-4"><div class="text-xs text-[#6e6e73] mb-1">店铺数量</div><div class="text-2xl font-semibold" id="val-shop_count">{{ summary.shop_count }}</div></div>
-<div class="card rounded-2xl p-4 cursor-pointer hover:bg-white transition-colors" onclick="showSummaryDetail('total_today_orders','订单数')"><div class="text-xs text-[#6e6e73] mb-1">订单数</div><div class="text-2xl font-semibold text-[#0071e3] decoration-1 underline underline-offset-4 decoration-[#0071e3]/30" id="val-orders">{{ summary.total_today_orders }}</div></div>
-<div class="card rounded-2xl p-4 cursor-pointer hover:bg-white transition-colors" onclick="showSummaryDetail('total_amount','成交金额')"><div class="text-xs text-[#6e6e73] mb-1">成交金额</div><div class="text-2xl font-semibold text-[#34c759] decoration-1 underline underline-offset-4 decoration-[#34c759]/30" id="val-amount">{{ "%.2f"|format(summary.total_amount) }}</div></div>
-<div class="card rounded-2xl p-4 cursor-pointer hover:bg-white transition-colors" onclick="showSummaryDetail('total_refund_today','今日退款金额')"><div class="text-xs text-[#6e6e73] mb-1">今日退款金额</div><div class="text-2xl font-semibold text-[#ff3b30] decoration-1 underline underline-offset-4 decoration-[#ff3b30]/30" id="val-refund_today">{{ "%.2f"|format(summary.total_refund_today) }}</div></div>
-<div class="card rounded-2xl p-4 cursor-pointer hover:bg-white transition-colors" onclick="showSummaryDetail('total_refund','全部退款金额')"><div class="text-xs text-[#6e6e73] mb-1">全部退款金额</div><div class="text-2xl font-semibold text-[#ff9500] decoration-1 underline underline-offset-4 decoration-[#ff9500]/30" id="val-refund">{{ "%.2f"|format(summary.total_refund) }}</div></div>
-<div class="card rounded-2xl p-4 cursor-pointer hover:bg-white transition-colors" onclick="showSummaryDetail('total_pending_ship','待发货')"><div class="text-xs text-[#6e6e73] mb-1">待发货</div><div class="text-2xl font-semibold text-[#ff9500] decoration-1 underline underline-offset-4 decoration-[#ff9500]/30" id="val-pending_ship">{{ summary.total_pending_ship }}</div></div>
+<div class="card rounded-2xl p-4 cursor-pointer hover:bg-white transition-colors" onclick="showSummaryDetail('total_today_orders','订单数')"><div class="text-xs text-[#6e6e73] mb-1">订单数</div><div class="text-2xl font-semibold text-amber-700 decoration-1 underline underline-offset-4 decoration-[#0071e3]/30" id="val-orders">{{ summary.total_today_orders }}</div></div>
+<div class="card rounded-2xl p-4 cursor-pointer hover:bg-white transition-colors" onclick="showSummaryDetail('total_amount','成交金额')"><div class="text-xs text-[#6e6e73] mb-1">成交金额</div><div class="text-2xl font-semibold text-green-600 decoration-1 underline underline-offset-4 decoration-[#34c759]/30" id="val-amount">{{ "%.2f"|format(summary.total_amount) }}</div></div>
+<div class="card rounded-2xl p-4 cursor-pointer hover:bg-white transition-colors" onclick="showSummaryDetail('total_refund_today','今日退款金额')"><div class="text-xs text-[#6e6e73] mb-1">今日退款金额</div><div class="text-2xl font-semibold text-red-500 decoration-1 underline underline-offset-4 decoration-[#ff3b30]/30" id="val-refund_today">{{ "%.2f"|format(summary.total_refund_today) }}</div></div>
+<div class="card rounded-2xl p-4 cursor-pointer hover:bg-white transition-colors" onclick="showSummaryDetail('total_refund','全部退款金额')"><div class="text-xs text-[#6e6e73] mb-1">全部退款金额</div><div class="text-2xl font-semibold text-orange-500 decoration-1 underline underline-offset-4 decoration-[#ff9500]/30" id="val-refund">{{ "%.2f"|format(summary.total_refund) }}</div></div>
+<div class="card rounded-2xl p-4 cursor-pointer hover:bg-white transition-colors" onclick="showSummaryDetail('total_pending_ship','待发货')"><div class="text-xs text-[#6e6e73] mb-1">待发货</div><div class="text-2xl font-semibold text-orange-500 decoration-1 underline underline-offset-4 decoration-[#ff9500]/30" id="val-pending_ship">{{ summary.total_pending_ship }}</div></div>
 <div class="card rounded-2xl p-4 cursor-pointer hover:bg-white transition-colors" onclick="showSummaryDetail('total_overdue_ship','超时未发货')"><div class="text-xs text-[#6e6e73] mb-1">超时未发货</div><div class="text-2xl font-semibold decoration-1 underline underline-offset-4 decoration-[#ff3b30]/30" id="val-overdue_ship">{{ summary.total_overdue_ship }}</div></div>
-<div class="card rounded-2xl p-4 cursor-pointer hover:bg-white transition-colors" onclick="showSummaryDetail('total_exposure','曝光人数')"><div class="text-xs text-[#6e6e73] mb-1">曝光人数</div><div class="text-2xl font-semibold text-[#5856d6] decoration-1 underline underline-offset-4 decoration-[#5856d6]/30" id="val-exposure">{{ summary.total_exposure }}</div></div>
-<div class="card rounded-2xl p-4 cursor-pointer hover:bg-white transition-colors" onclick="showSummaryDetail('total_clicks','点击人数')"><div class="text-xs text-[#6e6e73] mb-1">点击人数</div><div class="text-2xl font-semibold text-[#af52de] decoration-1 underline underline-offset-4 decoration-[#af52de]/30" id="val-clicks">{{ summary.total_clicks }}</div></div>
-<div class="card rounded-2xl p-4"><div class="text-xs text-[#6e6e73] mb-1">今日剩余金额</div><div class="text-2xl font-semibold text-[#0071e3]" id="val-remaining">{{ "%.2f"|format(summary.total_amount - summary.total_refund_today) }}</div></div>
+<div class="card rounded-2xl p-4 cursor-pointer hover:bg-white transition-colors" onclick="showSummaryDetail('total_exposure','曝光人数')"><div class="text-xs text-[#6e6e73] mb-1">曝光人数</div><div class="text-2xl font-semibold text-purple-500 decoration-1 underline underline-offset-4 decoration-[#5856d6]/30" id="val-exposure">{{ summary.total_exposure }}</div></div>
+<div class="card rounded-2xl p-4 cursor-pointer hover:bg-white transition-colors" onclick="showSummaryDetail('total_clicks','点击人数')"><div class="text-xs text-[#6e6e73] mb-1">点击人数</div><div class="text-2xl font-semibold text-purple-600 decoration-1 underline underline-offset-4 decoration-[#af52de]/30" id="val-clicks">{{ summary.total_clicks }}</div></div>
+<div class="card rounded-2xl p-4"><div class="text-xs text-[#6e6e73] mb-1">今日剩余金额</div><div class="text-2xl font-semibold text-amber-700" id="val-remaining">{{ "%.2f"|format(summary.total_amount - summary.total_refund_today) }}</div></div>
 </div>
 
 <div class="card rounded-2xl overflow-hidden fade-in">
-<div class="px-5 py-3 border-b border-black/5 flex items-center justify-between">
+<div class="px-5 py-3 border-b border-amber-200 flex items-center justify-between">
 <h2 class="text-base font-semibold">店铺列表</h2>
 <div class="flex items-center gap-3">
-<select id="groupFilter" onchange="filterShops()" class="bg-[#f5f5f7] border-0 rounded-lg px-3 py-1.5 text-sm focus:ring-1 focus:ring-[#0071e3] outline-none">
+<select id="groupFilter" onchange="filterShops()" class="bg-amber-50 border-0 rounded-lg px-3 py-1.5 text-sm focus:ring-1 focus:ring-[#0071e3] outline-none">
 <option value="">全部分组</option>
 {% for g in groups %}<option value="{{ g }}">{{ g }}</option>{% endfor %}
 </select>
-<input type="text" id="shopSearch" placeholder="搜索店铺..." class="bg-[#f5f5f7] border-0 rounded-lg px-3 py-1.5 text-sm w-44 focus:ring-1 focus:ring-[#0071e3] outline-none" oninput="filterShops()">
+<input type="text" id="shopSearch" placeholder="搜索店铺..." class="bg-amber-50 border-0 rounded-lg px-3 py-1.5 text-sm w-44 focus:ring-1 focus:ring-[#0071e3] outline-none" oninput="filterShops()">
 </div></div>
 <div class="overflow-x-auto">
 <table class="w-full text-sm" id="shopTable">
-<thead class="bg-[#fafafa] text-[#6e6e73] text-xs sticky top-0">
+<thead class="bg-amber-50 text-[#6e6e73] text-xs sticky top-0">
 <tr>
 <th class="px-3 py-2.5 text-left cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium" data-col="0" data-type="text" onclick="sortTable(this)">店铺名称 <span class="sort-icon">⇅</span></th>
 <th class="px-3 py-2.5 text-left cursor-pointer hover:bg-[#f0f0f0] whitespace-nowrap font-medium max-w-[80px]" data-col="1" data-type="text" onclick="sortTable(this)">分组 <span class="sort-icon">⇅</span></th>
@@ -107,10 +107,10 @@
 </tr></thead>
 <tbody class="divide-y divide-black/5">
 {% for s in shops %}
-<tr class="hover:bg-[#fafafa] transition-colors">
-<td class="px-3 py-2.5 text-[#0071e3] cursor-pointer hover:underline whitespace-nowrap text-xs font-medium" onclick="showShopModal('{{ s.shop_name }}')">{{ s.shop_name }}</td>
+<tr class="hover:bg-amber-50 transition-colors">
+<td class="px-3 py-2.5 text-amber-700 cursor-pointer hover:underline whitespace-nowrap text-xs font-medium" onclick="showShopModal('{{ s.shop_name }}')">{{ s.shop_name }}</td>
 <td class="px-3 py-2.5 text-[#6e6e73] whitespace-nowrap text-xs max-w-[80px] truncate" title="{{ s.group_name }}">{{ s.group_name }}</td>
-<td class="px-3 py-2.5 text-center"><span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-medium {% if s.status == '在线' %}bg-[#34c759]/10 text-[#34c759]{% else %}bg-[#ff3b30]/10 text-[#ff3b30]{% endif %}">{{ s.status }}</span></td>
+<td class="px-3 py-2.5 text-center"><span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-medium {% if s.status == '在线' %}bg-[#34c759]/10 text-green-600{% else %}bg-[#ff3b30]/10 text-red-500{% endif %}">{{ s.status }}</span></td>
 <td class="px-3 py-2.5 text-[#6e6e73] text-xs max-w-[100px] truncate" title="{{ s.remark }}">{{ s.remark }}</td>
 <td class="px-3 py-2.5 text-[#6e6e73] text-xs whitespace-nowrap">{{ s.expire_info }}</td>
 <td class="px-3 py-2.5 text-right text-xs">{{ s.warning }}</td>
@@ -118,15 +118,15 @@
 <td class="px-3 py-2.5 text-right text-xs">{{ s.order_count }}</td>
 <td class="px-3 py-2.5 text-right text-xs">{{ s.exposure }}</td>
 <td class="px-3 py-2.5 text-right text-xs">{{ s.clicks }}</td>
-<td class="px-3 py-2.5 text-right text-xs {% if s.refund_amount > 0 %}text-[#ff3b30]{% endif %}">{{ "%.2f"|format(s.refund_amount) }}</td>
-<td class="px-3 py-2.5 text-right text-xs {% if s.experience_score not in ['-',''] and s.experience_score|float < 70 %}text-[#ff3b30] font-semibold{% endif %}">{{ s.experience_score }}</td>
+<td class="px-3 py-2.5 text-right text-xs {% if s.refund_amount > 0 %}text-red-500{% endif %}">{{ "%.2f"|format(s.refund_amount) }}</td>
+<td class="px-3 py-2.5 text-right text-xs {% if s.experience_score not in ['-',''] and s.experience_score|float < 70 %}text-red-500 font-semibold{% endif %}">{{ s.experience_score }}</td>
 <td class="px-3 py-2.5 text-right text-xs">{{ s.pending_ship }}</td>
 <td class="px-3 py-2.5 text-right text-xs">{{ s.pending_after_sale }}</td>
 <td class="px-3 py-2.5 text-right text-xs">{{ s.on_sale }}</td>
 <td class="px-3 py-2.5 text-right text-xs">{{ s.in_warehouse }}</td>
 <td class="px-3 py-2.5 text-right text-xs">{{ s.draft }}</td>
 <td class="px-3 py-2.5 text-right text-xs">{{ s.ship_24h }}</td>
-<td class="px-3 py-2.5 text-right text-xs {% if s.overdue_ship > 0 %}text-[#ff3b30] font-semibold pulse-dot{% endif %}">{{ s.overdue_ship }}</td>
+<td class="px-3 py-2.5 text-right text-xs {% if s.overdue_ship > 0 %}text-red-500 font-semibold pulse-dot{% endif %}">{{ s.overdue_ship }}</td>
 <td class="px-3 py-2.5 text-right text-xs">{{ s.after_sale_24h }}</td>
 <td class="px-3 py-2.5 text-right text-xs">{{ s.pending_rectify }}</td>
 <td class="px-3 py-2.5 text-[#6e6e73] text-[11px] whitespace-nowrap">{{ s.last_violation }}</td>
@@ -136,13 +136,13 @@
 <td class="px-3 py-2.5 text-[#6e6e73] text-[11px]">{{ s.insurance_price }}</td>
 <td class="px-3 py-2.5 text-right text-xs">{{ s.valid_orders_30d }}</td>
 <td class="px-3 py-2.5 text-right text-xs">{{ s.cleaned_orders }}</td>
-<td class="px-3 py-2.5 text-right text-xs {% if s.violation_count > 0 %}text-[#ff3b30]{% endif %}">{{ s.violation_count }}</td>
+<td class="px-3 py-2.5 text-right text-xs {% if s.violation_count > 0 %}text-red-500{% endif %}">{{ s.violation_count }}</td>
 <td class="px-3 py-2.5 text-right text-xs">{{ s.product_score }}</td>
 <td class="px-3 py-2.5 text-right text-xs">{{ s.logistics_score }}</td>
 <td class="px-3 py-2.5 text-right text-xs">{{ s.service_score }}</td>
-<td class="px-3 py-2.5 text-right text-xs {% if s.abnormal_parcel > 0 %}text-[#ff9500]{% endif %}">{{ s.abnormal_parcel }}</td>
+<td class="px-3 py-2.5 text-right text-xs {% if s.abnormal_parcel > 0 %}text-orange-500{% endif %}">{{ s.abnormal_parcel }}</td>
 <td class="px-3 py-2.5 text-right text-xs">{{ s.recycle_bin }}</td>
-<td class="px-3 py-2.5 text-right text-xs {% if s.refund_today > 0 %}text-[#ff3b30]{% endif %}">{{ "%.2f"|format(s.refund_today) }}</td>
+<td class="px-3 py-2.5 text-right text-xs {% if s.refund_today > 0 %}text-red-500{% endif %}">{{ "%.2f"|format(s.refund_today) }}</td>
 <td class="px-3 py-2.5 text-[#6e6e73] text-[11px]">{{ s.shop_id }}</td>
 <td class="px-3 py-2.5 text-[#6e6e73] text-[11px]">{{ s.qianchuan_id }}</td>
 <td class="px-3 py-2.5 text-right text-xs">{{ "%.2f"|format(s.need_invoice) }}</td>
@@ -200,7 +200,7 @@ function renderCal() {
         const ds = calYear + '-' + String(calMonth+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
         const btn = document.createElement('button');
         btn.textContent = d;
-        btn.className = 'rounded-lg py-1 text-sm transition-colors ' + (ds === SELECTED_DATE ? 'bg-[#0071e3] text-white' : dateSet.has(ds) ? 'bg-[#0071e3]/10 text-[#0071e3] hover:bg-[#0071e3]/20 cursor-pointer' : 'text-[#d1d1d6] cursor-default');
+        btn.className = 'rounded-lg py-1 text-sm transition-colors ' + (ds === SELECTED_DATE ? 'bg-amber-500 text-white font-bold' : dateSet.has(ds) ? 'bg-amber-100 text-amber-700 hover:bg-amber-200 cursor-pointer font-medium' : 'text-gray-300 cursor-default');
         if (dateSet.has(ds)) btn.onclick = () => location = '/dashboard/?qdate=' + ds;
         grid.appendChild(btn);
     }
@@ -223,7 +223,7 @@ let currentRange = 'day';
 function switchRange(r) {
     currentRange = r;
     document.querySelectorAll('.range-btn').forEach(b => {
-        b.className = 'range-btn px-3 py-1 rounded-full text-xs font-medium ' + (b.id === 'range-' + r ? 'bg-[#0071e3] text-white' : 'bg-[#f5f5f7] hover:bg-[#e8e8ed]');
+        b.className = 'range-btn px-3 py-1 rounded-full text-xs font-medium ' + (b.id === 'range-' + r ? 'bg-amber-500 text-white' : 'bg-amber-50 hover:bg-amber-100');
     });
     const s = SUMMARIES[r];
     document.getElementById('val-shop_count').textContent = s.shop_count;
@@ -233,7 +233,7 @@ function switchRange(r) {
     document.getElementById('val-refund').textContent = s.total_refund.toFixed(2);
     document.getElementById('val-pending_ship').textContent = s.total_pending_ship;
     document.getElementById('val-overdue_ship').textContent = s.total_overdue_ship;
-    document.getElementById('val-overdue_ship').className = 'text-2xl font-semibold decoration-1 underline underline-offset-4 ' + (s.total_overdue_ship > 0 ? 'text-[#ff3b30] pulse-dot' : 'text-[#86868b] decoration-[#ff3b30]/30');
+    document.getElementById('val-overdue_ship').className = 'text-2xl font-semibold decoration-1 underline underline-offset-4 ' + (s.total_overdue_ship > 0 ? 'text-red-500 pulse-dot' : 'text-amber-500 decoration-[#ff3b30]/30');
     document.getElementById('val-exposure').textContent = s.total_exposure;
     document.getElementById('val-clicks').textContent = s.total_clicks;
     document.getElementById('val-remaining').textContent = (s.total_amount - s.total_refund_today).toFixed(2);
@@ -274,7 +274,7 @@ async function showSummaryDetail(metric, title) {
     const r = currentRange;
     const label = r === 'day' ? SELECTED_DATE : RANGE_LABELS[r];
     document.getElementById('summaryModalTitle').textContent = title + ' · ' + label;
-    document.getElementById('summaryModalBody').innerHTML = '<div class="text-center py-8 text-[#86868b]">加载中...</div>';
+    document.getElementById('summaryModalBody').innerHTML = '<div class="text-center py-8 text-amber-500">加载中...</div>';
     modal.classList.remove('hidden');
     let url;
     if (r === 'day') {
@@ -290,9 +290,9 @@ async function showSummaryDetail(metric, title) {
     const data = await res.json();
     let html = '<table class="w-full text-sm"><thead class="text-xs text-[#6e6e73]"><tr><th class="px-3 py-2 text-left font-medium">店铺</th><th class="px-3 py-2 text-right font-medium">' + title + '</th></tr></thead><tbody class="divide-y divide-black/5">';
     data.shops.forEach(s => {
-        html += '<tr class="hover:bg-[#fafafa] cursor-pointer transition-colors" onclick="closeSummaryModal();showShopModal(\'' + s.shop_name + '\')"><td class="px-3 py-2 text-[#0071e3] text-sm">' + s.shop_name + '</td><td class="px-3 py-2 text-right font-medium text-sm">' + (typeof s.val === 'number' ? (Number.isInteger(s.val) ? s.val : s.val.toFixed(2)) : s.val) + '</td></tr>';
+        html += '<tr class="hover:bg-amber-50 cursor-pointer transition-colors" onclick="closeSummaryModal();showShopModal(\'' + s.shop_name + '\')"><td class="px-3 py-2 text-amber-700 text-sm">' + s.shop_name + '</td><td class="px-3 py-2 text-right font-medium text-sm">' + (typeof s.val === 'number' ? (Number.isInteger(s.val) ? s.val : s.val.toFixed(2)) : s.val) + '</td></tr>';
     });
-    if (!data.shops.length) html += '<tr><td colspan="2" class="px-3 py-8 text-center text-[#86868b]">暂无数据</td></tr>';
+    if (!data.shops.length) html += '<tr><td colspan="2" class="px-3 py-8 text-center text-amber-500">暂无数据</td></tr>';
     html += '</tbody></table>';
     document.getElementById('summaryModalBody').innerHTML = html;
 }
@@ -301,7 +301,7 @@ function closeSummaryModal() { document.getElementById('summaryModal').classList
 async function showShopModal(name) {
     const modal = document.getElementById('shopModal');
     document.getElementById('shopModalTitle').textContent = name;
-    document.getElementById('shopModalBody').innerHTML = '<div class="text-center py-8 text-[#86868b]">加载中...</div>';
+    document.getElementById('shopModalBody').innerHTML = '<div class="text-center py-8 text-amber-500">加载中...</div>';
     modal.classList.remove('hidden');
     loadShopData(name, '1');
 }
@@ -314,13 +314,13 @@ async function loadShopData(name, range) {
     const ranges = [{l:'今日',v:'1'},{l:'昨日',v:'2'},{l:'近7天',v:'7'},{l:'近15天',v:'15'},{l:'近30天',v:'30'}];
     let html = '<div class="flex items-center gap-3 mb-4">';
     ranges.forEach(r => {
-        html += '<button onclick="loadShopData(\'' + name + '\',\'' + r.v + '\')" class="px-4 py-1.5 rounded-full text-xs font-medium transition-colors ' + (range === r.v ? 'bg-[#0071e3] text-white' : 'bg-[#f5f5f7] text-[#1d1d1f] hover:bg-[#e8e8ed]') + '">' + r.l + '</button>';
+        html += '<button onclick="loadShopData(\'' + name + '\',\'' + r.v + '\')" class="px-4 py-1.5 rounded-full text-xs font-medium transition-colors ' + (range === r.v ? 'bg-amber-500 text-white' : 'bg-amber-50 text-[#1d1d1f] hover:bg-amber-100') + '">' + r.l + '</button>';
     });
     html += '</div>';
     if (latest) {
         html += '<div class="grid grid-cols-3 md:grid-cols-6 gap-2.5 mb-4">';
         [['成交', latest.amount, '#0071e3'],['订单', latest.order_count, '#1d1d1f'],['退款', latest.refund_amount, latest.refund_amount>0?'#ff3b30':'#86868b'],['体验分', latest.experience_score, '#1d1d1f'],['待发货', latest.pending_ship, '#ff9500'],['超时', latest.overdue_ship, latest.overdue_ship>0?'#ff3b30':'#86868b'],['曝光', latest.exposure, '#5856d6'],['点击', latest.clicks, '#af52de'],['资金', latest.fund?latest.fund.toFixed(2):'0', '#1d1d1f'],['在售', latest.on_sale, '#1d1d1f'],['仓库', latest.in_warehouse, '#1d1d1f'],['30天订单', latest.valid_orders_30d, '#1d1d1f']].forEach(i => {
-            html += '<div class="bg-[#f5f5f7] rounded-xl p-3"><div class="text-[10px] text-[#6e6e73] mb-0.5">' + i[0] + '</div><div class="text-base font-semibold" style="color:' + i[2] + '">' + i[1] + '</div></div>';
+            html += '<div class="bg-amber-50 rounded-xl p-3"><div class="text-[10px] text-[#6e6e73] mb-0.5">' + i[0] + '</div><div class="text-base font-semibold" style="color:' + i[2] + '">' + i[1] + '</div></div>';
         });
         html += '</div>';
     }
@@ -330,14 +330,14 @@ async function loadShopData(name, range) {
         const maxAmt = Math.max(...history.map(h => h.amount || 0));
         history.forEach(h => {
             const hh = maxAmt > 0 ? (h.amount / maxAmt * 120) : 0;
-            html += '<div class="flex-1 mx-0.5 group relative"><div class="bg-[#0071e3] rounded-t-sm hover:bg-[#0077ed] transition-colors" style="height:' + hh + 'px"></div><div class="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 bg-[#1d1d1f] text-white text-[10px] px-2 py-1 rounded-md mb-1 whitespace-nowrap z-10">' + h.snapshot_date + ': ' + (h.amount||0).toFixed(2) + '</div></div>';
+            html += '<div class="flex-1 mx-0.5 group relative"><div class="bg-amber-500 rounded-t-sm hover:bg-amber-600 transition-colors" style="height:' + hh + 'px"></div><div class="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 bg-[#1d1d1f] text-white text-[10px] px-2 py-1 rounded-md mb-1 whitespace-nowrap z-10">' + h.snapshot_date + ': ' + (h.amount||0).toFixed(2) + '</div></div>';
         });
         html += '</div></div>';
     }
     html += '<h4 class="text-sm font-semibold mb-2">详细数据</h4>';
     html += '<div class="overflow-x-auto"><table class="w-full text-xs"><thead class="text-[#6e6e73]"><tr><th class="px-2 py-1.5 text-left font-medium">日期</th><th class="px-2 py-1.5 text-right font-medium">成交</th><th class="px-2 py-1.5 text-right font-medium">订单</th><th class="px-2 py-1.5 text-right font-medium">退款</th><th class="px-2 py-1.5 text-right font-medium">体验分</th><th class="px-2 py-1.5 text-right font-medium">待发</th><th class="px-2 py-1.5 text-right font-medium">超时</th><th class="px-2 py-1.5 text-right font-medium">曝光</th><th class="px-2 py-1.5 text-right font-medium">点击</th><th class="px-2 py-1.5 text-right font-medium">资金</th><th class="px-2 py-1.5 text-right font-medium">违规</th></tr></thead><tbody class="divide-y divide-black/5">';
     history.slice().reverse().forEach(h => {
-        html += '<tr><td class="px-2 py-1.5">' + h.snapshot_date + '</td><td class="px-2 py-1.5 text-right">' + (h.amount||0).toFixed(2) + '</td><td class="px-2 py-1.5 text-right">' + h.order_count + '</td><td class="px-2 py-1.5 text-right' + (h.refund_amount>0?' text-[#ff3b30]':'') + '">' + (h.refund_amount||0).toFixed(2) + '</td><td class="px-2 py-1.5 text-right">' + h.experience_score + '</td><td class="px-2 py-1.5 text-right">' + h.pending_ship + '</td><td class="px-2 py-1.5 text-right' + (h.overdue_ship>0?' text-[#ff3b30]':'') + '">' + h.overdue_ship + '</td><td class="px-2 py-1.5 text-right">' + h.exposure + '</td><td class="px-2 py-1.5 text-right">' + h.clicks + '</td><td class="px-2 py-1.5 text-right">' + (h.fund||0).toFixed(2) + '</td><td class="px-2 py-1.5 text-right' + (h.violation_count>0?' text-[#ff3b30]':'') + '">' + h.violation_count + '</td></tr>';
+        html += '<tr><td class="px-2 py-1.5">' + h.snapshot_date + '</td><td class="px-2 py-1.5 text-right">' + (h.amount||0).toFixed(2) + '</td><td class="px-2 py-1.5 text-right">' + h.order_count + '</td><td class="px-2 py-1.5 text-right' + (h.refund_amount>0?' text-red-500':'') + '">' + (h.refund_amount||0).toFixed(2) + '</td><td class="px-2 py-1.5 text-right">' + h.experience_score + '</td><td class="px-2 py-1.5 text-right">' + h.pending_ship + '</td><td class="px-2 py-1.5 text-right' + (h.overdue_ship>0?' text-red-500':'') + '">' + h.overdue_ship + '</td><td class="px-2 py-1.5 text-right">' + h.exposure + '</td><td class="px-2 py-1.5 text-right">' + h.clicks + '</td><td class="px-2 py-1.5 text-right">' + (h.fund||0).toFixed(2) + '</td><td class="px-2 py-1.5 text-right' + (h.violation_count>0?' text-red-500':'') + '">' + h.violation_count + '</td></tr>';
     });
     html += '</tbody></table></div>';
     document.getElementById('shopModalBody').innerHTML = html;

@@ -1,4 +1,5 @@
 import os
+import sys
 import io
 import re
 import sqlite3
@@ -15,7 +16,12 @@ import openpyxl
 
 import crypto
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# Handle PyInstaller bundled resources
+if getattr(sys, 'frozen', False):
+    BASE_DIR = os.path.dirname(sys.executable)
+else:
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 DB_PATH = os.path.join(BASE_DIR, "data.db")
 
 BACKUP_PROFIT = os.path.join(BASE_DIR, "backup", "douyin-profit-tracker", "data.db")
@@ -25,8 +31,15 @@ BACKUP_TASK = os.path.join(BASE_DIR, "backup", "task-tracker", "data.db")
 REPORT_ROOT = os.path.dirname(BASE_DIR)
 
 app = FastAPI()
-app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
-templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
+
+# Ensure directories exist
+static_dir = os.path.join(BASE_DIR, "static")
+templates_dir = os.path.join(BASE_DIR, "templates")
+os.makedirs(static_dir, exist_ok=True)
+os.makedirs(templates_dir, exist_ok=True)
+
+app.mount("/static", StaticFiles(directory=static_dir), name="static")
+templates = Jinja2Templates(directory=templates_dir)
 
 profit_router = APIRouter(prefix="/profit")
 dashboard_router = APIRouter(prefix="/dashboard")
@@ -1719,18 +1732,49 @@ def task_daily_task_templates_page(request: Request):
     tasks = [dict(r) for r in conn.execute(
         "SELECT * FROM daily_task_templates ORDER BY sort_order"
     ).fetchall()]
+    all_shops = [dict(r) for r in conn.execute(
+        "SELECT id, name, group_name FROM shops WHERE status != 'closed' ORDER BY name"
+    ).fetchall()]
+    all_groups = [r['group_name'] for r in conn.execute(
+        "SELECT DISTINCT group_name FROM shops WHERE group_name != '' ORDER BY group_name"
+    ).fetchall()]
     conn.close()
     return templates.TemplateResponse(request, "task/daily_tasks.html", {
-        "request": request, "tasks": tasks
+        "request": request, "tasks": tasks,
+        "all_shops": all_shops, "all_groups": all_groups
     })
 
 
 @task_router.post("/api/daily_task_templates/add")
-def task_add_daily_task(task_name: str = Form(...)):
+def task_add_daily_task(task_name: str = Form(...), shop_ids: str = Form(""), group_names: str = Form("")):
     conn = get_db()
     max_order = conn.execute("SELECT COALESCE(MAX(sort_order),0) FROM daily_task_templates").fetchone()[0]
-    conn.execute("INSERT INTO daily_task_templates(task_name, sort_order) VALUES(?,?)",
+    cur = conn.execute("INSERT INTO daily_task_templates(task_name, sort_order) VALUES(?,?)",
                  (task_name, max_order + 1))
+    task_id = cur.lastrowid
+    
+    # Get shops to apply this task to
+    target_shop_ids = []
+    if shop_ids:
+        target_shop_ids = [int(x) for x in shop_ids.split(",") if x.strip()]
+    elif group_names:
+        for g in group_names.split(","):
+            if g.strip():
+                rows = conn.execute("SELECT id FROM shops WHERE group_name=? AND status != 'closed'", (g.strip(),)).fetchall()
+                target_shop_ids.extend([r['id'] for r in rows])
+    else:
+        # Apply to all active shops by default
+        rows = conn.execute("SELECT id FROM shops WHERE status != 'closed'").fetchall()
+        target_shop_ids = [r['id'] for r in rows]
+    
+    # Create task entries for target shops
+    today = date.today().isoformat()
+    for sid in target_shop_ids:
+        conn.execute(
+            "INSERT OR IGNORE INTO daily_tasks(shop_id, task_id, task_date) VALUES(?,?,?)",
+            (sid, task_id, today)
+        )
+    
     conn.commit()
     conn.close()
     return RedirectResponse("/task/daily_task_templates", status_code=302)
@@ -1749,6 +1793,10 @@ def task_toggle_daily_task(task_id: int):
 def task_delete_daily_task(task_id: int):
     conn = get_db()
     conn.execute("DELETE FROM daily_task_templates WHERE id=?", (task_id,))
+    # Renumber sort_order
+    rows = conn.execute("SELECT id FROM daily_task_templates ORDER BY sort_order").fetchall()
+    for i, row in enumerate(rows, 1):
+        conn.execute("UPDATE daily_task_templates SET sort_order=? WHERE id=?", (i, row['id']))
     conn.commit()
     conn.close()
     return RedirectResponse("/task/daily_task_templates", status_code=302)
@@ -1760,18 +1808,48 @@ def task_new_shop_task_templates_page(request: Request):
     tasks = [dict(r) for r in conn.execute(
         "SELECT * FROM new_shop_task_templates ORDER BY sort_order"
     ).fetchall()]
+    all_new_shops = [dict(r) for r in conn.execute(
+        "SELECT id, name, group_name FROM shops WHERE status = 'new' ORDER BY name"
+    ).fetchall()]
+    all_groups = [r['group_name'] for r in conn.execute(
+        "SELECT DISTINCT group_name FROM shops WHERE group_name != '' ORDER BY group_name"
+    ).fetchall()]
     conn.close()
     return templates.TemplateResponse(request, "task/new_shop_tasks.html", {
-        "request": request, "tasks": tasks
+        "request": request, "tasks": tasks,
+        "all_new_shops": all_new_shops, "all_groups": all_groups
     })
 
 
 @task_router.post("/api/new_shop_task_templates/add")
-def task_add_new_shop_task(task_name: str = Form(...)):
+def task_add_new_shop_task(task_name: str = Form(...), shop_ids: str = Form(""), group_names: str = Form("")):
     conn = get_db()
     max_order = conn.execute("SELECT COALESCE(MAX(sort_order),0) FROM new_shop_task_templates").fetchone()[0]
-    conn.execute("INSERT INTO new_shop_task_templates(task_name, sort_order) VALUES(?,?)",
+    cur = conn.execute("INSERT INTO new_shop_task_templates(task_name, sort_order) VALUES(?,?)",
                  (task_name, max_order + 1))
+    task_id = cur.lastrowid
+    
+    # Get new shops to apply this task to
+    target_shop_ids = []
+    if shop_ids:
+        target_shop_ids = [int(x) for x in shop_ids.split(",") if x.strip()]
+    elif group_names:
+        for g in group_names.split(","):
+            if g.strip():
+                rows = conn.execute("SELECT id FROM shops WHERE group_name=? AND status='new'", (g.strip(),)).fetchall()
+                target_shop_ids.extend([r['id'] for r in rows])
+    else:
+        # Apply to all new shops by default
+        rows = conn.execute("SELECT id FROM shops WHERE status='new'").fetchall()
+        target_shop_ids = [r['id'] for r in rows]
+    
+    # Create task entries for target shops
+    for sid in target_shop_ids:
+        conn.execute(
+            "INSERT OR IGNORE INTO new_shop_tasks(shop_id, task_id) VALUES(?,?)",
+            (sid, task_id)
+        )
+    
     conn.commit()
     conn.close()
     return RedirectResponse("/task/new_shop_task_templates", status_code=302)
@@ -1790,6 +1868,10 @@ def task_toggle_new_shop_task(task_id: int):
 def task_delete_new_shop_task(task_id: int):
     conn = get_db()
     conn.execute("DELETE FROM new_shop_task_templates WHERE id=?", (task_id,))
+    # Renumber sort_order
+    rows = conn.execute("SELECT id FROM new_shop_task_templates ORDER BY sort_order").fetchall()
+    for i, row in enumerate(rows, 1):
+        conn.execute("UPDATE new_shop_task_templates SET sort_order=? WHERE id=?", (i, row['id']))
     conn.commit()
     conn.close()
     return RedirectResponse("/task/new_shop_task_templates", status_code=302)

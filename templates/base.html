@@ -400,6 +400,62 @@ footer .pulse svg {
     box-shadow: 0 8px 30px rgba(245, 184, 0, 0.15);
 }
 
+/* Chart hover effects */
+.chart-bar {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+.chart-bar:hover {
+    filter: brightness(1.2);
+    transform: scaleY(1.05);
+    transform-origin: bottom;
+}
+.chart-bar:hover + .chart-tooltip,
+.chart-tooltip:hover {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+.chart-tooltip {
+    opacity: 0;
+    transform: translateY(5px);
+    transition: all 0.2s ease;
+}
+.chart-container:hover .chart-tooltip {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Table row hover animation */
+.cyber-table tbody tr {
+    transition: all 0.3s ease;
+}
+.cyber-table tbody tr:hover {
+    transform: scale(1.01);
+    background: rgba(245, 184, 0, 0.08);
+}
+
+/* Progress bar hover */
+.cyber-progress:hover .cyber-progress-fill {
+    filter: brightness(1.1);
+    box-shadow: 0 0 10px rgba(245, 184, 0, 0.3);
+}
+
+/* Badge hover */
+.cyber-badge {
+    transition: all 0.2s ease;
+}
+.cyber-badge:hover {
+    transform: scale(1.05);
+}
+
+/* Button icon hover */
+.cyber-btn svg {
+    transition: all 0.3s ease;
+}
+.cyber-btn:hover svg {
+    transform: translateX(3px);
+}
+
 /* Select styles */
 select.cyber-input {
     appearance: none;

@@ -3,13 +3,13 @@
 {% block content %}
 <div class="flex justify-between items-center mb-6">
 <h1 class="text-2xl font-bold">订单详情</h1>
-<a href="/profit/orders" class="bg-gray-100 px-4 py-2 rounded-lg hover:bg-gray-200">返回列表</a>
+<a href="/profit/orders" class="bg-amber-100 px-4 py-2 rounded-lg hover:bg-gray-200">返回列表</a>
 </div>
 <div class="bg-white rounded-xl shadow-sm border p-6 max-w-3xl">
 <form method="post" action="/profit/api/orders/{{ order.douyin_order_no }}">
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 <div><label class="block text-sm font-medium mb-1">抖音订单号</label>
-<input type="text" value="{{ order.douyin_order_no }}" class="border rounded-lg px-3 py-2 w-full bg-gray-100" readonly></div>
+<input type="text" value="{{ order.douyin_order_no }}" class="border rounded-lg px-3 py-2 w-full bg-amber-100" readonly></div>
 <div><label class="block text-sm font-medium mb-1">店铺</label>
 <select name="shop_id" class="border rounded-lg px-3 py-2 w-full">
 {% for s in shops %}<option value="{{ s.id }}" {{ 'selected' if order.shop_id == s.id }}>{{ s.name }}</option>{% endfor %}
@@ -53,7 +53,7 @@
 <div><label class="block text-sm font-medium mb-1">物流单号</label>
 <input type="text" name="logistics_no" value="{{ order.logistics_no }}" class="border rounded-lg px-3 py-2 w-full"></div>
 </div>
-<div class="mt-6 p-4 bg-gray-50 rounded-lg">
+<div class="mt-6 p-4 bg-amber-50 rounded-lg">
 <h3 class="font-medium mb-2">利润明细</h3>
 {% set commission = order.douyin_amount * 0.25 if order.is_influencer == '是' else 0 %}
 {% set ship_cost = 5.5 if order.warehouse_status in ('已到达仓库未发货', '已到仓库已发货') else 0 %}
@@ -72,7 +72,7 @@
 </div>
 <div class="flex gap-4 mt-6">
 <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">保存修改</button>
-<a href="/profit/orders" class="bg-gray-100 px-4 py-2 rounded-lg hover:bg-gray-200">取消</a>
+<a href="/profit/orders" class="bg-amber-100 px-4 py-2 rounded-lg hover:bg-gray-200">取消</a>
 <form method="post" action="/profit/api/orders/{{ order.douyin_order_no }}/delete" onsubmit="return confirm('确认删除该订单？')" class="ml-auto">
 <button class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">删除订单</button>
 </form>

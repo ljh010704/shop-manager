@@ -2,8 +2,8 @@
 {% block title %}首页 - 抖音小店利润统计{% endblock %}
 {% block content %}
 <div class="mb-8">
-<h1 class="text-3xl font-bold text-gray-900 mb-2">数据看板</h1>
-<p class="text-gray-500">实时监控您的店铺利润数据</p>
+<h1 class="text-3xl font-bold text-amber-900 mb-2">数据看板</h1>
+<p class="text-amber-500">实时监控您的店铺利润数据</p>
 </div>
 
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -15,12 +15,12 @@
       <span class="text-xs font-medium text-green-700 bg-green-50 px-3 py-1 rounded-full">今日</span>
     </div>
     <div class="text-4xl font-bold mb-2 {{ 'text-green-700' if td.profit >= 0 else 'text-red-600' }}">¥{{ "%.2f"|format(td.profit) }}</div>
-    <div class="text-sm text-gray-500 mb-4">{{ td.cnt }} 笔订单</div>
+    <div class="text-sm text-amber-500 mb-4">{{ td.cnt }} 笔订单</div>
     <div class="grid grid-cols-2 gap-3">
-      <div class="bg-green-50/50 rounded-xl p-3"><div class="text-xs text-gray-500 mb-1">收入</div><div class="font-semibold text-green-700">¥{{ "%.2f"|format(td.dy) }}</div></div>
-      <div class="bg-red-50/50 rounded-xl p-3"><div class="text-xs text-gray-500 mb-1">采购</div><div class="font-semibold text-red-600">¥{{ "%.2f"|format(td.tb) }}</div></div>
-      <div class="bg-orange-50/50 rounded-xl p-3"><div class="text-xs text-gray-500 mb-1">佣金</div><div class="font-semibold text-amber-600">¥{{ "%.2f"|format(td.commission) }}</div></div>
-      <div class="bg-purple-50/50 rounded-xl p-3"><div class="text-xs text-gray-500 mb-1">运费</div><div class="font-semibold text-purple-600">¥{{ "%.2f"|format(td.freight) }}</div></div>
+      <div class="bg-green-50/50 rounded-xl p-3"><div class="text-xs text-amber-500 mb-1">收入</div><div class="font-semibold text-green-700">¥{{ "%.2f"|format(td.dy) }}</div></div>
+      <div class="bg-red-50/50 rounded-xl p-3"><div class="text-xs text-amber-500 mb-1">采购</div><div class="font-semibold text-red-600">¥{{ "%.2f"|format(td.tb) }}</div></div>
+      <div class="bg-orange-50/50 rounded-xl p-3"><div class="text-xs text-amber-500 mb-1">佣金</div><div class="font-semibold text-amber-600">¥{{ "%.2f"|format(td.commission) }}</div></div>
+      <div class="bg-purple-50/50 rounded-xl p-3"><div class="text-xs text-amber-500 mb-1">运费</div><div class="font-semibold text-purple-600">¥{{ "%.2f"|format(td.freight) }}</div></div>
     </div>
   </div>
 
@@ -32,12 +32,12 @@
       <span class="text-xs font-medium text-amber-700 bg-blue-50 px-3 py-1 rounded-full">本周</span>
     </div>
     <div class="text-4xl font-bold mb-2 {{ 'text-green-700' if wk.profit >= 0 else 'text-red-600' }}">¥{{ "%.2f"|format(wk.profit) }}</div>
-    <div class="text-sm text-gray-500 mb-4">{{ wk.cnt }} 笔订单</div>
+    <div class="text-sm text-amber-500 mb-4">{{ wk.cnt }} 笔订单</div>
     <div class="grid grid-cols-2 gap-3">
-      <div class="bg-green-50/50 rounded-xl p-3"><div class="text-xs text-gray-500 mb-1">收入</div><div class="font-semibold text-green-700">¥{{ "%.2f"|format(wk.dy) }}</div></div>
-      <div class="bg-red-50/50 rounded-xl p-3"><div class="text-xs text-gray-500 mb-1">采购</div><div class="font-semibold text-red-600">¥{{ "%.2f"|format(wk.tb) }}</div></div>
-      <div class="bg-orange-50/50 rounded-xl p-3"><div class="text-xs text-gray-500 mb-1">佣金</div><div class="font-semibold text-amber-600">¥{{ "%.2f"|format(wk.commission) }}</div></div>
-      <div class="bg-purple-50/50 rounded-xl p-3"><div class="text-xs text-gray-500 mb-1">运费</div><div class="font-semibold text-purple-600">¥{{ "%.2f"|format(wk.freight) }}</div></div>
+      <div class="bg-green-50/50 rounded-xl p-3"><div class="text-xs text-amber-500 mb-1">收入</div><div class="font-semibold text-green-700">¥{{ "%.2f"|format(wk.dy) }}</div></div>
+      <div class="bg-red-50/50 rounded-xl p-3"><div class="text-xs text-amber-500 mb-1">采购</div><div class="font-semibold text-red-600">¥{{ "%.2f"|format(wk.tb) }}</div></div>
+      <div class="bg-orange-50/50 rounded-xl p-3"><div class="text-xs text-amber-500 mb-1">佣金</div><div class="font-semibold text-amber-600">¥{{ "%.2f"|format(wk.commission) }}</div></div>
+      <div class="bg-purple-50/50 rounded-xl p-3"><div class="text-xs text-amber-500 mb-1">运费</div><div class="font-semibold text-purple-600">¥{{ "%.2f"|format(wk.freight) }}</div></div>
     </div>
   </div>
 
@@ -49,12 +49,12 @@
       <span class="text-xs font-medium text-purple-600 bg-purple-50 px-3 py-1 rounded-full">本月</span>
     </div>
     <div class="text-4xl font-bold mb-2 {{ 'text-green-700' if mn.profit >= 0 else 'text-red-600' }}">¥{{ "%.2f"|format(mn.profit) }}</div>
-    <div class="text-sm text-gray-500 mb-4">{{ mn.cnt }} 笔订单</div>
+    <div class="text-sm text-amber-500 mb-4">{{ mn.cnt }} 笔订单</div>
     <div class="grid grid-cols-2 gap-3">
-      <div class="bg-green-50/50 rounded-xl p-3"><div class="text-xs text-gray-500 mb-1">收入</div><div class="font-semibold text-green-700">¥{{ "%.2f"|format(mn.dy) }}</div></div>
-      <div class="bg-red-50/50 rounded-xl p-3"><div class="text-xs text-gray-500 mb-1">采购</div><div class="font-semibold text-red-600">¥{{ "%.2f"|format(mn.tb) }}</div></div>
-      <div class="bg-orange-50/50 rounded-xl p-3"><div class="text-xs text-gray-500 mb-1">佣金</div><div class="font-semibold text-amber-600">¥{{ "%.2f"|format(mn.commission) }}</div></div>
-      <div class="bg-purple-50/50 rounded-xl p-3"><div class="text-xs text-gray-500 mb-1">运费</div><div class="font-semibold text-purple-600">¥{{ "%.2f"|format(mn.freight) }}</div></div>
+      <div class="bg-green-50/50 rounded-xl p-3"><div class="text-xs text-amber-500 mb-1">收入</div><div class="font-semibold text-green-700">¥{{ "%.2f"|format(mn.dy) }}</div></div>
+      <div class="bg-red-50/50 rounded-xl p-3"><div class="text-xs text-amber-500 mb-1">采购</div><div class="font-semibold text-red-600">¥{{ "%.2f"|format(mn.tb) }}</div></div>
+      <div class="bg-orange-50/50 rounded-xl p-3"><div class="text-xs text-amber-500 mb-1">佣金</div><div class="font-semibold text-amber-600">¥{{ "%.2f"|format(mn.commission) }}</div></div>
+      <div class="bg-purple-50/50 rounded-xl p-3"><div class="text-xs text-amber-500 mb-1">运费</div><div class="font-semibold text-purple-600">¥{{ "%.2f"|format(mn.freight) }}</div></div>
     </div>
   </div>
 </div>
@@ -62,13 +62,13 @@
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
   <div class="lg:col-span-2 tech-card glow-warm p-6">
     <div class="flex items-center justify-between mb-6">
-      <h2 class="text-lg font-semibold text-gray-900">利润趋势</h2>
+      <h2 class="text-lg font-semibold text-amber-900">利润趋势</h2>
       <div class="flex items-center gap-3">
-        <select id="trendShop" onchange="loadTrend()" class="bg-white/80 border border-gray-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">
+        <select id="trendShop" onchange="loadTrend()" class="bg-white/80 border border-amber-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">
           <option value="">全部店铺</option>
           {% for sp in shop_profit %}<option value="{{ sp.id }}">{{ sp.name }}</option>{% endfor %}
         </select>
-        <select id="trendGroup" onchange="loadTrend()" class="bg-white/80 border border-gray-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">
+        <select id="trendGroup" onchange="loadTrend()" class="bg-white/80 border border-amber-200 rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">
           <option value="">全部分组</option>
           {% for g in groups %}<option value="{{ g }}">{{ g }}</option>{% endfor %}
         </select>
@@ -76,27 +76,27 @@
     </div>
     <div class="flex gap-3 mb-6">
       <button onclick="setTrendDays('today', this)" class="trend-btn px-4 py-2 rounded-xl text-sm font-medium bg-amber-500 text-white shadow-md shadow-amber-500/30">今日</button>
-      <button onclick="setTrendDays(7, this)" class="trend-btn px-4 py-2 rounded-xl text-sm font-medium bg-white/80 text-gray-600 hover:bg-gray-100 transition">近7天</button>
-      <button onclick="setTrendDays(15, this)" class="trend-btn px-4 py-2 rounded-xl text-sm font-medium bg-white/80 text-gray-600 hover:bg-gray-100 transition">近15天</button>
-      <button onclick="setTrendDays(30, this)" class="trend-btn px-4 py-2 rounded-xl text-sm font-medium bg-white/80 text-gray-600 hover:bg-gray-100 transition">近30天</button>
+      <button onclick="setTrendDays(7, this)" class="trend-btn px-4 py-2 rounded-xl text-sm font-medium bg-white/80 text-amber-600 hover:bg-amber-100 transition">近7天</button>
+      <button onclick="setTrendDays(15, this)" class="trend-btn px-4 py-2 rounded-xl text-sm font-medium bg-white/80 text-amber-600 hover:bg-amber-100 transition">近15天</button>
+      <button onclick="setTrendDays(30, this)" class="trend-btn px-4 py-2 rounded-xl text-sm font-medium bg-white/80 text-amber-600 hover:bg-amber-100 transition">近30天</button>
     </div>
     <div id="trendChart" class="h-72"></div>
   </div>
 
   <div class="tech-card glow-warm p-6">
-    <h2 class="text-lg font-semibold text-gray-900 mb-6">店铺利润</h2>
+    <h2 class="text-lg font-semibold text-amber-900 mb-6">店铺利润</h2>
     {% for g in groups %}
     <div class="mb-5">
       <div class="flex items-center gap-2 mb-3 cursor-pointer group" onclick="toggleGroup(this)">
-        <svg class="w-4 h-4 text-gray-400 transform transition-transform group-hover:text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-        <span class="text-sm font-semibold text-gray-700 uppercase tracking-wider">{{ g }}</span>
+        <svg class="w-4 h-4 text-amber-400 transform transition-transform group-hover:text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        <span class="text-sm font-semibold text-amber-700 uppercase tracking-wider">{{ g }}</span>
       </div>
       <div class="space-y-2 ml-6 group-shops">
         {% for sp in shop_profit if sp.group_name == g %}
         <div class="flex items-center justify-between p-3 rounded-xl hover:bg-white/60 cursor-pointer transition-all duration-200" onclick="showShopModal({{ sp.id }}, '{{ sp.name }}')">
           <div class="flex items-center gap-3">
             <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-apple-blue to-blue-400 flex items-center justify-center text-white text-sm font-semibold">{{ sp.name[0] }}</div>
-            <span class="font-medium text-gray-800">{{ sp.name }}</span>
+            <span class="font-medium text-amber-800">{{ sp.name }}</span>
           </div>
           <span class="font-semibold {{ 'text-green-700' if sp.profit >= 0 else 'text-red-600' }}">¥{{ "%.2f"|format(sp.profit) }}</span>
         </div>
@@ -106,15 +106,15 @@
     {% endfor %}
     <div class="mb-5">
       <div class="flex items-center gap-2 mb-3 cursor-pointer group" onclick="toggleGroup(this)">
-        <svg class="w-4 h-4 text-gray-400 transform transition-transform group-hover:text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-        <span class="text-sm font-semibold text-gray-700 uppercase tracking-wider">未分组</span>
+        <svg class="w-4 h-4 text-amber-400 transform transition-transform group-hover:text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        <span class="text-sm font-semibold text-amber-700 uppercase tracking-wider">未分组</span>
       </div>
       <div class="space-y-2 ml-6 group-shops">
         {% for sp in shop_profit if not sp.group_name %}
         <div class="flex items-center justify-between p-3 rounded-xl hover:bg-white/60 cursor-pointer transition-all duration-200" onclick="showShopModal({{ sp.id }}, '{{ sp.name }}')">
           <div class="flex items-center gap-3">
             <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-gray-400 to-gray-500 flex items-center justify-center text-white text-sm font-semibold">{{ sp.name[0] }}</div>
-            <span class="font-medium text-gray-800">{{ sp.name }}</span>
+            <span class="font-medium text-amber-800">{{ sp.name }}</span>
           </div>
           <span class="font-semibold {{ 'text-green-700' if sp.profit >= 0 else 'text-red-600' }}">¥{{ "%.2f"|format(sp.profit) }}</span>
         </div>
@@ -124,7 +124,7 @@
     {% if not shop_profit %}
     <div class="text-center py-12">
       <svg class="w-12 h-12 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
-      <p class="text-gray-400">暂无数据</p>
+      <p class="text-amber-400">暂无数据</p>
     </div>
     {% endif %}
   </div>
@@ -134,9 +134,9 @@
 <div id="shopModal" class="fixed inset-0 bg-black/30 backdrop-blur-sm hidden z-50 flex items-center justify-center">
 <div class="tech-card glow-warm-lg max-w-5xl w-full mx-4 flex flex-col" style="max-height:90vh">
 <div class="flex justify-between items-center p-6 border-b border-gray-100">
-<h2 class="text-xl font-semibold text-gray-900" id="shopModalTitle">店铺详情</h2>
-<button onclick="closeShopModal()" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition">
-<svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+<h2 class="text-xl font-semibold text-amber-900" id="shopModalTitle">店铺详情</h2>
+<button onclick="closeShopModal()" class="w-8 h-8 rounded-full bg-amber-100 hover:bg-gray-200 flex items-center justify-center transition">
+<svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
 </button>
 </div>
 <div class="p-6 overflow-y-auto flex-1" id="shopModalContent">
@@ -151,9 +151,9 @@
 <div id="orderModal" class="fixed inset-0 bg-black/30 backdrop-blur-sm hidden z-[60] flex items-center justify-center">
 <div class="tech-card glow-warm-lg max-w-2xl w-full mx-4 flex flex-col" style="max-height:90vh">
 <div class="flex justify-between items-center p-6 border-b border-gray-100">
-<h2 class="text-xl font-semibold text-gray-900">订单详情</h2>
-<button onclick="closeOrderModal()" class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition">
-<svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+<h2 class="text-xl font-semibold text-amber-900">订单详情</h2>
+<button onclick="closeOrderModal()" class="w-8 h-8 rounded-full bg-amber-100 hover:bg-gray-200 flex items-center justify-center transition">
+<svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
 </button>
 </div>
 <div class="p-6 overflow-y-auto flex-1" id="orderModalContent">
@@ -183,7 +183,7 @@ function toggleGroup(el) {
 function renderTrend(data) {
     var c = document.getElementById('trendChart');
     if (!data || data.length === 0) {
-        c.innerHTML = '<div class="flex items-center justify-center h-full"><p class="text-gray-400">暂无数据</p></div>';
+        c.innerHTML = '<div class="flex items-center justify-center h-full"><p class="text-amber-400">暂无数据</p></div>';
         return;
     }
     var mx = Math.max(...data.map(x => Math.abs(x.profit)), 1);
@@ -241,9 +241,9 @@ function setTrendDays(days, btn) {
     currentDays = days;
     document.querySelectorAll('.trend-btn').forEach(b => {
         b.classList.remove('bg-amber-500', 'text-white', 'shadow-md', 'shadow-amber-500/30');
-        b.classList.add('bg-white/80', 'text-gray-600');
+        b.classList.add('bg-white/80', 'text-amber-600');
     });
-    btn.classList.remove('bg-white/80', 'text-gray-600');
+    btn.classList.remove('bg-white/80', 'text-amber-600');
     btn.classList.add('bg-amber-500', 'text-white', 'shadow-md', 'shadow-amber-500/30');
     loadTrend();
 }
@@ -274,9 +274,9 @@ function showShopModal(shopId, shopName) {
     modal.classList.remove('hidden');
     content.innerHTML = '<div class="mb-6"><div class="flex gap-3 mb-6">' +
         '<button onclick="loadShopTrend(' + shopId + ', \'today\', this)" class="shop-trend-btn px-4 py-2 rounded-xl text-sm font-medium bg-amber-500 text-white shadow-md shadow-amber-500/30">今日</button>' +
-        '<button onclick="loadShopTrend(' + shopId + ', 7, this)" class="shop-trend-btn px-4 py-2 rounded-xl text-sm font-medium bg-white/80 text-gray-600 hover:bg-gray-100">近7天</button>' +
-        '<button onclick="loadShopTrend(' + shopId + ', 15, this)" class="shop-trend-btn px-4 py-2 rounded-xl text-sm font-medium bg-white/80 text-gray-600 hover:bg-gray-100">近15天</button>' +
-        '<button onclick="loadShopTrend(' + shopId + ', 30, this)" class="shop-trend-btn px-4 py-2 rounded-xl text-sm font-medium bg-white/80 text-gray-600 hover:bg-gray-100">近30天</button>' +
+        '<button onclick="loadShopTrend(' + shopId + ', 7, this)" class="shop-trend-btn px-4 py-2 rounded-xl text-sm font-medium bg-white/80 text-amber-600 hover:bg-amber-100">近7天</button>' +
+        '<button onclick="loadShopTrend(' + shopId + ', 15, this)" class="shop-trend-btn px-4 py-2 rounded-xl text-sm font-medium bg-white/80 text-amber-600 hover:bg-amber-100">近15天</button>' +
+        '<button onclick="loadShopTrend(' + shopId + ', 30, this)" class="shop-trend-btn px-4 py-2 rounded-xl text-sm font-medium bg-white/80 text-amber-600 hover:bg-amber-100">近30天</button>' +
         '</div><div id="shopTrendChart" class="h-48 mb-6"></div>' +
         '<div id="shopOrdersList"></div></div>';
     loadShopTrend(shopId, 'today', content.querySelector('.shop-trend-btn'));
@@ -285,7 +285,7 @@ function showShopModal(shopId, shopName) {
 function renderShopTrend(data) {
     var c = document.getElementById('shopTrendChart');
     if (!data || data.length === 0) {
-        c.innerHTML = '<div class="flex items-center justify-center h-full"><p class="text-gray-400">暂无数据</p></div>';
+        c.innerHTML = '<div class="flex items-center justify-center h-full"><p class="text-amber-400">暂无数据</p></div>';
         return;
     }
     var range = Math.max(...data.map(x => x.profit)) - Math.min(...data.map(x => x.profit)) || 1;
@@ -314,9 +314,9 @@ function renderShopTrend(data) {
 function loadShopTrend(shopId, days, btn) {
     document.querySelectorAll('.shop-trend-btn').forEach(b => {
         b.classList.remove('bg-amber-500', 'text-white', 'shadow-md', 'shadow-amber-500/30');
-        b.classList.add('bg-white/80', 'text-gray-600');
+        b.classList.add('bg-white/80', 'text-amber-600');
     });
-    btn.classList.remove('bg-white/80', 'text-gray-600');
+    btn.classList.remove('bg-white/80', 'text-amber-600');
     btn.classList.add('bg-amber-500', 'text-white', 'shadow-md', 'shadow-amber-500/30');
     var url;
     if (days === 'today') {
@@ -333,27 +333,27 @@ function loadShopTrend(shopId, days, btn) {
     fetch('/profit/api/shop/' + shopId + '/orders').then(r => r.json()).then(data => {
         var list = document.getElementById('shopOrdersList');
         if (!data.orders.length) {
-            list.innerHTML = '<div class="text-center py-8"><p class="text-gray-400">暂无订单</p></div>';
+            list.innerHTML = '<div class="text-center py-8"><p class="text-amber-400">暂无订单</p></div>';
             return;
         }
         var totalProfit = data.orders.reduce((sum, o) => sum + o.profit, 0);
-        var html = '<div class="glass rounded-xl p-4 mb-4 flex justify-between items-center"><span class="text-sm text-gray-600">共 <strong class="text-gray-900">' + data.orders.length + '</strong> 笔订单</span><span class="font-semibold ' + (totalProfit >= 0 ? 'text-green-700' : 'text-red-600') + '">¥' + totalProfit.toFixed(2) + '</span></div>';
-        html += '<div class="glass rounded-xl overflow-hidden"><table class="w-full text-sm"><thead class="bg-gray-50/80"><tr>' +
-            '<th class="px-4 py-3 text-left font-medium text-gray-600">订单号</th><th class="px-4 py-3 text-left font-medium text-gray-600">商品</th>' +
-            '<th class="px-4 py-3 text-right font-medium text-gray-600">抖音</th><th class="px-4 py-3 text-right font-medium text-gray-600">淘宝</th>' +
-            '<th class="px-4 py-3 text-right font-medium text-gray-600">利润</th><th class="px-4 py-3 text-center font-medium text-gray-600">状态</th>' +
-            '<th class="px-4 py-3 text-center font-medium text-gray-600">日期</th></tr></thead><tbody>';
+        var html = '<div class="glass rounded-xl p-4 mb-4 flex justify-between items-center"><span class="text-sm text-amber-600">共 <strong class="text-amber-900">' + data.orders.length + '</strong> 笔订单</span><span class="font-semibold ' + (totalProfit >= 0 ? 'text-green-700' : 'text-red-600') + '">¥' + totalProfit.toFixed(2) + '</span></div>';
+        html += '<div class="glass rounded-xl overflow-hidden"><table class="w-full text-sm"><thead class="bg-amber-50/80"><tr>' +
+            '<th class="px-4 py-3 text-left font-medium text-amber-600">订单号</th><th class="px-4 py-3 text-left font-medium text-amber-600">商品</th>' +
+            '<th class="px-4 py-3 text-right font-medium text-amber-600">抖音</th><th class="px-4 py-3 text-right font-medium text-amber-600">淘宝</th>' +
+            '<th class="px-4 py-3 text-right font-medium text-amber-600">利润</th><th class="px-4 py-3 text-center font-medium text-amber-600">状态</th>' +
+            '<th class="px-4 py-3 text-center font-medium text-amber-600">日期</th></tr></thead><tbody>';
         data.orders.forEach(o => {
             html += '<tr class="border-t border-gray-100 hover:bg-blue-50/30 cursor-pointer transition" onclick="showOrderDetail(\'' + o.douyin_order_no + '\')">' +
                 '<td class="px-4 py-3 font-mono text-xs text-amber-700">' + o.douyin_order_no + '</td>' +
-                '<td class="px-4 py-3 text-gray-700">' + (o.product_name || '') + '</td>' +
-                '<td class="px-4 py-3 text-right text-gray-700">¥' + o.douyin_amount.toFixed(2) + '</td>' +
-                '<td class="px-4 py-3 text-right text-gray-700">¥' + o.taobao_amount.toFixed(2) + '</td>' +
+                '<td class="px-4 py-3 text-amber-700">' + (o.product_name || '') + '</td>' +
+                '<td class="px-4 py-3 text-right text-amber-700">¥' + o.douyin_amount.toFixed(2) + '</td>' +
+                '<td class="px-4 py-3 text-right text-amber-700">¥' + o.taobao_amount.toFixed(2) + '</td>' +
                 '<td class="px-4 py-3 text-right font-semibold ' + (o.profit >= 0 ? 'text-green-700' : 'text-red-600') + '">¥' + o.profit.toFixed(2) + '</td>' +
                 '<td class="px-4 py-3 text-center"><span class="text-xs px-3 py-1 rounded-full font-medium ' +
-                (o.refund_status == '退货退款' ? 'text-red-600 bg-red-50' : o.refund_status == '已发货退款' ? 'text-amber-600 bg-orange-50' : o.refund_status == '已发货' ? 'text-amber-700 bg-blue-50' : 'text-gray-600 bg-gray-100') +
+                (o.refund_status == '退货退款' ? 'text-red-600 bg-red-50' : o.refund_status == '已发货退款' ? 'text-amber-600 bg-orange-50' : o.refund_status == '已发货' ? 'text-amber-700 bg-blue-50' : 'text-amber-600 bg-amber-100') +
                 '">' + o.refund_status + '</span></td>' +
-                '<td class="px-4 py-3 text-center text-gray-500 text-xs">' + o.order_date + '</td></tr>';
+                '<td class="px-4 py-3 text-center text-amber-500 text-xs">' + o.order_date + '</td></tr>';
         });
         html += '</tbody></table></div>';
         list.innerHTML = html;
@@ -378,47 +378,47 @@ function showOrderDetail(dyNo) {
         var shopOptions = shops.map(s => '<option value="' + s.id + '"' + (s.id == o.shop_id ? ' selected' : '') + '>' + s.name + '</option>').join('');
         content.innerHTML = '<form method="post" action="/profit/api/orders/' + o.douyin_order_no + '">' +
             '<div class="grid grid-cols-2 gap-4">' +
-            '<div><label class="block text-sm font-medium text-gray-700 mb-2">抖音订单号</label><input type="text" value="' + o.douyin_order_no + '" class="w-full px-4 py-3 rounded-xl bg-gray-50 border-0 text-gray-500" readonly></div>' +
-            '<div><label class="block text-sm font-medium text-gray-700 mb-2">店铺</label><select name="shop_id" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">' + shopOptions + '</select></div>' +
-            '<div><label class="block text-sm font-medium text-gray-700 mb-2">商品名称</label><input type="text" name="product_name" value="' + (o.product_name||'') + '" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"></div>' +
-            '<div><label class="block text-sm font-medium text-gray-700 mb-2">订单日期</label><input type="date" name="order_date" value="' + o.order_date + '" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"></div>' +
-            '<div><label class="block text-sm font-medium text-gray-700 mb-2">抖音金额</label><input type="number" step="0.01" name="douyin_amount" value="' + o.douyin_amount + '" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"></div>' +
-            '<div><label class="block text-sm font-medium text-gray-700 mb-2">淘宝订单号</label><input type="text" name="taobao_order_no" value="' + (o.taobao_order_no||'') + '" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"></div>' +
-            '<div><label class="block text-sm font-medium text-gray-700 mb-2">淘宝金额</label><input type="number" step="0.01" name="taobao_amount" value="' + (o.taobao_amount||0) + '" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"></div>' +
-            '<div><label class="block text-sm font-medium text-gray-700 mb-2">订单状态</label><select name="refund_status" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">' +
+            '<div><label class="block text-sm font-medium text-amber-700 mb-2">抖音订单号</label><input type="text" value="' + o.douyin_order_no + '" class="w-full px-4 py-3 rounded-xl bg-amber-50 border-0 text-amber-500" readonly></div>' +
+            '<div><label class="block text-sm font-medium text-amber-700 mb-2">店铺</label><select name="shop_id" class="w-full px-4 py-3 rounded-xl bg-white border border-amber-200 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">' + shopOptions + '</select></div>' +
+            '<div><label class="block text-sm font-medium text-amber-700 mb-2">商品名称</label><input type="text" name="product_name" value="' + (o.product_name||'') + '" class="w-full px-4 py-3 rounded-xl bg-white border border-amber-200 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"></div>' +
+            '<div><label class="block text-sm font-medium text-amber-700 mb-2">订单日期</label><input type="date" name="order_date" value="' + o.order_date + '" class="w-full px-4 py-3 rounded-xl bg-white border border-amber-200 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"></div>' +
+            '<div><label class="block text-sm font-medium text-amber-700 mb-2">抖音金额</label><input type="number" step="0.01" name="douyin_amount" value="' + o.douyin_amount + '" class="w-full px-4 py-3 rounded-xl bg-white border border-amber-200 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"></div>' +
+            '<div><label class="block text-sm font-medium text-amber-700 mb-2">淘宝订单号</label><input type="text" name="taobao_order_no" value="' + (o.taobao_order_no||'') + '" class="w-full px-4 py-3 rounded-xl bg-white border border-amber-200 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"></div>' +
+            '<div><label class="block text-sm font-medium text-amber-700 mb-2">淘宝金额</label><input type="number" step="0.01" name="taobao_amount" value="' + (o.taobao_amount||0) + '" class="w-full px-4 py-3 rounded-xl bg-white border border-amber-200 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"></div>' +
+            '<div><label class="block text-sm font-medium text-amber-700 mb-2">订单状态</label><select name="refund_status" class="w-full px-4 py-3 rounded-xl bg-white border border-amber-200 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">' +
             '<option value="待发货"' + (o.refund_status=='待发货'?' selected':'') + '>待发货</option>' +
             '<option value="已发货"' + (o.refund_status=='已发货'?' selected':'') + '>已发货</option>' +
             '<option value="已发货退款"' + (o.refund_status=='已发货退款'?' selected':'') + '>已发货退款</option>' +
             '<option value="退货退款"' + (o.refund_status=='退货退款'?' selected':'') + '>退货退款</option></select></div>' +
-            '<div><label class="block text-sm font-medium text-gray-700 mb-2">达人带货</label><select name="is_influencer" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">' +
+            '<div><label class="block text-sm font-medium text-amber-700 mb-2">达人带货</label><select name="is_influencer" class="w-full px-4 py-3 rounded-xl bg-white border border-amber-200 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">' +
             '<option value="否"' + (o.is_influencer=='否'?' selected':'') + '>否</option>' +
             '<option value="是"' + (o.is_influencer=='是'?' selected':'') + '>是（25%佣金）</option></select></div>' +
-            '<div><label class="block text-sm font-medium text-gray-700 mb-2">仓库状态</label><select name="warehouse_status" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">' +
+            '<div><label class="block text-sm font-medium text-amber-700 mb-2">仓库状态</label><select name="warehouse_status" class="w-full px-4 py-3 rounded-xl bg-white border border-amber-200 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500">' +
             '<option value="未到仓库"' + (o.warehouse_status=='未到仓库'?' selected':'') + '>未到仓库</option>' +
             '<option value="已到达仓库未发货"' + (o.warehouse_status=='已到达仓库未发货'?' selected':'') + '>已到达仓库未发货</option>' +
             '<option value="已到仓库已发货"' + (o.warehouse_status=='已到仓库已发货'?' selected':'') + '>已到仓库已发货</option></select></div>' +
             '</div>' +
             '<div class="grid grid-cols-2 gap-4 mt-4">' +
-            '<div><label class="block text-sm font-medium text-gray-700 mb-2">买家备注</label><input type="text" name="buyer_note" value="' + (o.buyer_note||'') + '" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"></div>' +
-            '<div><label class="block text-sm font-medium text-gray-700 mb-2">系统备注</label><input type="text" name="system_note" value="' + (o.system_note||'') + '" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"></div>' +
-            '<div><label class="block text-sm font-medium text-gray-700 mb-2">物流公司</label><input type="text" name="logistics_company" value="' + (o.logistics_company||'') + '" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"></div>' +
-            '<div><label class="block text-sm font-medium text-gray-700 mb-2">物流单号</label><input type="text" name="logistics_no" value="' + (o.logistics_no||'') + '" class="w-full px-4 py-3 rounded-xl bg-white border border-gray-200 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"></div>' +
+            '<div><label class="block text-sm font-medium text-amber-700 mb-2">买家备注</label><input type="text" name="buyer_note" value="' + (o.buyer_note||'') + '" class="w-full px-4 py-3 rounded-xl bg-white border border-amber-200 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"></div>' +
+            '<div><label class="block text-sm font-medium text-amber-700 mb-2">系统备注</label><input type="text" name="system_note" value="' + (o.system_note||'') + '" class="w-full px-4 py-3 rounded-xl bg-white border border-amber-200 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"></div>' +
+            '<div><label class="block text-sm font-medium text-amber-700 mb-2">物流公司</label><input type="text" name="logistics_company" value="' + (o.logistics_company||'') + '" class="w-full px-4 py-3 rounded-xl bg-white border border-amber-200 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"></div>' +
+            '<div><label class="block text-sm font-medium text-amber-700 mb-2">物流单号</label><input type="text" name="logistics_no" value="' + (o.logistics_no||'') + '" class="w-full px-4 py-3 rounded-xl bg-white border border-amber-200 focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500"></div>' +
             '</div>' +
             '<div class="mt-6 glass rounded-xl p-5">' +
-            '<h3 class="font-semibold text-gray-900 mb-4">利润明细</h3>' +
+            '<h3 class="font-semibold text-amber-900 mb-4">利润明细</h3>' +
             '<div class="grid grid-cols-2 md:grid-cols-4 gap-3">' +
-            '<div class="bg-white/60 rounded-lg p-3"><div class="text-xs text-gray-500 mb-1">抖音</div><div class="font-semibold text-gray-900">¥' + o.douyin_amount.toFixed(2) + '</div></div>' +
-            '<div class="bg-white/60 rounded-lg p-3"><div class="text-xs text-gray-500 mb-1">淘宝</div><div class="font-semibold text-gray-900">¥' + o.taobao_amount.toFixed(2) + '</div></div>' +
-            '<div class="bg-white/60 rounded-lg p-3"><div class="text-xs text-gray-500 mb-1">运费</div><div class="font-semibold text-red-600">-¥' + freight.toFixed(2) + '</div></div>' +
-            '<div class="bg-white/60 rounded-lg p-3"><div class="text-xs text-gray-500 mb-1">佣金</div><div class="font-semibold text-red-600">-¥' + commission.toFixed(2) + '</div></div>' +
-            '<div class="bg-white/60 rounded-lg p-3"><div class="text-xs text-gray-500 mb-1">发货</div><div class="font-semibold text-red-600">-¥' + shipCost.toFixed(2) + '</div></div>' +
-            '<div class="bg-white/60 rounded-lg p-3"><div class="text-xs text-gray-500 mb-1">退款</div><div class="font-semibold text-red-600">-¥' + refund.toFixed(2) + '</div></div>' +
-            '<div class="bg-white/60 rounded-lg p-3"><div class="text-xs text-gray-500 mb-1">退货成本</div><div class="font-semibold text-red-600">-¥' + returnCost.toFixed(2) + '</div></div>' +
+            '<div class="bg-white/60 rounded-lg p-3"><div class="text-xs text-amber-500 mb-1">抖音</div><div class="font-semibold text-amber-900">¥' + o.douyin_amount.toFixed(2) + '</div></div>' +
+            '<div class="bg-white/60 rounded-lg p-3"><div class="text-xs text-amber-500 mb-1">淘宝</div><div class="font-semibold text-amber-900">¥' + o.taobao_amount.toFixed(2) + '</div></div>' +
+            '<div class="bg-white/60 rounded-lg p-3"><div class="text-xs text-amber-500 mb-1">运费</div><div class="font-semibold text-red-600">-¥' + freight.toFixed(2) + '</div></div>' +
+            '<div class="bg-white/60 rounded-lg p-3"><div class="text-xs text-amber-500 mb-1">佣金</div><div class="font-semibold text-red-600">-¥' + commission.toFixed(2) + '</div></div>' +
+            '<div class="bg-white/60 rounded-lg p-3"><div class="text-xs text-amber-500 mb-1">发货</div><div class="font-semibold text-red-600">-¥' + shipCost.toFixed(2) + '</div></div>' +
+            '<div class="bg-white/60 rounded-lg p-3"><div class="text-xs text-amber-500 mb-1">退款</div><div class="font-semibold text-red-600">-¥' + refund.toFixed(2) + '</div></div>' +
+            '<div class="bg-white/60 rounded-lg p-3"><div class="text-xs text-amber-500 mb-1">退货成本</div><div class="font-semibold text-red-600">-¥' + returnCost.toFixed(2) + '</div></div>' +
             '<div class="bg-gradient-to-br from-apple-blue to-blue-400 rounded-lg p-3 text-white"><div class="text-xs opacity-80 mb-1">净利润</div><div class="font-bold text-xl">¥' + profit.toFixed(2) + '</div></div>' +
             '</div></div>' +
             '<div class="flex gap-3 mt-6">' +
             '<button type="submit" class="flex-1 bg-amber-500 text-white py-3 rounded-xl font-medium cyber-btn">保存修改</button>' +
-            '<button type="button" onclick="closeOrderModal()" class="px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-medium hover:bg-gray-200 transition">关闭</button>' +
+            '<button type="button" onclick="closeOrderModal()" class="px-6 py-3 bg-amber-100 text-amber-700 rounded-xl font-medium hover:bg-gray-200 transition">关闭</button>' +
             '</div></form>';
     });
 }

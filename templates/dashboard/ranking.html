@@ -5,7 +5,7 @@
 <div class="flex items-center justify-between mb-6">
 <h1 class="text-2xl font-semibold tracking-tight">店铺排行榜</h1>
 <div class="flex items-center space-x-2">
-<select onchange="switchGroup(this.value)" class="bg-[#f5f5f7] border-0 rounded-lg px-3 py-1.5 text-sm focus:ring-1 focus:ring-[#0071e3] outline-none">
+<select onchange="switchGroup(this.value)" class="bg-amber-50 border-0 rounded-lg px-3 py-1.5 text-sm focus:ring-1 focus:ring-[#0071e3] outline-none">
 <option value="">全部分组</option>
 {% for g in all_groups %}<option value="{{ g }}" {% if g == group %}selected{% endif %}>{{ g }}</option>{% endfor %}
 </select>
@@ -13,18 +13,18 @@
 
 {% set gf = '&group=' ~ group if group else '' %}
 <div class="flex items-center space-x-1.5 mb-6">
-<a href="/dashboard/ranking?sort_by=amount&days=1{{ gf }}" class="px-3 py-1 rounded-full text-xs font-medium transition-colors {% if sort_by == 'amount' and days == 1 %}bg-[#0071e3] text-white{% else %}bg-[#f5f5f7] hover:bg-[#e8e8ed]{% endif %}">今日成交</a>
-<a href="/dashboard/ranking?sort_by=orders&days=1{{ gf }}" class="px-3 py-1 rounded-full text-xs font-medium transition-colors {% if sort_by == 'orders' and days == 1 %}bg-[#0071e3] text-white{% else %}bg-[#f5f5f7] hover:bg-[#e8e8ed]{% endif %}">今日订单</a>
-<a href="/dashboard/ranking?sort_by=refund&days=1{{ gf }}" class="px-3 py-1 rounded-full text-xs font-medium transition-colors {% if sort_by == 'refund' and days == 1 %}bg-[#0071e3] text-white{% else %}bg-[#f5f5f7] hover:bg-[#e8e8ed]{% endif %}">今日退款</a>
-<a href="/dashboard/ranking?sort_by=amount&days=7{{ gf }}" class="px-3 py-1 rounded-full text-xs font-medium transition-colors {% if sort_by == 'amount' and days == 7 %}bg-[#0071e3] text-white{% else %}bg-[#f5f5f7] hover:bg-[#e8e8ed]{% endif %}">7天成交</a>
-<a href="/dashboard/ranking?sort_by=amount&days=15{{ gf }}" class="px-3 py-1 rounded-full text-xs font-medium transition-colors {% if sort_by == 'amount' and days == 15 %}bg-[#0071e3] text-white{% else %}bg-[#f5f5f7] hover:bg-[#e8e8ed]{% endif %}">15天成交</a>
-<a href="/dashboard/ranking?sort_by=amount&days=30{{ gf }}" class="px-3 py-1 rounded-full text-xs font-medium transition-colors {% if sort_by == 'amount' and days == 30 %}bg-[#0071e3] text-white{% else %}bg-[#f5f5f7] hover:bg-[#e8e8ed]{% endif %}">30天成交</a>
+<a href="/dashboard/ranking?sort_by=amount&days=1{{ gf }}" class="px-3 py-1 rounded-full text-xs font-medium transition-colors {% if sort_by == 'amount' and days == 1 %}bg-amber-500 text-white{% else %}bg-amber-50 hover:bg-amber-100{% endif %}">今日成交</a>
+<a href="/dashboard/ranking?sort_by=orders&days=1{{ gf }}" class="px-3 py-1 rounded-full text-xs font-medium transition-colors {% if sort_by == 'orders' and days == 1 %}bg-amber-500 text-white{% else %}bg-amber-50 hover:bg-amber-100{% endif %}">今日订单</a>
+<a href="/dashboard/ranking?sort_by=refund&days=1{{ gf }}" class="px-3 py-1 rounded-full text-xs font-medium transition-colors {% if sort_by == 'refund' and days == 1 %}bg-amber-500 text-white{% else %}bg-amber-50 hover:bg-amber-100{% endif %}">今日退款</a>
+<a href="/dashboard/ranking?sort_by=amount&days=7{{ gf }}" class="px-3 py-1 rounded-full text-xs font-medium transition-colors {% if sort_by == 'amount' and days == 7 %}bg-amber-500 text-white{% else %}bg-amber-50 hover:bg-amber-100{% endif %}">7天成交</a>
+<a href="/dashboard/ranking?sort_by=amount&days=15{{ gf }}" class="px-3 py-1 rounded-full text-xs font-medium transition-colors {% if sort_by == 'amount' and days == 15 %}bg-amber-500 text-white{% else %}bg-amber-50 hover:bg-amber-100{% endif %}">15天成交</a>
+<a href="/dashboard/ranking?sort_by=amount&days=30{{ gf }}" class="px-3 py-1 rounded-full text-xs font-medium transition-colors {% if sort_by == 'amount' and days == 30 %}bg-amber-500 text-white{% else %}bg-amber-50 hover:bg-amber-100{% endif %}">30天成交</a>
 </div>
 
 <div class="card rounded-2xl overflow-hidden fade-in">
 <div class="overflow-x-auto">
 <table class="w-full text-sm">
-<thead class="bg-[#fafafa] text-[#6e6e73] text-xs">
+<thead class="bg-amber-50 text-amber-600 text-xs">
 <tr>
 <th class="px-3 py-2.5 text-center font-medium w-12">排名</th>
 <th class="px-3 py-2.5 text-left font-medium">店铺名称</th>
@@ -39,23 +39,23 @@
 </tr></thead>
 <tbody class="divide-y divide-black/5">
 {% for s in shops %}
-<tr class="hover:bg-[#fafafa] transition-colors">
+<tr class="hover:bg-amber-50 transition-colors">
 <td class="px-3 py-2.5 text-center">
 {% if loop.index <= 3 %}
 <span class="inline-flex items-center justify-center w-6 h-6 rounded-full text-[10px] font-bold text-white {% if loop.index == 1 %}bg-[#ffd60a]{% elif loop.index == 2 %}bg-[#86868b]{% else %}bg-[#bf8a00]{% endif %}">{{ loop.index }}</span>
 {% else %}
-<span class="text-[#86868b] text-xs">{{ loop.index }}</span>
+<span class="text-amber-500 text-xs">{{ loop.index }}</span>
 {% endif %}
 </td>
-<td class="px-3 py-2.5 text-[#0071e3] cursor-pointer hover:underline text-xs font-medium" onclick="showShopModal('{{ s.shop_name }}')">{{ s.shop_name }}</td>
-<td class="px-3 py-2.5 text-[#6e6e73] text-xs">{{ s.group_name }}</td>
+<td class="px-3 py-2.5 text-amber-700 cursor-pointer hover:underline text-xs font-medium" onclick="showShopModal('{{ s.shop_name }}')">{{ s.shop_name }}</td>
+<td class="px-3 py-2.5 text-amber-600 text-xs">{{ s.group_name }}</td>
 <td class="px-3 py-2.5 text-right font-medium text-xs">{{ "%.2f"|format(s.total_amount) }}</td>
 <td class="px-3 py-2.5 text-right text-xs">{{ s.total_orders }}</td>
-<td class="px-3 py-2.5 text-right text-xs {% if s.total_refund > 0 %}text-[#ff3b30]{% endif %}">{{ "%.2f"|format(s.total_refund) }}</td>
+<td class="px-3 py-2.5 text-right text-xs {% if s.total_refund > 0 %}text-red-500{% endif %}">{{ "%.2f"|format(s.total_refund) }}</td>
 <td class="px-3 py-2.5 text-right text-xs">{{ s.total_exposure }}</td>
 <td class="px-3 py-2.5 text-right text-xs">{{ s.total_clicks }}</td>
 <td class="px-3 py-2.5 text-right text-xs">{{ s.total_pending_ship }}</td>
-<td class="px-3 py-2.5 text-right text-xs {% if s.total_overdue_ship > 0 %}text-[#ff3b30] font-semibold{% endif %}">{{ s.total_overdue_ship }}</td>
+<td class="px-3 py-2.5 text-right text-xs {% if s.total_overdue_ship > 0 %}text-red-500 font-semibold{% endif %}">{{ s.total_overdue_ship }}</td>
 </tr>
 {% endfor %}
 </tbody></table></div></div>
@@ -79,7 +79,7 @@ function switchGroup(g) {
 async function showShopModal(name) {
     const modal = document.getElementById('shopModal');
     document.getElementById('shopModalTitle').textContent = name;
-    document.getElementById('shopModalBody').innerHTML = '<div class="text-center py-8 text-[#86868b]">加载中...</div>';
+    document.getElementById('shopModalBody').innerHTML = '<div class="text-center py-8 text-amber-500">加载中...</div>';
     modal.classList.remove('hidden');
     const res = await fetch('/dashboard/api/shop/detail?shop_name=' + encodeURIComponent(name) + '&range=1');
     const data = await res.json();
@@ -89,7 +89,7 @@ async function showShopModal(name) {
     if (latest) {
         html += '<div class="grid grid-cols-3 md:grid-cols-6 gap-2.5 mb-4">';
         [['成交', latest.amount, '#0071e3'],['订单', latest.order_count, '#1d1d1f'],['退款', latest.refund_amount, latest.refund_amount>0?'#ff3b30':'#86868b'],['体验分', latest.experience_score, '#1d1d1f'],['待发货', latest.pending_ship, '#ff9500'],['超时', latest.overdue_ship, latest.overdue_ship>0?'#ff3b30':'#86868b']].forEach(i => {
-            html += '<div class="bg-[#f5f5f7] rounded-xl p-3"><div class="text-[10px] text-[#6e6e73] mb-0.5">' + i[0] + '</div><div class="text-base font-semibold" style="color:' + i[2] + '">' + i[1] + '</div></div>';
+            html += '<div class="bg-amber-50 rounded-xl p-3"><div class="text-[10px] text-amber-600 mb-0.5">' + i[0] + '</div><div class="text-base font-semibold" style="color:' + i[2] + '">' + i[1] + '</div></div>';
         });
         html += '</div>';
     }

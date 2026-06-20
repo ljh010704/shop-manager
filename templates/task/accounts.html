@@ -35,9 +35,8 @@
 <td class="px-5 py-4 font-semibold text-amber-800">{{ acc.platform_name }}</td>
 <td class="px-5 py-4 text-amber-700">{{ acc.account or '-' }}</td>
 <td class="px-5 py-4">
-<span class="text-amber-500 cursor-pointer hover:text-amber-700" onclick="togglePwd(this, '{{ acc.id }}')">••••••</span>
-<span class="pwd-value hidden" data-id="{{ acc.id }}">{{ acc.password_dec }}</span>
-<button onclick="copyPwd('{{ acc.id }}')" class="ml-2 text-xs text-amber-500 hover:text-amber-700">复制</button>
+<span id="pwd-{{ acc.id }}" class="text-amber-500 cursor-pointer hover:text-amber-700 font-mono" onclick="togglePwd('{{ acc.id }}', '{{ acc.password_dec }}')">••••••</span>
+<button onclick="copyPwd('{{ acc.id }}', '{{ acc.password_dec }}')" class="ml-2 text-xs text-amber-500 hover:text-amber-700">复制</button>
 </td>
 <td class="px-5 py-4 text-amber-700">{{ acc.remark or '-' }}</td>
 <td class="px-5 py-4 text-center">
@@ -98,19 +97,19 @@
 </div>
 
 <script>
-function togglePwd(el, id) {
-    var val = el.nextElementSibling;
-    if (val.classList.contains('hidden')) {
-        el.textContent = val.textContent;
-        val.classList.remove('hidden');
-    } else {
+var pwdVisible = {};
+function togglePwd(id, pwd) {
+    var el = document.getElementById('pwd-' + id);
+    if (pwdVisible[id]) {
         el.textContent = '••••••';
-        val.classList.add('hidden');
+        pwdVisible[id] = false;
+    } else {
+        el.textContent = pwd;
+        pwdVisible[id] = true;
     }
 }
-function copyPwd(id) {
-    var val = document.querySelector('.pwd-value[data-id="'+id+'"]');
-    if (val) navigator.clipboard.writeText(val.textContent).then(function() { alert('已复制'); });
+function copyPwd(id, pwd) {
+    navigator.clipboard.writeText(pwd).then(function() { alert('已复制'); });
 }
 function editAccount(id, platform, account, password, remark) {
     document.getElementById('editForm').action = '/task/api/accounts/' + id + '/edit';
