@@ -84,11 +84,12 @@
       <h3 class="text-base font-semibold text-amber-800">{{ task.task_name }}</h3>
       <div class="flex items-center gap-3">
         {% if all_groups %}
-        <select onchange="filterTaskByGroup({{ loop.index }}, this.value)" class="cyber-input text-sm py-1 px-3" style="width:150px">
+        <select onchange="filterTaskByGroup({{ loop.index }}, this.value)" class="cyber-input text-sm py-1 px-3" style="width:150px" id="groupSelect_{{ loop.index }}">
           <option value="">全部分组</option>
           {% for g in all_groups %}<option value="{{ g }}">{{ g }}</option>{% endfor %}
         </select>
         {% endif %}
+        <button onclick="completeAllForTask({{ loop.index }}, {{ task.task_id }}, '{{ today }}')" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200">一键完成</button>
         <span class="text-sm text-amber-600 task-progress" data-task="{{ loop.index }}">{{ task.done_count }}/{{ task.total_count }} 完成</span>
       </div>
     </div>
@@ -234,6 +235,58 @@ function undoLast() {
     document.getElementById('toast').classList.add('translate-y-2', 'opacity-0');
     setTimeout(function() { document.getElementById('toast').classList.add('hidden'); }, 300);
     toggleTask(a.btn, a.shopId, a.taskId, a.taskDate);
+}
+
+function completeAllForTask(taskIndex, taskId, taskDate) {
+    var groupSelect = document.getElementById('groupSelect_' + taskIndex);
+    var selectedGroup = groupSelect ? groupSelect.value : '';
+    var container = document.querySelector('.task-shops[data-task="' + taskIndex + '"]');
+    if (!container) return;
+    
+    var cards = container.querySelectorAll('.shop-card');
+    var shopIds = [];
+    cards.forEach(function(card) {
+        var btn = card.querySelector('.task-btn');
+        if (btn.dataset.completed !== '1') {
+            if (!selectedGroup || card.dataset.group === selectedGroup) {
+                if (card.style.display !== 'none') {
+                    shopIds.push(btn);
+                }
+            }
+        }
+    });
+    
+    if (shopIds.length === 0) {
+        var toast = document.getElementById('toast');
+        var msg = document.getElementById('toastMsg');
+        msg.textContent = '没有需要完成的任务';
+        toast.classList.remove('hidden');
+        setTimeout(function() { toast.classList.add('translate-y-2', 'opacity-0'); }, 2000);
+        return;
+    }
+    
+    var completed = 0;
+    shopIds.forEach(function(btn) {
+        btn.dataset.completed = '1';
+        btn.className = 'task-btn px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-200 bg-green-500 text-white hover:bg-green-600';
+        btn.innerHTML = '<svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> 已完成';
+        
+        var shopId = btn.closest('.shop-card').dataset.shopId;
+        fetch('/task/api/checkin/toggle', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: 'shop_id=' + shopId + '&task_id=' + taskId + '&task_date=' + taskDate
+        });
+        completed++;
+    });
+    
+    updateProgress(taskIndex);
+    
+    var toast = document.getElementById('toast');
+    var msg = document.getElementById('toastMsg');
+    msg.textContent = '已完成 ' + completed + ' 个店铺的任务';
+    toast.classList.remove('hidden');
+    setTimeout(function() { toast.classList.add('translate-y-2', 'opacity-0'); }, 3000);
 }
 
 function updateProgress(taskIndex) {

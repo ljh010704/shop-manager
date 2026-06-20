@@ -1726,6 +1726,20 @@ def task_get_password(acc_id: int):
     return {"password": ""}
 
 
+@task_router.get("/api/license/shops")
+def task_license_shops(license_name: str):
+    conn = get_db()
+    shops = [dict(r) for r in conn.execute("""
+        SELECT s.name, s.group_name, s.status
+        FROM shops s
+        JOIN licenses l ON s.license_id = l.id
+        WHERE l.license_name = ?
+        ORDER BY s.name
+    """, (license_name,)).fetchall()]
+    conn.close()
+    return {"shops": shops, "license_name": license_name}
+
+
 @task_router.get("/daily_task_templates", response_class=HTMLResponse)
 def task_daily_task_templates_page(request: Request):
     conn = get_db()
@@ -1878,13 +1892,17 @@ def task_delete_new_shop_task(task_id: int):
 
 
 @task_router.get("/checkin", response_class=HTMLResponse)
-def task_checkin_page(request: Request, shop_id: str = "", qdate: str = ""):
+def task_checkin_page(request: Request, shop_id: str = "", qdate: str = "", group: str = ""):
     conn = get_db()
     today = date.today().isoformat()
     selected_date = qdate if qdate else today
 
     shops = [dict(r) for r in conn.execute(
         "SELECT id, name, group_name, status FROM shops WHERE status != 'closed' ORDER BY name"
+    ).fetchall()]
+
+    all_groups = [r['group_name'] for r in conn.execute(
+        "SELECT DISTINCT group_name FROM shops WHERE group_name != '' ORDER BY group_name"
     ).fetchall()]
 
     tasks_data = []
@@ -1905,7 +1923,8 @@ def task_checkin_page(request: Request, shop_id: str = "", qdate: str = ""):
     conn.close()
     return templates.TemplateResponse(request, "task/checkin.html", {
         "request": request, "shops": shops, "tasks": tasks_data,
-        "selected_shop": selected_shop, "selected_date": selected_date, "today": today
+        "selected_shop": selected_shop, "selected_date": selected_date,
+        "today": today, "all_groups": all_groups, "selected_group": group
     })
 
 
